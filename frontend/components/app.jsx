@@ -8,7 +8,6 @@ const App = () => (
   <div>
     <Switch>
       <AuthRoute exact path='/' component={Splash} />
-
     </Switch>
 
   </div>
