@@ -6,11 +6,12 @@ import App from './app';
 
 
 const Root = ({ store }) => (
-  <Provider store={store}>
-    <HashRouter>
-      <App store={store} />
-    </HashRouter>
-  </Provider>
+  <h1>From the root </h1>
+  // <Provider store={store}>
+  //   <HashRouter>
+  //     <App store={store} />
+  //   </HashRouter>
+  // </Provider>
 );
 
 export default Root;
