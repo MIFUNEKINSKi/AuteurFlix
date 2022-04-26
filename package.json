@@ -1,5 +1,5 @@
 {
-  "name": "AuteurFlix",
+  "name": "auteurflix",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.17.9",
@@ -25,6 +25,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch --mode=development",
+    "webpack": "webpack --mode=development --watch",
     "postinstall": "webpack"
   },
   "engines": {
@@ -34,5 +35,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MIFUNEKINSKi/AuteurFlix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MIFUNEKINSKi/AuteurFlix/issues"
+  },
+  "homepage": "https://github.com/MIFUNEKINSKi/AuteurFlix#readme"
 }
