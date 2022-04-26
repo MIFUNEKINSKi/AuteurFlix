@@ -1,5 +1,5 @@
 
-import { LOGOUT_CURRENT_USER, RECEIVE_CURRENT_USER } from "../actions/session_actions";
+import { LOGOUT_CURRENT_USER, RECEIVE_CURRENT_USER } from "../actions/session_actions.js";
 import { RECEIVE_CURRENT_PROFILE, RESET_CURRENT_PROFILE } from "../actions/profile_actions";
 import { RECEIVE_MOVIE } from '../actions/movie_actions';
 
