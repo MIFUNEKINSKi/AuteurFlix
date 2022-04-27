@@ -1,15 +1,15 @@
-// import { createStore, applyMiddleware } from 'redux';
-// import RootReducer from '../reducers/root_reducer';
-// import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 
-// /*
-// Export a `configureStore` function that takes in a `preloadedState` parameter
-// and returns a store created with the `RootReducer`, `preloadedState`, and
-// `thunk` middleware.
-// */
+import rootReducer from '../reducers/root_reducer';
 
-// const configureStore = (preloadedState) => (
-//   createStore(RootReducer, preloadedState, applyMiddleware(thunk))
-// )
+const configureStore = (preloadedState = {}) => (
+    createStore(
+        rootReducer,
+        preloadedState,
+        applyMiddleware(thunk, logger)
+    )
+);
 
-// export default configureStore
+export default configureStore;
