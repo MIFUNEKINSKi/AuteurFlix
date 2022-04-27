@@ -41,7 +41,7 @@ class SignupField extends React.Component {
                     <h2>Limited movies from a distinct set of directors and era.</h2>
                     <p>Watch only on approved browsers (not Safari)</p>
                     <p>Ready to watch? Enter your email to so we can get to the payment.</p>
-                    
+
                 </section>
 
                 <form className='signup-bar-form' onSubmit={this.handleSubmit}>
@@ -55,7 +55,7 @@ class SignupField extends React.Component {
                     </div>
 
 
-                    <button className='signup-bar-btn' type='submit'>Get Started </button>
+                    <button className='signup-bar-btn' type='submit'>Get Started</button>
 
                 </form>
                 <p className='splash-error'>{this.state.error}</p>

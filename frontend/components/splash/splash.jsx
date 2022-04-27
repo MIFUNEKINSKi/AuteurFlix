@@ -9,8 +9,8 @@ export default props => (
         <SplashHeader />
     <SignupField />
   
-  <SignupFooter /> 
-    {/* <footer>
-  //   </footer> */}
+   <footer>
+    <SignupFooter /> 
+  </footer> 
   </div>
 )
