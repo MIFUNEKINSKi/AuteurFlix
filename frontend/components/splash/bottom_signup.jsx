@@ -1,6 +1,6 @@
 import React from 'react';
 
-class SignupField extends React.Component {
+class BottomSignupField extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -36,14 +36,11 @@ class SignupField extends React.Component {
     render() {
         const filled = this.state.email === '' ? '' : 'filled';
         return (
-            <div className='signup-container'>
+            <div className='btm-signup-container'>
                 <section className='signup-text'>
-                    <h1>Limited set of movies from a niche array of directors and eras.</h1>
-                    <h2>Watch only on approved browsers (not Safari)</h2>
-                    <h3>Ready to watch? Enter your email to so we can get to the payment.</h3>
-
+                    {/* <h3>Ready to watch? Enter your email to so we can get to the payment.</h3> */}
                 </section>
-
+                
                 <form className='signup-bar-form' onSubmit={this.handleSubmit}>
                     <div className='input-container'>
                         <input
@@ -52,7 +49,7 @@ class SignupField extends React.Component {
                             onChange={this.update('email')}
                         />
                         <label id={filled}>Email address</label>
-                    <button className='sign-btn' type='submit'>Get Started</button>
+                        <button className='sign-btn' type='submit'>Get Started</button>
                     </div>
                 </form>
                 <div className='splash-error'>{this.state.error}</div>
@@ -62,4 +59,4 @@ class SignupField extends React.Component {
     }
 }
 
-export default SignupField;
+export default BottomSignupField;

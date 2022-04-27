@@ -1,16 +1,16 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
+
 export default () => (
  
   <div className='splash-header'> 
-    <img id="Logo"
-      src={window.logoURL}
-      className="img-splash" />
-   
- <button>Sign In</button>
+    <Link to='/'><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
+  
+  
+    <Link className="sign-btn" to="/login">Sign In</Link>
     
-  {/* <Link className="signin-btn" to='/login'>Log In</Link>  */}
+  
 </div>
 
 );

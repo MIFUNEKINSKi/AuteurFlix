@@ -1,35 +1,33 @@
-
+$grad-begin: rgba(0, 0, 0, 1);
+$grad-mid: rgba(0, 0, 0, 0.25);
 
 #logo {
-    height: 50px;
-    width: auto;
-    background-image: 
-        image_url('auteurflix_logo.png');
+    height: 36px;
+    width: 134;
 }
 .splash-main {
     background-image: 
-        linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%),
-        linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%),
-        image_url('netflix_bg');
+        linear-gradient(to bottom, $grad-begin, $grad-mid, $grad-begin),
+        image_url('netflix-library-photo-scaled.jpeg');
     width: auto;
     background-size: cover;
 }
 
 .splash-main {
-    min-height: 85vh;
+    min-height: 90.5vh;
     border-bottom: 8px solid rgb(66, 66, 66);
 }
 
-.splash-header, .login-header {
+.splash-header {
     height: 100px;
     display: flex;
     justify-content: space-between;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 25px;
+    padding-right: 25px;
     align-items: center;
 }
 
-.signup-bar-btn, .signin-btn {
+.sign-btn {
     text-decoration: none;
     color: white;
     background: red;
@@ -38,21 +36,19 @@
     cursor: pointer;
 }
 
-.signup-bar-btn:hover, .signin-btn:hover {
+.sign-btn:hover {
     filter: brightness(110%);
 }
 
-.email-input {
-    height: 96%;
+.email {
+    height: 70%;
     width: 100%;
-    border-radius: 3px;
-    border: none;
-    outline: 0;
+    border-radius: 4px;
     position: relative;
     color: black;
-    padding-left: 15px;
-    font-size: 14px;
-    font-weight: bold;
+    padding-left: 10px;
+    font-size: 16px;
+
 }
 
 .link-text {
@@ -108,6 +104,21 @@
     color: gray;
     margin-top: 10px;
 }
+
+.cards-below {
+  justify-content: space-around;
+  padding: 60px 12%;
+  
+}
+
+.cards-below-txt {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  text-align: left;
+  color:  white;
+}
+
 
 
 
