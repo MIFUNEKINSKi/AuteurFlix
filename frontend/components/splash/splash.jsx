@@ -1,17 +1,16 @@
 import React from "react"
 import SplashHeader from "./splash_header"
 import SignupFooter from "./signup_footer"
-import SignupBar from "./signup_bar"
+import SignupField from "./signup_field"
 
 
 export default props => (
   <div className="splash-main">
         <SplashHeader />
-        {/* <SignupBar /> */}
-      <SignupFooter /> 
-   
-    </div>
-  //   <footer>
-  //   </footer>
-  // </div>
+    <SignupField />
+  
+  <SignupFooter /> 
+    {/* <footer>
+  //   </footer> */}
+  </div>
 )

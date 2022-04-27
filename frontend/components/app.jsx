@@ -6,7 +6,6 @@ import Splash from "./splash/splash";
 
 const App = () => (
   <div>
-    {/* <h1>In the app</h1> */}
     <Splash />
   </div>
 );
