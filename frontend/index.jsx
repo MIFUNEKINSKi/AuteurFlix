@@ -7,6 +7,8 @@ import { login } from "./util/session_api_util";
 document.addEventListener("DOMContentLoaded", () => {
   const root = document.getElementById("root");
   // const store = configureStore();
+  // window.getState = store.getState;
+  // window.dispatch = store.dispatch;
   ReactDOM.render(<Root/>, root);
   window.login = login
 });
