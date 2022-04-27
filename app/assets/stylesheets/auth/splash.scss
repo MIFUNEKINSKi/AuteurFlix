@@ -1,11 +1,18 @@
 
 
-
+#logo {
+    height: 50px;
+    width: auto;
+    background-image: 
+        image_url('auteurflix_logo.png');
+}
 .splash-main {
     background-image: 
-        linear-gradient(rgba(0, 0, 0, 5), rgba(0, 0, 0, 0) 60%),
-        linear-gradient(to top, rgb(216, 42, 42), rgba(0, 0, 0, 0) 60%)
-    
+        linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%),
+        linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%),
+        image_url('netflix_bg');
+    width: auto;
+    background-size: cover;
 }
 
 .splash-main {
@@ -35,7 +42,57 @@
     filter: brightness(110%);
 }
 
+.email-input {
+    height: 96%;
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+    outline: 0;
+    position: relative;
+    color: black;
+    padding-left: 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
 
+.link-text {
+    text-decoration: none;
+    color: white;
+
+}
+
+.splash-error {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: red;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    width: 80%;
+    justify-content: center;
+}
+
+.input-container label {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(0, 24px) scale(1);
+    transform-origin: top left;
+    transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    color: gray;
+    font-size: 14px;
+    line-height: 1;
+    left: 16px;
+}
+
+.input-container:focus-within label, #filled {
+  transform: translate(0, 5px) scale(0.8);
+}
 
 .splash-footer {
     color: gray;
