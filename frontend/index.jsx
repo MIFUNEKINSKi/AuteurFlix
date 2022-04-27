@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // testing start
   window.getState = store.getState;
   window.dispatch = store.dispatch;
-  // window.login = login
+  window.login = login
   // testing end
   const root = document.getElementById("root");
   ReactDOM.render(<Root store={store}/>, root);
