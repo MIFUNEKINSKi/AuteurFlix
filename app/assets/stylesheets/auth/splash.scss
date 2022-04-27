@@ -21,3 +21,37 @@
     padding-right: 30px;
     align-items: center;
 }
+
+.signup-bar-btn, .signin-btn {
+    text-decoration: none;
+    color: white;
+    background: red;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.signup-bar-btn:hover, .signin-btn:hover {
+    filter: brightness(110%);
+}
+
+
+
+.splash-footer {
+    color: gray;
+    background: black;
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.splash-footer a {
+    text-decoration: none;
+    color: gray;
+    margin-top: 10px;
+}
+
+
+
+
