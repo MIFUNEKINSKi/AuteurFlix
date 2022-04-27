@@ -5,10 +5,12 @@ import configureStore from "./store/store"
 import { login } from "./util/session_api_util";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const store = configureStore();
+  // testing start
+  window.getState = store.getState;
+  window.dispatch = store.dispatch;
+  // window.login = login
+  // testing end
   const root = document.getElementById("root");
-  // const store = configureStore();
-  // window.getState = store.getState;
-  // window.dispatch = store.dispatch;
-  ReactDOM.render(<Root/>, root);
-  window.login = login
+  ReactDOM.render(<Root store={store}/>, root);
 });
