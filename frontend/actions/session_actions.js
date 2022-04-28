@@ -40,8 +40,8 @@ export const logout = () => dispatch =>
             errors => dispatch(receiveSessionErrors(errors.responseJSON)));
 
 export const signup = user => dispatch => {
+    return SessionApiUtil.signup(user)
+    .then(user => dispatch(receiveCurrentUser(user)),
+    errors => dispatch(receiveSessionErrors(errors.responseJSON)));
     debugger
-   return SessionApiUtil.signup(user)
-        .then(user => dispatch(receiveCurrentUser(user)),
-            errors => dispatch(receiveSessionErrors(errors.responseJSON)));
 }
