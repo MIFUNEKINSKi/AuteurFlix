@@ -52,7 +52,7 @@ class BottomSignupField extends React.Component {
                         <button className='sign-btn' type='submit'>Get Started</button>
                     </div>
                 </form>
-                <div className='splash-error'>{this.state.error}</div>
+                <div className='splash-errors'>{this.state.error}</div>
             </div>
 
         )
