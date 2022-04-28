@@ -8,6 +8,7 @@ class SignupForm extends React.Component {
         super(props);
         const passedThroughEmail = (typeof props.location.email === 'undefined' ? '' :
             props.location.email)
+
         this.state = {
             email: passedThroughEmail,
             password: ''
@@ -19,15 +20,14 @@ class SignupForm extends React.Component {
 
     update(field) {
         return (e) => {
-            this.setState({ [field]: e.currentTarget.value });
+            this.setState({ [field]: e.target.value });
         }
     }
 
     handleSubmit(e) {
         e.preventDefault();
         this.props.resetSessionErrors();
-        const user = Object.assign({}, this.state);
-        this.props.signup(user);
+        this.props.signup(this.state);
 
     }
 
@@ -59,7 +59,6 @@ class SignupForm extends React.Component {
                         </div>
                         <p className='signup-error'>{emailError[0]}</p>
 
-
                         <div className='signup-input-container'>
                             <input
                                 className='signup-input'
@@ -69,7 +68,6 @@ class SignupForm extends React.Component {
                             <label id={passFilled}>Add a password</label>
                         </div>
                         <p className='signup-error'>{passError}</p>
-
                         <button className='sign-btn' type='submit'>Sign Up</button>
 
                     </form>
