@@ -6,6 +6,21 @@ import { login } from "./util/session_api_util";
 
 document.addEventListener("DOMContentLoaded", () => {
   const store = configureStore();
+  // bootstrappiung user 
+  let preloadedState = undefined;
+  if (window.currentUser) {
+    preloadedState = {
+      entities: {
+        users: { [window.currentUser.id]: window.currentUser }
+      },
+      session: {
+        id: window.currentUser.id,
+      }
+    };
+
+  }
+
+
   // testing start
   window.getState = store.getState;
   window.dispatch = store.dispatch;
