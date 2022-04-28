@@ -39,7 +39,7 @@ class SignupField extends React.Component {
         return (
             <div className='signup-container'>
                 <section className='hero-text'>
-                    <h1>Limited set of movies from a niche array of directors and eras.</h1>
+                    <h1>Limited set of movies from Auteur directors by decade!</h1>
                     <h2>Watch only on approved browsers (not Safari)</h2>
                     <h3>Ready to watch? Enter your email to so we can get to the payment.</h3>
 
@@ -56,7 +56,7 @@ class SignupField extends React.Component {
                     <button className='sign-btn' type='submit'>Get Started</button>
                     </div>
                 </form>
-                <div className='splash-error'>{this.state.error}</div>
+                <div className='splash-errors'>{this.state.error}</div>
             </div>
 
         )
