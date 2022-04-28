@@ -5,7 +5,6 @@ class User < ApplicationRecord
     validates :password, length: {minimum: 6, allow_nil: true}
 
     attr_reader :password
-
     after_initialize :ensure_session_token
 
     def self.find_by_credentials(email, password)
@@ -39,9 +38,5 @@ class User < ApplicationRecord
         self.session_token ||= SecureRandom.base64
     end
 
-    has_many :profiles,
-        primary_key: :id,
-        foreign_key: :user_id,
-        class_name: :Profile
 
 end

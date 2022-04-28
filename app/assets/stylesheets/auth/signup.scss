@@ -36,26 +36,26 @@
 
 }
 
-.signup-text {
+.hero-text {
     color: white;
     text-align: center;
 }
 
-.signup-text h1 {
+.hero-text h1 {
     font-size: 50px;
     font-weight: 700;
     padding-bottom: 20px;
     max-width: 640px;
     margin: auto;
 }
-.signup-text h2 {
+.hero-text h2 {
     font-size: 26px;
     font-weight: 350;
     padding-bottom: 20px;
     max-width: 640px;
     margin: 16px 155px;
 }
-.signup-text h3 {
+.hero-text h3 {
     font-size: 19.3px;
     font-weight: 350;
     padding-bottom: 20px;
@@ -63,17 +63,17 @@
     margin: 16px 155px;
 }
 
-.signup-text > p {
+.hero-text > p {
     font-size: 24px;
     padding-bottom: 30px;
 }
 
-.signup-text p:last-child {
+.hero-text p:last-child {
     font-size: 16px;
 }
 
 
-.signup-bar-form {
+.signup-field-form {
     display: flex;
     justify-content: center;
     width: 100%;

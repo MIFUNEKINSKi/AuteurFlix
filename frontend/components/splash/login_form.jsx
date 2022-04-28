@@ -40,7 +40,7 @@ class LoginForm extends React.Component {
     render() {
         const filled = this.state.email === '' ? '' : 'filled';
         const passFilled = this.state.password === '' ? '' : 'filled';
-        const errors = this.props.errors.map((error, idx) => <li key={idx}>{error}</li>);
+        const errors = this.props.errors.map((error) => <li>{error}</li>);
 
         return (
             <div>
