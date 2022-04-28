@@ -15,7 +15,7 @@ export default props => (
   <div>
   <div className="splash-main">
         <SplashHeader />
-    <SignupField />
+      <SignupField history={props.history}/>
   </div>
     <KidsCard /> 
      <EnjoyCard />

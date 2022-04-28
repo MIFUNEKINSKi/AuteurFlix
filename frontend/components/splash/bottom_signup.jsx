@@ -11,23 +11,29 @@ class BottomSignupField extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     };
 
+    // routeChange() {
+    //     let path = `/signup`;
+    //     this.props.history.push(path);
+    // }
+
     update(field) {
         return e => this.setState({ [field]: e.currentTarget.value });
     };
 
     handleClick(e) {
         e => this.setState({ [email]: '' });
-
     }
 
 
     handleSubmit(e) {
+        
         e.preventDefault();
         const email = this.state.email;
         const valid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+        
         if (valid.test(email)) {
-            this.props.history.push({ pathname: `/signup`, email: email });
+            // build this in later
+            // this.props.history.push({ pathname: `/signup`, email: email });
         } else {
             this.setState({ error: 'Please enter a valid email.' });
         }

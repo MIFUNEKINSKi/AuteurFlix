@@ -17,6 +17,9 @@ class LoginForm extends React.Component {
 
     handleDemo(e) {
         e.preventDefault();
+        this.props.history.push({ pathname: `/signup`, email: "hello" });
+        debugger
+        
         const demoUser = {
             email: 'dan@gmail.com',
             password: 'password'
@@ -33,7 +36,7 @@ class LoginForm extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         this.props.resetSessionErrors();
-        debugger
+        // debugger
         this.props.login(this.state);
     }
 
