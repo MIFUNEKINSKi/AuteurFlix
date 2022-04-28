@@ -37,11 +37,11 @@ class BottomSignupField extends React.Component {
         const filled = this.state.email === '' ? '' : 'filled';
         return (
             <div className='btm-signup-container'>
-                <section className='signup-text'>
+                <section className='hero-text'>
                     {/* <h3>Ready to watch? Enter your email to so we can get to the payment.</h3> */}
                 </section>
                 
-                <form className='signup-bar-form' onSubmit={this.handleSubmit}>
+                <form className='signup-field-form' onSubmit={this.handleSubmit}>
                     <div className='input-container'>
                         <input
                             className='email'
