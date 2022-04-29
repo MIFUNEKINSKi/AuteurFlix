@@ -22,10 +22,9 @@ export default props => (
       <DownloadCard /> 
       <WatchEverywhereCard /> 
       <FAQ /> 
-    {/* need this signup to only be email and limited text */}
-    <BottomSignupField />
+    <BottomSignupField history={props.history}/>
    <footer>
-    <SignupFooter /> 
+      <SignupFooter /> 
   </footer> 
  </div > 
 )
