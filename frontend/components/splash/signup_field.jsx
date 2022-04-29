@@ -24,7 +24,7 @@ class SignupField extends React.Component {
         e.preventDefault();
         const email = this.state.email;
         const valid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        // debugger
+        debugger
 
         // regex test 
         if (valid.test(email)) {

@@ -9,7 +9,7 @@ const mSTP = state => ({
 });
 
 const mDTP = dispatch => ({
-    login: formUser => dispatch(login(formUser)),
+    login: user => dispatch(login(user)),
     resetSessionErrors: () => dispatch(resetSessionErrors())
 });
 

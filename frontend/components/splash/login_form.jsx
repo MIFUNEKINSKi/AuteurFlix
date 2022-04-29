@@ -36,7 +36,7 @@ class LoginForm extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         this.props.resetSessionErrors();
-        // debugger
+        debugger
         this.props.login(this.state);
     }
 

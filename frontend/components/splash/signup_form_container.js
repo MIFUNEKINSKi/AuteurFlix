@@ -9,7 +9,7 @@ const mSTP = (state, ownProps) => ({
 });
 
 const mDTP = dispatch => ({
-    signup: formUser => dispatch(signup(formUser)),
+    signup: user => dispatch(signup(user)),
     resetSessionErrors: () => dispatch(resetSessionErrors())
 });
 
