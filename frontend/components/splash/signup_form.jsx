@@ -6,11 +6,11 @@ import SplashHeader from "./splash_header";
 class SignupForm extends React.Component {
     constructor(props) {
         super(props);
-        const passedThroughEmail = (typeof props.location.email === 'undefined' ? '' :
+        const historyEmail = (typeof props.location.email === 'undefined' ? '' :
             props.location.email)
 
         this.state = {
-            email: passedThroughEmail,
+            email: historyEmail,
             password: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
