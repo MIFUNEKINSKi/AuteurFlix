@@ -13,6 +13,7 @@ const Root = ({ store, persistor }) => (
       <HashRouter>
         <App />
       </HashRouter>
+      
     </persistor>
   </Provider>
 );
