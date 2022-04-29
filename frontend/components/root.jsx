@@ -9,10 +9,11 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 
 const Root = ({ store, persistor }) => (
   <Provider store={store}>
-    <persistor> </persistor>
+    <persistor> 
       <HashRouter>
         <App />
       </HashRouter>
+    </persistor>
   </Provider>
 );
 
