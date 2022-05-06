@@ -8,7 +8,7 @@ $grad-mid: rgba(0, 0, 0, 0.25);
 .splash-main {
     background-image: 
         linear-gradient(to bottom, $grad-begin, $grad-mid, $grad-begin),
-        image_url('netflix-library-photo-scaled.jpeg');
+        image_url('splash-background.jpg');
     width: auto;
     background-size: cover;
 }
@@ -25,6 +25,7 @@ $grad-mid: rgba(0, 0, 0, 0.25);
     padding-left: 25px;
     padding-right: 25px;
     align-items: center;
+   
 }
 
 .sign-btn {

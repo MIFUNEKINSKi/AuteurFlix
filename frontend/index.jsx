@@ -1,31 +1,27 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
+import configureStore from './store/store';
 import Root from './components/root';
-import configureStore from "./store/store"
-import { login } from "./util/session_api_util";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const store = configureStore();
-  // bootstrappiung user 
-  let preloadedState = undefined;
+document.addEventListener('DOMContentLoaded', () => {
+  let init;
   if (window.currentUser) {
-    preloadedState = {
+    const preloadedState = {
       entities: {
         users: { [window.currentUser.id]: window.currentUser }
       },
-      session: {
-        id: window.currentUser.id,
-      }
+      session: { id: window.currentUser.id }
     };
+    init = configureStore(preloadedState);
+
+    delete window.currentUser;
+  } else {
+    init = configureStore();
 
   }
+  const root = document.getElementById('root');
+  ReactDOM.render(<Root store={init.store} persistor={init.persistor} />, root);
 
-
-  // testing start
-  window.getState = store.getState;
-  window.dispatch = store.dispatch;
-  window.login = login
-  // testing end
-  const root = document.getElementById("root");
-  ReactDOM.render(<Root store={store}/>, root);
 });
