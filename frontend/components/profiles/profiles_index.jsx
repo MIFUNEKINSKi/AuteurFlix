@@ -9,14 +9,17 @@ class ProfilesIndex extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            show: 'profiles'
+            show: 'profiles',
+            profiles: this.props.fetchProfiles(this.props.userId)
         }
-        this.props.fetchProfiles(this.props.userId);
+       
+        debugger
         this.handleCancel = this.handleCancel.bind(this);
     }
 
     componentDidMount() {
-        this.props.fetchMovies();
+        // this.props.fetchMovies();
+        this.props.fetchProfiles(this.props.userId);
     }
 
     handleClick() {
@@ -35,6 +38,7 @@ class ProfilesIndex extends React.Component {
                 <p>Add Profile</p>
             </li>
         
+        debugger
         const profiles = this.props.profiles.map(profile => (
             <ProfileIndexItem 
             key={profile.id} 
@@ -51,7 +55,7 @@ class ProfilesIndex extends React.Component {
                 <h1>Who's Watching?</h1>
                 <ul className='profiles-list'>
                     {profiles}
-                    {/* {addProfile} */}
+                    {addProfile}
 
                 </ul> 
                 <Link className='manage-link' to='/manageprofiles'>

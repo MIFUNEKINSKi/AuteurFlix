@@ -20,7 +20,7 @@ class Api::ProfilesController < ApplicationController
 
     def show
         @profile = Profile.find(params[:id])
-        @my_list = @profile.list_items
+        # @my_list = @profile.list_items
         render :show
     end
 

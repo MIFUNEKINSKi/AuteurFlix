@@ -1,0 +1,34 @@
+
+
+.movie-container {
+    overflow: hidden;
+    margin: 0 auto;
+    width: auto;
+    height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 97vh;
+    width: auto;
+    overflow: hidden;
+}
+
+#back-arrow {
+    display: block;
+    color: white;
+    font-size: 48px;
+    position: absolute;
+    z-index: 10;
+    left: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+#back-arrow .hidden {
+    display: none;
+}
+
+.show-movie {
+    width: auto;
+    height: 97vh;
+}
