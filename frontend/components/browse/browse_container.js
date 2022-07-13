@@ -10,6 +10,7 @@ const mDTP = dispatch => ({
     createProfile: profile => dispatch(createProfile(profile))
 });
 // debugger
+// debugger
 const mSTP = state => ({
     currentUserId: state.session.id,
     profiles: Object.values(state.entities.profiles),
