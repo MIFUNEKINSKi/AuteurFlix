@@ -18,3 +18,5 @@ User.create(id: 4, email: 'john@gmail.com', password: 'password')
 Profile.create(user_id: 3, name: 'tante elle')
 Profile.create(user_id: 3, name: 'pram')
 Profile.create(user_id: 3, name: 'living room')
+
+
