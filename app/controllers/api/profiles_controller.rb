@@ -20,7 +20,7 @@ class Api::ProfilesController < ApplicationController
 
     def show
         @profile = Profile.find(params[:id])
-        # @my_list = @profile.list_items
+        @my_list = @profile.list_items
         render :show
     end
 
@@ -29,7 +29,7 @@ class Api::ProfilesController < ApplicationController
         @profiles = user.profiles
         render :index
     end
-``
+
     
     def destroy
         @profile = current_user.profiles.find_by(id: params[:id])
@@ -37,7 +37,7 @@ class Api::ProfilesController < ApplicationController
             @profiles = current_user.profiles
             render :index
         else
-            render json: ["Ooops, that didn't work"], status: 401
+            render json: ['Something went wrong'], status: 401
         end
      end
     
