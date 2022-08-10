@@ -18,8 +18,8 @@ class ProfilesIndex extends React.Component {
     }
 
     componentDidMount() {
-        // this.props.fetchMovies();
-        this.props.fetchProfiles(this.props.userId);
+        this.props.fetchMovies();
+        // this.props.fetchProfiles(this.props.userId);
     }
 
     handleClick() {

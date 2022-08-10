@@ -7,7 +7,7 @@ const profilesReducer = (state = {}, action) => {
         case RECEIVE_USER_PROFILES:
             return action.profiles;
         case RECEIVE_NEW_PROFILE:
-            return Object.assign({}, state, { [action.profile.id]: action.profile })
+            return Object.assign({}, state, { [action.profile.id]: action.profile})
         case REMOVE_PROFILE:
             let nextState = Object.assign({}, state)
             delete nextState[action.profile.id]
