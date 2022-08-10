@@ -3,9 +3,8 @@ import { RECEIVE_CURRENT_USER, RECEIVE_SESSION_ERRORS, RESET_SESSION_ERRORS } fr
 
 const sessionErrorsReducer = (state = {}, action) => {
     Object.freeze(state);
-    switch (action.type) {
+    switch (action.type){
         case RECEIVE_SESSION_ERRORS:
-            debugger
             return action.errors;
         case RESET_SESSION_ERRORS:
             return {};

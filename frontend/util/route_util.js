@@ -2,8 +2,6 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Redirect, Route, withRouter } from 'react-router-dom';
 
-// conditionally render either the component or a <Redirect> based on whether a user is logged in.
-
 const Auth = ({ component: Component, path, loggedIn, exact }) => (
     <Route path={path} exact={exact} render={(props) => (
         !loggedIn ? (
@@ -27,7 +25,6 @@ const Protected = ({ component: Component, path, loggedIn, exact }) => (
 const mapStateToProps = state => {
     return { loggedIn: Boolean(state.session.id) };
 }
-
 
 export const AuthRoute = withRouter(connect(mapStateToProps)(Auth));
 

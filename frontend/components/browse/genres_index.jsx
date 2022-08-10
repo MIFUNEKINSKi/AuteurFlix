@@ -98,13 +98,14 @@ class GenresIndex extends React.Component {
     
         const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
 
+        debugger
         return (
             <div className='browse-main'>
                 <BrowseHeader
                     history={this.props.history} 
                     logout={this.props.logout} 
                     resetProfile={this.props.resetProfile}/>
-                <div className='top-movie'>
+                     {/* <div className='top-movie'>
                     <img src={this.props.topMovie.photoUrl}/>
                     <h1>{this.props.topMovie.title}</h1>
                     <div className='top-movie-btns'>
@@ -118,16 +119,20 @@ class GenresIndex extends React.Component {
                         id='top-sound-off'
                         className='hidden'
                         onClick={this.soundOff} />
-                </div>
+                </div>  */}
                 <div className='genres-browse'>
                     {myList}
                     {genres}
                 </div>
                 
                    
-                {modal}
+              {modal}
                 
-                
+               <div>
+                <p>something else hehe</p>
+               </div>
+             
+
             </div>
         )
         

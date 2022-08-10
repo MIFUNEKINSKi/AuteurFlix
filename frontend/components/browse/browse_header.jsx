@@ -32,7 +32,7 @@ class BrowseHeader extends React.Component {
     update(e) {
         this.setState({ search: e.currentTarget.value });
         this.props.searchTitles(e.currentTarget.value);
-        // this.props.searchGenres(e.currentTarget.value);
+        this.props.searchGenres(e.currentTarget.value);
        
     }
 
@@ -88,9 +88,9 @@ class BrowseHeader extends React.Component {
                 <div className='left-nav'>
                     <Link to='/browse/'><p>Home</p></Link>
                     <Link to='/browse/my-list'><p>My List</p></Link>
-                    <a href='https://github.com/ashes4trees/napflix' target='_blank'>GitHub</a>
-                    <a href='https://linkedin.com/in/steph-soni' target='_blank'>LinkedIn</a>
-                    <a href='https://stephaniesoni.com' target='_blank'>Portfolio</a>
+                    <a href='https://github.com/MIFUNEKINSKi/AuteurFlix' target='_blank'>GitHub</a>
+                    <a href='https://www.linkedin.com/in/chris-moore-27438989/' target='_blank'>LinkedIn</a>
+                    
 
                 </div>
                 <div className='right-nav'>
