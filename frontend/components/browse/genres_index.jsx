@@ -19,7 +19,7 @@ class GenresIndex extends React.Component {
     }
 
     soundOff(e) {
-      
+
         const bool = this.state.sound ? false : true;
         this.setState({ sound: bool });
     }
@@ -50,44 +50,44 @@ class GenresIndex extends React.Component {
     render() {
         const tags = this.movieGenres();
         const display = tags.map(tag => <p key={tag.id}>{tag.genre}</p>);
-        
+
         const genres = this.props.genres.map(genre =>
             <div key={genre.id} className='genre-name'>
                 <h1>{genre.genre}</h1>
-                <GenreList 
+                <GenreList
                     myList={this.props.myList}
                     currentProfileId={this.props.currentProfileId}
-                    createListItem={this.props.createListItem} 
+                    createListItem={this.props.createListItem}
                     deleteListItem={this.props.deleteListItem}
                     movies={this.props.movies}
                     genreId={genre.id}
                     genres={this.props.genres}
                     tags={this.props.tags}
-                    />
+                />
             </div>
         )
 
-        const myList = this.props.myList.length ? <div key = { this.props.currentProfileId } className = 'genre-name' >
-                        <h1>My List</h1>
-                        <GenreList
-                            currentProfileId={this.props.currentProfileId}
-                            createListItem={this.props.createListItem}
-                            deleteListItem={this.props.deleteListItem}
-                            movies={this.props.movies}
-                            myList={this.props.myList}
-                            genreId={null}
-                            tags={this.props.tags} 
-                            genres={this.props.genres}/>
-                    </div > : null
+        const myList = this.props.myList.length ? <div key={this.props.currentProfileId} className='genre-name' >
+            <h1>My List</h1>
+            <GenreList
+                currentProfileId={this.props.currentProfileId}
+                createListItem={this.props.createListItem}
+                deleteListItem={this.props.deleteListItem}
+                movies={this.props.movies}
+                myList={this.props.myList}
+                genreId={null}
+                tags={this.props.tags}
+                genres={this.props.genres} />
+        </div > : null
 
-        
 
-        const modal = this.state.showModal ? 
+
+        const modal = this.state.showModal ?
             <DetailsModal
                 myList={this.props.myList}
                 currentProfileId={this.props.currentProfileId}
                 createListItem={this.props.createListItem}
-                deleteListItem={this.props.deleteListItem} 
+                deleteListItem={this.props.deleteListItem}
                 movie={this.props.topMovie}
                 toggleModal={this.toggleModal}
                 onEnd={this.onEnd}
@@ -95,48 +95,43 @@ class GenresIndex extends React.Component {
                 display={display}
                 sound={this.state.sound}
             /> : null
-    
+
         const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
 
-        debugger
         return (
             <div className='browse-main'>
                 <BrowseHeader
-                    history={this.props.history} 
-                    logout={this.props.logout} 
-                    resetProfile={this.props.resetProfile}/>
-                     {/* <div className='top-movie'>
-                    <img src={this.props.topMovie.photoUrl}/>
+                    history={this.props.history}
+                    logout={this.props.logout}
+                    resetProfile={this.props.resetProfile} />
+                <div className='top-movie'>
+                    <img src={this.props.topMovie.photoUrl} />
                     <h1>{this.props.topMovie.title}</h1>
                     <div className='top-movie-btns'>
                         <Link to={`/watch/${this.props.topMovie.id}`} className='modal-play'>&#9658; Play</Link>
-                        <button 
-                        className='top-info'
-                        onClick={this.toggleModal}
+                        <button
+                            className='top-info'
+                            onClick={this.toggleModal}
                         >&#9432; More info</button>
                     </div>
                     <img src={soundBtn}
                         id='top-sound-off'
                         className='hidden'
                         onClick={this.soundOff} />
-                </div>  */}
+                </div>
                 <div className='genres-browse'>
                     {myList}
                     {genres}
                 </div>
-                
-                   
-              {modal}
-                
-               <div>
-                <p>something else hehe</p>
-               </div>
-             
+
+
+                {modal}
+
 
             </div>
         )
-        
-        
+
+
 
     }
 }

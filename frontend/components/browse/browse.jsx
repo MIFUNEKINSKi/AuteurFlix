@@ -21,7 +21,7 @@ class Browse extends React.Component {
     render () {
 
         const display = this.state.showProfiles ? 
-            
+                
                 <ProfilesIndex
                     fetchMovies={this.props.fetchMovies}
                     show={this.state.show}
