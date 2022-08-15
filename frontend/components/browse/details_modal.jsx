@@ -106,15 +106,10 @@ class DetailsModal extends React.Component {
                 <div className='left-details'>
                     <div>
                         <p>{this.props.movie.year}</p>
-                        {/* <p className='modal-rating'>{this.props.movie.rating}</p> */}
+                        <p className='modal-director'>{this.props.movie.director}</p>
                         <p>{displayLength}</p>
                     </div>
                     <p>{this.props.movie.summary}</p>
-                </div>
-
-                <div className='modal-tags' >
-                    <p>Genres:</p>
-                    {this.props.display}
                 </div>
 
             </div>
