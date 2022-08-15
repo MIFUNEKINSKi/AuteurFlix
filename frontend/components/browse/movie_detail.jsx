@@ -176,7 +176,7 @@ class MovieDetail extends React.Component {
                             </button>
                         
                         </div>
-                        <p className='details-rating'>{this.props.movie.rating}</p>
+                        {/* <p className='details-rating'>{this.props.movie.rating}</p> */}
                         <div className='details-tags' >
                             {display}
                         </div>
