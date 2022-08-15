@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-require 'open-uri'
+
 
 User.destroy_all
 Profile.destroy_all
@@ -38,8 +38,7 @@ Movie.create(
         title: 'The Red Shoes', 
         year: 1948, 
         summary: "A young ballet dancer is torn between the man she loves and her pursuit to become a prima ballerina.", 
-        length: 133, 
-        rating: 'PG'
+        length: 133
     }
 )
 
@@ -58,8 +57,7 @@ Movie.create(
         title: 'High and Low', 
         year: 1965, 
         summary: "Police procedural crime film directed by Akira Kurosawa, starring Toshiro Mifune, Tatsuya Nakadai and Kyōko Kagawa. The film is loosely based on the 1959 novel King's Ransom by Ed McBain (Evan Hunter).", 
-        length: 143, 
-        rating: 'PG'
+        length: 143
     }
 )
 
@@ -77,8 +75,7 @@ Movie.create(
         title: 'Black Narcissus', 
         year: 1947, 
         summary: "A group of nuns struggle to establish a convent in the Himalayas, while isolation, extreme weather, altitude, and culture clashes all conspire to drive the well-intentioned missionaries mad.", 
-        length: 143, 
-        rating: 'PG'
+        length: 143
     }
 )
 
@@ -96,8 +93,7 @@ Movie.create(
         title: '8 1/2', 
         year: 1963, 
         summary: "A harried movie director retreats into his memories and fantasies.", 
-        length: 138, 
-        rating: 'PG'
+        length: 138
     }
 )
 

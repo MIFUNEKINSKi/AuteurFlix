@@ -1,6 +1,6 @@
 class Movie < ApplicationRecord
-    validates :title, :year, :summary, :length, :rating, presence: true
-    validates :rating, inclusion: {in: ['G', 'PG', 'PG-13', 'R', 'NC-17', 'NR']}
+    validates :title, :year, :summary, :length , presence: true
+    
 
     has_one_attached :thumbnail
     has_one_attached :video
