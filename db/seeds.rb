@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
+require 'open-uri'
 
 User.destroy_all
 Profile.destroy_all
@@ -27,9 +27,14 @@ Genre.create(id: 2, genre: 'Powell and Pressburger')
 Genre.create(id: 3, genre: 'Koreeda')
 Genre.create(id: 4, genre: 'Fellini')
 Genre.create(id: 5, genre: 'Bong Joon Ho')
-Genre.create(id: 6, genre: 'Bunuel')
-Genre.create(id: 7, genre: 'Coen Brothers')
-Genre.create(id: 8, genre: 'Chaplin')
+Genre.create(id: 6, genre: 'Buñuel')
+Genre.create(id: 8, genre: 'Kubrick')
+Genre.create(id: 9, genre: '60s')
+Genre.create(id: 10, genre: '70s')
+Genre.create(id: 11, genre: '80s')
+Genre.create(id: 12, genre: '50s')
+Genre.create(id: 13, genre: '40s')
+Genre.create(id: 7, genre: '2000')
 
 
 
@@ -44,6 +49,8 @@ Movie.create(
 )
 
 Tag.create(movie_id: 1, genre_id: 2)
+Tag.create(movie_id: 1, genre_id: 13)
+
 m1 = Movie.find(1)
 m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/il_fullxfull.3352098303_h27q.webp'), 
                 filename: 'il_fullxfull.3352098303_h27q.webp
@@ -64,13 +71,16 @@ Movie.create(
 )
 
 Tag.create(movie_id: 4, genre_id: 1)
-m1 = Movie.find(4)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/high-and-low-md-web.jpeg'), 
+Tag.create(movie_id: 4, genre_id: 9)
+
+
+m4 = Movie.find(4)
+m4.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/high-and-low-md-web.jpeg'), 
                 filename: 'high-and-low-md-web.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Y2Mate.is+-+High+and+Low+(Tengoku+to+Jigoku)+1963+trailer+with+subtitles-LV3z2Ytxu90-1080p-1660239252097.mp4'), 
+m4.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Y2Mate.is+-+High+and+Low+(Tengoku+to+Jigoku)+1963+trailer+with+subtitles-LV3z2Ytxu90-1080p-1660239252097.mp4'), 
                 filename: 'Y2Mate.is - High and Low (Tengoku to Jigoku) 1963 trailer with subtitles-LV3z2Ytxu90-1080p-1660239252097.mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/High_and_low.png'), 
+m4.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/High_and_low.png'), 
                 filename: 'High_and_low.png')
 Movie.create( 
     {   id: 3, 
@@ -83,13 +93,15 @@ Movie.create(
 )
 
 Tag.create(movie_id: 3, genre_id: 2)
-m1 = Movie.find(3)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/black_narcissus_thumbnail.jpeg'), 
+Tag.create(movie_id: 3, genre_id: 13)
+
+m3 = Movie.find(3)
+m3.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/black_narcissus_thumbnail.jpeg'), 
                 filename: 'black_narcissus_thumbnail.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/BLACK+NARCISSUS+-+Trailer+-+(1947)+-+HQ+(336p_24fps_H264-96kbit_AAC).mp4'), 
+m3.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/BLACK+NARCISSUS+-+Trailer+-+(1947)+-+HQ+(336p_24fps_H264-96kbit_AAC).mp4'), 
                 filename: 'BLACK NARCISSUS - Trailer - (1947) - HQ (336p_24fps_H264-96kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/blacknarcissus.webp'), 
+m3.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/blacknarcissus.webp'), 
                 filename: 'blacknarcissus.webp')
 Movie.create( 
     {   id: 2, 
@@ -102,13 +114,16 @@ Movie.create(
 )
 
 Tag.create(movie_id: 2, genre_id: 4)
-m1 = Movie.find(2)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Federico+Fellini+-+8+1_2+(New+Trailer)+-+In+UK+cinemas+1+May+2015+_+BFI+Release+(BQ).jpg'), 
+Tag.create(movie_id: 2, genre_id: 9)
+
+
+m2 = Movie.find(2)
+m2.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Federico+Fellini+-+8+1_2+(New+Trailer)+-+In+UK+cinemas+1+May+2015+_+BFI+Release+(BQ).jpg'), 
                 filename: 'Federico Fellini - 8 1_2 (New Trailer) - In UK cinemas 1 May 2015 _ BFI Release (BQ).jpg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Federico+Fellini+-+8+1_2+(New+Trailer)+-+In+UK+cinemas+1+May+2015+_+BFI+Release+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+m2.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Federico+Fellini+-+8+1_2+(New+Trailer)+-+In+UK+cinemas+1+May+2015+_+BFI+Release+(1080p_24fps_H264-128kbit_AAC).mp4'), 
                 filename: 'Federico Fellini - 8 1_2 (New Trailer) - In UK cinemas 1 May 2015 _ BFI Release (1080p_24fps_H264-128kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Federico+Fellini+-+8+1_2+(New+Trailer)+-+In+UK+cinemas+1+May+2015+_+BFI+Release+(BQ).jpg'), 
+m2.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Federico+Fellini+-+8+1_2+(New+Trailer)+-+In+UK+cinemas+1+May+2015+_+BFI+Release+(BQ).jpg'), 
                 filename: 'Federico Fellini - 8 1_2 (New Trailer) - In UK cinemas 1 May 2015 _ BFI Release (BQ).jpg')
 
 Movie.create( 
@@ -123,13 +138,17 @@ Movie.create(
 )
 
 Tag.create(movie_id: 5, genre_id: 1)
-m1 = Movie.find(5)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/ikuru.jpeg'), 
+Tag.create(movie_id: 5, genre_id: 12)
+
+
+
+m5 = Movie.find(5)
+m5.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/ikuru.jpeg'), 
                 filename: 'ikuru.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Ikiru+_+1952+_+Akira+Kurosawa+_+Modern+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+m5.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Ikiru+_+1952+_+Akira+Kurosawa+_+Modern+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
                 filename: 'Ikiru _ 1952 _ Akira Kurosawa _ Modern Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Ikiru+_+1952+_+Akira+Kurosawa+_+Modern+Trailer+(BQ).jpg'), 
+m5.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Ikiru+_+1952+_+Akira+Kurosawa+_+Modern+Trailer+(BQ).jpg'), 
                 filename: 'Ikiru _ 1952 _ Akira Kurosawa _ Modern Trailer (BQ).jpg')
 
 Movie.create( 
@@ -143,13 +162,16 @@ Movie.create(
 )
 
 Tag.create(movie_id: 6, genre_id: 1)
-m1 = Movie.find(6)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/kagealtposter.jpeg'), 
+Tag.create(movie_id: 6, genre_id: 11)
+
+
+m6 = Movie.find(6)
+m6.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/kagealtposter.jpeg'), 
                 filename: 'kagealtposter.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Kagemusha+(1980)+Trailer+(480p_25fps_H264-128kbit_AAC).mp4'), 
+m6.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Kagemusha+(1980)+Trailer+(480p_25fps_H264-128kbit_AAC).mp4'), 
                 filename: 'Kagemusha (1980) Trailer (480p_25fps_H264-128kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/kagemusha_image.jpeg'), 
+m6.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/kagemusha_image.jpeg'), 
                 filename: 'kagemusha_image.jpeg')
 
 Movie.create( 
@@ -163,13 +185,16 @@ Movie.create(
 )
 
 Tag.create(movie_id: 7, genre_id: 1)
-m1 = Movie.find(7)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/ran-theatrical-movie-poster-md.jpeg'), 
+Tag.create(movie_id: 7, genre_id: 11)
+
+
+m7 = Movie.find(7)
+m7.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/ran-theatrical-movie-poster-md.jpeg'), 
                 filename: 'ran-theatrical-movie-poster-md.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Ran+_+Official+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+m7.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Ran+_+Official+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
                 filename: 'Ran _ Official Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/ran-1200-1200-675-675-crop-000000.jpeg'), 
+m7.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/ran-1200-1200-675-675-crop-000000.jpeg'), 
                 filename: 'ran-1200-1200-675-675-crop-000000.jpeg')
 
 Movie.create( 
@@ -183,13 +208,15 @@ Movie.create(
 )
 
 Tag.create(movie_id: 8, genre_id: 1)
-m1 = Movie.find(8)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Rashomon_onesheet_2009RR_USA_KentWilliams-2.jpeg'), 
+Tag.create(movie_id: 8, genre_id: 12)
+
+m8 = Movie.find(8)
+m8.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Rashomon_onesheet_2009RR_USA_KentWilliams-2.jpeg'), 
                 filename: 'Rashomon_onesheet_2009RR_USA_KentWilliams-2.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Rasho%CC%82mon+(1950)+ORIGINAL+TRAILER+%5BHD+1080p%5D+(1080p_30fps_H264-128kbit_AAC).mp4'), 
+m8.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Rasho%CC%82mon+(1950)+ORIGINAL+TRAILER+%5BHD+1080p%5D+(1080p_30fps_H264-128kbit_AAC).mp4'), 
                 filename: 'Rashômon (1950) ORIGINAL TRAILER [HD 1080p] (1080p_30fps_H264-128kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Rashomon-image.jpeg'), 
+m8.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Rashomon-image.jpeg'), 
                 filename: 'Rashomon-image.jpeg')
 
 
@@ -204,13 +231,15 @@ Movie.create(
 )
 
 Tag.create(movie_id: 9, genre_id: 1)
-m1 = Movie.find(9)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/seven-samurai-1954-quad-poster-samurai-in-field.jpeg'), 
+Tag.create(movie_id: 9, genre_id: 12)
+
+m9 = Movie.find(9)
+m9.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/seven-samurai-1954-quad-poster-samurai-in-field.jpeg'), 
                 filename: 'seven-samurai-1954-quad-poster-samurai-in-field.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Seven+Samurai+(1954)+Original+Japanese+Theatrical+Trailer+(720p_24fps_H264-192kbit_AAC).mp4'), 
+m9.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Seven+Samurai+(1954)+Original+Japanese+Theatrical+Trailer+(720p_24fps_H264-192kbit_AAC).mp4'), 
                 filename: 'Seven Samurai (1954) Original Japanese Theatrical Trailer (720p_24fps_H264-192kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Seven-Samurai.jpeg'), 
+m9.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Seven-Samurai.jpeg'), 
                 filename: 'Seven-Samurai.jpeg')
 
 
@@ -225,27 +254,234 @@ Movie.create(
 )
 
 Tag.create(movie_id: 10, genre_id: 1)
-m1 = Movie.find(10)
-m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/lf.jpeg'), 
+Tag.create(movie_id: 10, genre_id: 9)
+
+
+m10 = Movie.find(10)
+m10.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/lf.jpeg'), 
                 filename: 'lf.jpeg
 ')
-m1.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/YOJIMBO+Trailer+(1961)+-+The+Criterion+Collection+(720p_24fps_H264-192kbit_AAC).mp4'), 
+m10.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/YOJIMBO+Trailer+(1961)+-+The+Criterion+Collection+(720p_24fps_H264-192kbit_AAC).mp4'), 
                 filename: 'YOJIMBO Trailer (1961) - The Criterion Collection (720p_24fps_H264-192kbit_AAC).mp4')
-m1.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/yojimbo-1200-1200-675-675-crop-000000.jpeg'), 
+m10.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/yojimbo-1200-1200-675-675-crop-000000.jpeg'), 
                 filename: 'yojimbo-1200-1200-675-675-crop-000000.jpeg')
 
 
-                
+Movie.create( 
+    {   id: 13, 
+        title: 'La Dolce Vita', 
+        year: 1960, 
+        summary: "A series of stories following a week in the life of a philandering tabloid journalist living in Rome.", 
+        length: 174,
+        director: "Fellini"
+    }
+)
+
+Tag.create(movie_id: 13, genre_id: 4)
+Tag.create(movie_id: 13, genre_id: 9)
+
+
+m13 = Movie.find(13)
+m13.thumbnail.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/New+trailer+for+Fellini's+La+dolce+vita+-+back+in+cinemas+3+January+2020+_+BFI+(BQ).jpg"), 
+                filename: "New trailer for Fellini's La dolce vita - back in cinemas 3 January 2020 _ BFI (BQ).jpg"
+)
+m13.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/New+trailer+for+Fellini's+La+dolce+vita+-+back+in+cinemas+3+January+2020+_+BFI+(1080p_24fps_H264-128kbit_AAC).mp4"), 
+                filename: "New trailer for Fellini's La dolce vita - back in cinemas 3 January 2020 _ BFI (1080p_24fps_H264-128kbit_AAC).mp4")
+m13.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/la_dolce_image.jpeg'), 
+                filename: 'la_dolce_image.jpeg')
+
+
+Movie.create( 
+    {   id: 14, 
+        title: 'Amarcord', 
+        year: 1973, 
+        summary: "A series of comedic and nostalgic vignettes set in a 1930s Italian coastal town.", 
+        length: 123,
+        director: "Fellini"
+    }
+)
+
+Tag.create(movie_id: 14, genre_id: 4)
+Tag.create(movie_id: 14, genre_id: 10)
+
+
+m14 = Movie.find(14)
+m14.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/amarcord-md-web.jpeg'), 
+                filename: 'amarcord-md-web.jpeg
+')
+m14.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Amarcord+Trailer+(Federico+Fellini%2C+1973)+(360p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Amarcord Trailer (Federico Fellini, 1973) (360p_24fps_H264-128kbit_AAC).mp4')
+m14.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/amc_image.jpeg'), 
+                filename: 'amc_image.jpeg')
+
+
+Movie.create( 
+    {   id: 17, 
+        title: 'The Discreet Charm of the Bourgeoisie', 
+        year: 1972, 
+        summary: "A surreal, virtually plotless series of dreams centered around six middle-class people and their consistently interrupted attempts to have a meal together.", 
+        length: 102,
+        director: "Buñuel"
+    }
+)
+
+Tag.create(movie_id: 17, genre_id: 6)
+Tag.create(movie_id: 17, genre_id: 10)
+
+
+m17 = Movie.find(17)
+m17.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/discreet_thumbnail.jpeg'), 
+                filename: 'discreet_thumbnail.jpeg
+')
+m17.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Discreet+Charm+of+the+Bourgeosie+(Trailer)+(480p_30fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Discreet Charm of the Bourgeosie (Trailer) (480p_30fps_H264-128kbit_AAC).mp4')
+m17.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/discreet_image.jpeg'), 
+                filename: 'discreet_image.jpeg')
+
+
+Movie.create( 
+    {   id: 18, 
+        title: '2001: A Space Odyssey', 
+        year: 1968, 
+        summary: "After uncovering a mysterious artifact buried beneath the Lunar surface, a spacecraft is sent to Jupiter to find its origins - a spacecraft manned by two men and the supercomputer H.A.L. 9000.", 
+        length: 149,
+        director: "Kubrick"
+    }
+)
+
+Tag.create(movie_id: 18, genre_id: 8)
+Tag.create(movie_id: 18, genre_id: 9)
+
+
+m18 = Movie.find(18)
+m18.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/odyssey_thumbnail.jpeg'), 
+                filename: 'odyssey_thumbnail.jpeg
+')
+m18.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/2001_+A+SPACE+ODYSSEY+-+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4"), 
+                filename: "2001_ A SPACE ODYSSEY - Trailer (1080p_24fps_H264-128kbit_AAC).mp4")
+m18.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/2001_+A+SPACE+ODYSSEY+-+Trailer+(BQ).jpg'), 
+                filename: '2001_ A SPACE ODYSSEY - Trailer (BQ).jpg')
+
+
+Movie.create( 
+    {   id: 19, 
+        title: 'Barry Lyndon', 
+        year: 1975, 
+        summary: "An Irish rogue wins the heart of a rich widow and assumes her dead husband's aristocratic position in 18th-century England.", 
+        length: 185,
+        director: "Kubrick"
+    }
+)
+
+Tag.create(movie_id: 19, genre_id: 8)
+Tag.create(movie_id: 19, genre_id: 10)
+
+
+m19 = Movie.find(19)
+m19.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/barry_thumbnail.jpeg'), 
+                filename: 'barry_thumbnail.jpeg
+')
+m19.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/Stanley+Kubrick's+Barry+Lyndon+(New+Trailer+2016)+-+In+cinemas+29+July+_+BFI+release+(1080p_24fps_H264-128kbit_AAC).mp4"), 
+                filename: "Stanley Kubrick's Barry Lyndon (New Trailer 2016) - In cinemas 29 July _ BFI release (1080p_24fps_H264-128kbit_AAC).mp4")
+m19.photo.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/Stanley+Kubrick's+Barry+Lyndon+(New+Trailer+2016)+-+In+cinemas+29+July+_+BFI+release+(BQ).jpg"), 
+                filename: "Stanley Kubrick's Barry Lyndon (New Trailer 2016) - In cinemas 29 July _ BFI release (BQ).jpg")
+
+
+Movie.create( 
+    {   id: 20, 
+        title: 'Parasite', 
+        year: 2019, 
+        summary: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+        length: 132,
+        director: "Bong Joon Ho"
+    }
+)
+
+Tag.create(movie_id: 20, genre_id: 5)
+Tag.create(movie_id: 20, genre_id: 7)
+
+
+m20 = Movie.find(20)
+m20.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Parasite+%5BOfficial+Trailer%5D+%E2%80%93+In+Theaters+October+11%2C+2019+(BQ).jpg'), 
+                filename: "Parasite [Official Trailer] – In Theaters October 11, 2019 (BQ).jpg")
+m20.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Parasite+%5BOfficial+Trailer%5D+%E2%80%93+In+Theaters+October+11%2C+2019+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: "Parasite [Official Trailer] – In Theaters October 11, 2019 (1080p_24fps_H264-128kbit_AAC).mp4")
+m20.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Brody-Parasite.webp'), 
+                filename: 'Brody-Parasite.webp')
 
 
 
 
+Movie.create( 
+    {   id: 16, 
+        title: 'Memories of Murder', 
+        year: 2003, 
+        summary: "In a small Korean province in 1986, two detectives struggle with the case of multiple young women being found raped and murdered by an unknown culprit.", 
+        length: 132,
+        director: "Bong Joon Ho"
+    }
+)
+
+Tag.create(movie_id: 16, genre_id: 5)
+Tag.create(movie_id: 16, genre_id: 7)
 
 
+m16 = Movie.find(16)
+m16.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/mom_thumbnail.jpeg'), 
+                filename: 'mom_thumbnail.jpeg
+')
+m16.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/MEMORIES+OF+MURDER+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'MEMORIES OF MURDER Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
+m16.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/memories-of-murder-1108x0-c-default.jpeg'), 
+                filename: 'memories-of-murder-1108x0-c-default.jpeg')
 
 
+Movie.create( 
+    {   id: 11, 
+        title: 'Still Walking', 
+        year: 2008, 
+        summary: "A family gathers together for a commemorative ritual whose nature only gradually becomes clear.", 
+        length: 115,
+        director: "Koreeda"
+    }
+)
+
+Tag.create(movie_id: 11, genre_id: 3)
+Tag.create(movie_id: 11, genre_id: 7)
 
 
+m11 = Movie.find(11)
+m11.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/still_walking_thumbnail.jpeg'), 
+                filename: 'still_walking_thumbnail.jpeg
+')
+m11.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/STILL+WALKING+Trailer+(2008)+-+The+Criterion+Collection+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'STILL WALKING Trailer (2008) - The Criterion Collection (1080p_24fps_H264-128kbit_AAC).mp4')
+m11.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/still_walking_image.jpeg'), 
+                filename: 'still_walking_image.jpeg')
+
+
+Movie.create( 
+    {   id: 12, 
+        title: 'Shoplifters', 
+        year: 2018, 
+        summary: "A family of small-time crooks take in a child they find outside in the cold.", 
+        length: 121,
+        director: "Koreeda"
+    }
+)
+
+Tag.create(movie_id: 12, genre_id: 3)
+Tag.create(movie_id: 12, genre_id: 7)
+
+
+m12 = Movie.find(12)
+m12.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Shoplifters+-+Official+Trailer+(BQ).jpg'), 
+                filename: 'Shoplifters - Official Trailer (BQ).jpg
+')
+m12.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Shoplifters+-+Official+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Shoplifters - Official Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
+m12.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/shoplifters_image.jpeg'), 
+                filename: 'shoplifters_image.jpeg')
 
 
 
