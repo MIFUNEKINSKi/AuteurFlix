@@ -26,7 +26,7 @@ class GenreList extends React.Component {
             return selectedMovies;
         } else {
             const selectedTags = this.props.tags.filter(tag =>
-                tag.genre_id === this.props.genreId
+                (tag.genre_id === this.props.genreId) || (tag.genre_id === this.props.genreId)
             );
 
             const selectedMovies = selectedTags.map(tag =>

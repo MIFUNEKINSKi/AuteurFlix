@@ -34,9 +34,6 @@ class Browse extends React.Component {
              : 
             <div>
                 <GenresIndexContainer history={this.props.history}/>
-             {/* <p>
-                 something else hehe
-             </p> */}
             </div>
            
         

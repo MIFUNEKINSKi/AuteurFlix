@@ -1,5 +1,5 @@
 class Movie < ApplicationRecord
-    validates :title, :year, :summary, :length , presence: true
+    validates :title, :year, :summary, :length, :director , presence: true
     
 
     has_one_attached :thumbnail

@@ -50,7 +50,7 @@ class GenresIndex extends React.Component {
     render() {
         const tags = this.movieGenres();
         const display = tags.map(tag => <p key={tag.id}>{tag.genre}</p>);
-
+        
         const genres = this.props.genres.map(genre =>
             <div key={genre.id} className='genre-name'>
                 <h1>{genre.genre}</h1>
