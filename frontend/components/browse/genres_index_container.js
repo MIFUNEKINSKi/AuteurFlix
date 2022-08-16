@@ -11,7 +11,7 @@ const mSTP = state => {
     movies: state.entities.movies,
     genres: Object.values(state.entities.genres),
     tags: Object.values(state.entities.tags),
-    topMovie: Object.values(state.entities.movies)[3],
+    topMovie: Object.values(state.entities.movies)[Math.floor(Math.random() * (Object.values(state.entities.movies).length))],
     currentProfileId: state.session.profileId,
     myList: Object.values(state.entities.myList)
 }};

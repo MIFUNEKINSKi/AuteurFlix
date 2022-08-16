@@ -1,6 +1,6 @@
 .top-movie img {
     width: 100%;
-    height: calc(width*9/16);
+    max-height: 1000px;
 }
 
 .top-movie h1 {
