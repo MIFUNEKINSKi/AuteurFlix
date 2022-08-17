@@ -45,6 +45,7 @@ group :development do
   gem 'pry-rails'
   gem 'binding_of_caller'
   gem 'better_errors'
+  # gem 'uglifier', '~> 2.7'
 end
 
 group :test do
