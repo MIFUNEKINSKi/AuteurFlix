@@ -14,7 +14,7 @@ class BrowseHeader extends React.Component {
         this.closeSearch = this.closeSearch.bind(this);
         this.update = this.update.bind(this);
     }
-
+// heroku comment
     handleSwitch() {
       this.props.resetProfile();
       if (this.props.history.location.pathname.startsWith('/search')) {
