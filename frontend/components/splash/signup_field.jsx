@@ -39,8 +39,8 @@ class SignupField extends React.Component {
         return (
             <div className='signup-container'>
                 <section className='hero-text'>
-                    <h1>Limited set of movies from Auteur directors by decade!</h1>
-                    <h2>Watch only on approved browsers (not Safari)</h2>
+                    <h1>Curated list of movies from Auteur directors and their eras!</h1>
+                    <h2>Auteur - a filmmaker whose personal influence and artistic control over a movie are so great that the filmmaker is regarded as the author of the movie.</h2>
                     <h3>Ready to watch? Enter your email to so we can get to the payment.</h3>
 
                 </section>
@@ -53,7 +53,7 @@ class SignupField extends React.Component {
                             onChange={this.update('email')}
                         />
                         <label id={filled}>Email address</label>
-                    <button className='sign-btn' type='submit'>Get Started</button>
+                    <button className='signup-btn' type='submit'>Get Started</button>
                     </div>
                 </form>
                 <div className='splash-errors'>{this.state.error}</div>
