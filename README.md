@@ -1,7 +1,7 @@
 
-![AuteurFlix](/app/assets/images/AuteurFlix_logo.png)
+![AuteurFlix](/app/assets/images/auteurflix_logo.png)
 ___
-![AuteurFlix](/app/assets/images/readme/AuteurFlix.png)
+![AuteurFlix](/app/assets/images/readme/AuteurFLix.png)
 AuteurFlix is a fully-functioning clone of Netflix, consisting entirely of sleep- and dream-themed movie trailers. It was created in just two weeks using the following: 
 
 * Backend: Rails
@@ -17,7 +17,7 @@ Check out the site [here](http://AuteurFlix.herokuapp.com/).
 ### 1. Profiles
 As with Netflix, a  AuteurFlix user can create, edit, and delete profiles, allowing multiple people to share a single 'account' and curate their individual My Lists.
 
-![Adding a new profile](app/assets/images/readme/add_profile.gif)
+![Adding a new profile](app/assets/images/readme/Add_profile.gif)
 
 ### 2. Browse
 Upon signing in and selecting a profile, a user is taken to the main movie browse page, on which movies are organized by genre. They can see additional information about each title by hovering over its thumbnail, which also autoplays the associated trailer. From there, the user can play the video in fullscreen, add it to their My List, or click for more information, which opens a larger modal that includes the film's length and summary. 
