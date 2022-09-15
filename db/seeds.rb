@@ -14,7 +14,7 @@ Genre.destroy_all
 Tag.destroy_all
 
 User.create(id: 1, email: 'demo@user.com', password: 'password')
-User.create(id: 2, email: 'hamlet@appacademy.com', password: 'dummy')
+User.create(id: 2, email: 'hamlet@appacademy.com', password: 'password')
 User.create(id: 3, email: 'dan@gmail.com', password: 'password')
 User.create(id: 4, email: 'john@gmail.com', password: 'password')
 
@@ -28,13 +28,14 @@ Genre.create(id: 3, genre: 'Koreeda')
 Genre.create(id: 4, genre: 'Fellini')
 Genre.create(id: 5, genre: 'Bong Joon Ho')
 Genre.create(id: 6, genre: 'Buñuel')
+Genre.create(id: 7, genre: 'Buñuel')
 Genre.create(id: 8, genre: 'Kubrick')
 Genre.create(id: 9, genre: '60s')
 Genre.create(id: 10, genre: '70s')
 Genre.create(id: 11, genre: '80s')
 Genre.create(id: 12, genre: '50s')
 Genre.create(id: 13, genre: '40s')
-Genre.create(id: 7, genre: '2000')
+# Genre.create(id: 14, genre: '2000')
 
 
 
@@ -50,6 +51,7 @@ Movie.create(
 
 Tag.create(movie_id: 1, genre_id: 2)
 Tag.create(movie_id: 1, genre_id: 13)
+Tag.create(movie_id: 1, genre_id: 7)
 
 m1 = Movie.find(1)
 m1.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/il_fullxfull.3352098303_h27q.webp'), 
