@@ -26,11 +26,10 @@ class SignupForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        
         this.props.resetSessionErrors();
-       
-        this.props.signup(this.state);
-        debugger
+        const user = Object.assign({}, this.state);
+        this.props.signup(user);
+
     }
 
     render() {
