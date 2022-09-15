@@ -29,7 +29,6 @@ class SignupForm extends React.Component {
         this.props.resetSessionErrors();
         const user = Object.assign({}, this.state);
         this.props.signup(user);
-
     }
 
     render() {

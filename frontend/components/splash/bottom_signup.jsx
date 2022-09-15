@@ -51,7 +51,7 @@ class BottomSignupField extends React.Component {
                             onChange={this.update('email')}
                         />
                         <label id={filled}>Email address</label>
-                        <button className='sign-btn' type='submit'>Get Started</button>
+                        <button className='signup-btn' type='submit'>Get Started &gt;</button>
                     </div>
                 </form>
                 <div className='splash-errors'>{this.state.error}</div>

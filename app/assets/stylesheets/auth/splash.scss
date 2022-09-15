@@ -6,8 +6,9 @@ $grad-mid: rgba(0, 0, 0, 0.25);
     width: 134;
 }
 .splash-main {
-    background-image: 
-        linear-gradient(to bottom, $grad-begin, $grad-mid, $grad-begin),
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%),
+        linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%),
         image_url('splash-background.jpg');
     width: auto;
     background-size: cover;
@@ -28,7 +29,18 @@ $grad-mid: rgba(0, 0, 0, 0.25);
    
 }
 
-.sign-btn {
+.signup-btn {
+    text-decoration: none;
+    color: white;
+    background: red;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 20%;
+    height: 100%;
+}
+
+.signup-btn, .sign-btn {
     text-decoration: none;
     color: white;
     background: red;
@@ -40,16 +52,21 @@ $grad-mid: rgba(0, 0, 0, 0.25);
 .sign-btn:hover {
     filter: brightness(110%);
 }
+.signup-btn:hover {
+    filter: brightness(110%);
+}
 
 .email {
-    height: 70%;
+    height: 96%;
     width: 100%;
-    border-radius: 4px;
+    border-radius: 3px;
+    border: none;
+    outline: 0;
     position: relative;
     color: black;
-    padding-left: 10px;
-    font-size: 16px;
-
+    padding-left: 15px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .link-text {
@@ -116,11 +133,18 @@ $grad-mid: rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   justify-content: right;
-  text-align: left;
+  text-align: center;
   color:  white;
+  font-size: 20px;
+  margin: 15px 0px 5px;
+  padding: 10px;
 }
 
-
+.cards-below-txt h1 {
+    font-size: 40px;
+    padding: 20px;
+    margin: 15px 0px 5px;
+}
 
 
 
