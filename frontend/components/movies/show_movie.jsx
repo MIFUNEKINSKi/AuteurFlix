@@ -44,7 +44,7 @@ class ShowMovie extends React.Component {
                 <p id='back-arrow' 
                     className='hidden'
                     onClick={this.goBack}
-                    >&#8592;</p>
+                    >&#FFF;</p>
                 <video
                     autoPlay
                     muted
