@@ -17,40 +17,32 @@ class GenresIndex extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.soundOff = this.soundOff.bind(this);
     }
-
     soundOff(e) {
-
         const bool = this.state.sound ? false : true;
         this.setState({ sound: bool });
     }
-
     toggleModal() {
         const bool = this.state.showModal ? false : true;
         this.setState({ showModal: bool });
     }
-
     onEnd(e) {
         e.currentTarget.classList.toggle('hidden');
         e.currentTarget.parentElement.previousElementSibling.classList.toggle('hidden');
 
     }
-
     convertLength(minutes) {
         const h = parseInt(minutes / 60);
         const m = minutes % 60;
-        return `${h} h ${m} m`;
+        return `${h}h ${m}m`;
     }
-
     movieGenres() {
         const selectedTags = this.props.tags.filter(tag => tag.movie_id === this.props.topMovie.id);
         const selectedGenres = selectedTags.map(tag => this.props.genres[tag.genre_id - 1]);
         return selectedGenres;
     }
-
     render() {
         const tags = this.movieGenres();
         const display = tags.map(tag => <p key={tag.id}>{tag.genre}</p>);
-        
         const genres = this.props.genres.map(genre =>
             <div key={genre.id} className='genre-name'>
                 <h1>{genre.genre}</h1>
@@ -66,7 +58,6 @@ class GenresIndex extends React.Component {
                 />
             </div>
         )
-
         const myList = this.props.myList.length ? <div key={this.props.currentProfileId} className='genre-name' >
             <h1>My List</h1>
             <GenreList
@@ -79,9 +70,6 @@ class GenresIndex extends React.Component {
                 tags={this.props.tags}
                 genres={this.props.genres} />
         </div > : null
-
-
-
         const modal = this.state.showModal ?
             <DetailsModal
                 myList={this.props.myList}
@@ -95,9 +83,7 @@ class GenresIndex extends React.Component {
                 display={display}
                 sound={this.state.sound}
             /> : null
-
         const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
-
         return (
             <div className='browse-main'>
                 <BrowseHeader
@@ -108,11 +94,11 @@ class GenresIndex extends React.Component {
                     <img src={this.props.topMovie.photoUrl} />
                     <h1>{this.props.topMovie.title}</h1>
                     <div className='top-movie-btns'>
-                        <Link to={`/watch/${this.props.topMovie.id}`} className='modal-play'>&#9658; Play</Link>
+                        <Link to={`/watch/${this.props.topMovie.id}`} className='modal-play'>&#FFF; Play</Link>
                         <button
                             className='top-info'
                             onClick={this.toggleModal}
-                        >&#9432; More info</button>
+                        >&#FFF; More info</button>
                     </div>
                     <img src={soundBtn}
                         id='top-sound-off'
@@ -123,16 +109,9 @@ class GenresIndex extends React.Component {
                     {myList}
                     {genres}
                 </div>
-
-
                 {modal}
-
-
             </div>
         )
-
-
-
     }
 }
 

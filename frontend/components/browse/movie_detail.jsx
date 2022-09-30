@@ -10,21 +10,19 @@ class MovieDetail extends React.Component {
             sound: true,
             showModal: false
         }
+        this.toggleModal = this.toggleModal.bind(this);
     this.autoplay = this.autoplay.bind(this);
     this.soundOff = this.soundOff.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
     this.toggleListItem = this.toggleListItem.bind(this);
-    this.clearTimers = this.clearTimers.bind(this);
     this.stop = this.stop.bind(this);
+    this.clearTimers = this.clearTimers.bind(this);
     this.stopAll = this.stopAll.bind(this);
     }
-
     movieGenres() {
         const selectedTags = this.props.tags.filter(tag => tag.movie_id === this.props.movie.id);
         const selectedGenres = selectedTags.map(tag => this.props.genres[tag.genre_id-1]);
         return selectedGenres;
     }
-
     autoplay(e) {
         const video = e.currentTarget.children[1].children[1];
         video.currentTime = 0;
@@ -34,9 +32,8 @@ class MovieDetail extends React.Component {
             video.previousElementSibling.classList.remove('invisible');
             this.state.sound ? video.muted = false : video.muted = true;
             video.play();
-        }, 2000);
+        }, 1999);
     }
-
     stop(e) {
         this.clearTimers();
         const video = e.currentTarget.children[1].children[1];
@@ -44,19 +41,14 @@ class MovieDetail extends React.Component {
         video.classList.add('idle');
         video.parentElement.previousElementSibling.classList.remove('invisible');
         video.previousElementSibling.classList.add('invisible');
-        video.nextElementSibling.classList.add('invisible');
-        
+        video.nextElementSibling.classList.add('invisible')
     }
-
     clearTimers() {
         let id = window.setTimeout(() => { }, 0);
-
         while (id--) {
             window.clearTimeout(id);
-
         } 
     }
-
     stopAll() {
         this.clearTimers();
         const videos = Object.values(document.querySelectorAll('.thumbnail-vid'));
@@ -69,46 +61,36 @@ class MovieDetail extends React.Component {
         }
         )
     }
-
     soundOff(e) {
         const bool = this.state.sound ? false : true;
         this.setState({ sound: bool });
         const opposite = bool ? false : true;
         e.currentTarget.previousElementSibling.muted = opposite;
     }
-
     toggleModal() {
         const bool = this.state.showModal ?  false : true;
         this.setState({showModal: bool});
     }
-
     onEnd(e) {
         e.currentTarget.classList.add('idle');
         e.currentTarget.parentElement.previousElementSibling.classList.remove('invisible');
 
     }
-
     onList() {
         const match = this.props.myList.filter(listItem => listItem.movie_id === this.props.movie.id);
         return match.length > 0;
     }
-
     toggleListItem() {
-        
         if (this.onList()) {
             const item = this.props.myList.filter(listItem => 
                 listItem.movie_id === this.props.movie.id
                 );
-
             return this.props.deleteListItem(item[0].id);
         } else {
             return this.props.createListItem(this.props.movie.id, this.props.currentProfileId);
         }
     }
-
-
     render() {
-     
         if (this.state.showModal) {
             this.stopAll();
         }
@@ -130,9 +112,7 @@ class MovieDetail extends React.Component {
                 : null
         const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
         const listButton = this.onList() ? '✓' : '+';
-        
         return (
-    
                 <div className='list-item'
                     onMouseEnter={this.autoplay}
                     onMouseLeave={this.stop}
@@ -140,7 +120,6 @@ class MovieDetail extends React.Component {
                     <img className='thumbnail' 
                         src={this.props.movie.thumbnailUrl} 
                         />
-
                     <div className='details-vid-container'>
                         <p className='details-title invisible'>{this.props.movie.title}</p>
                         <video
@@ -150,14 +129,10 @@ class MovieDetail extends React.Component {
                             type='video/mp4'
                             onEnded={this.onEnd}
                         ></video>
-
-                        
                         <img src={soundBtn} 
                             className='sound-off invisible'
                             onClick={this.soundOff} />
                     </div>
-                
-                
                     <div className='movie-details hidden'>
                         <div className='details-btns'>
                             <div className='details-left-btns'>
@@ -167,20 +142,16 @@ class MovieDetail extends React.Component {
                                     onClick={this.toggleListItem}
                             >{listButton}</button>
                             </div>
-                            <button 
-                                
+                            <button   
                                 title='More Info'
                                 onClick={this.toggleModal} 
                                 id='details-info-btn'>
                                 <p>&#8964;</p>
                             </button>
-                        
                         </div>
-                
                         <div className='details-tags' >
                             {display}
                         </div>
-                    
                     </div>
                     {modal}
             </div>
