@@ -11,13 +11,11 @@ class EditProfile extends React.Component {
             error: '' }
         this.handleEditSubmit = this.handleEditSubmit.bind(this);
     }
-
     update(field) {
         return (e) => {
             this.setState({ [field]: e.currentTarget.value });
         }
     }
-
     handleEditSubmit(e) {
         e.preventDefault();
         if (this.state.name.length === 0) {
@@ -31,18 +29,14 @@ class EditProfile extends React.Component {
             window.location.reload();
         }
     }
-
     render () {
         return (
             <div className='edit-profile-main'>
-                
                 <Link to='/' className='profiles-home-btn'><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
-                
                 <div className='edit-profile-content'>
                     <div className='edit-profile-text'>
                         <h1>Edit Profile</h1>
                     </div>
-
                     <form className='edit-profile-form' >
                         <div className='img-input-container'>
                             <img src={window.avatar} />
@@ -52,7 +46,6 @@ class EditProfile extends React.Component {
                                 onChange={this.update('name')}
                                  />
                         </div>
-                       
                         <div className='edit-profile-bottom'>  
                             <p className='profile-error'>{this.state.error}</p>
                             <div className='edit-buttons-container'>
@@ -69,15 +62,9 @@ class EditProfile extends React.Component {
                                 >Delete Profile</button>
                             </div>
                         </div>
-                        
                     </form>
-
-                    
-                </div>
-                
-               
+                </div>   
             </div>
-           
         )
     }
 }

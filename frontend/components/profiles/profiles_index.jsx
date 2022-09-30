@@ -16,21 +16,16 @@ class ProfilesIndex extends React.Component {
         debugger
         this.handleCancel = this.handleCancel.bind(this);
     }
-
     componentDidMount() {
         this.props.fetchMovies();
     }
-
     handleClick() {
         this.setState({show: 'add profile'});
     }
-
     handleCancel() {
         this.setState({ show: 'profiles'});
     }
-
     render() {
-        
         const addProfile = this.props.profiles.length === 4 ? null : 
             <li className='add-profile-container' onClick={() => this.handleClick()}>
                 <img id='add-profile' src={window.addProfile} />
@@ -72,7 +67,6 @@ class ProfilesIndex extends React.Component {
             </div>
 
         return display
-         
     }
 }
 

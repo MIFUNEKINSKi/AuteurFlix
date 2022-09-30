@@ -14,7 +14,7 @@ class MyList extends React.Component {
         return selectedMovies;
     }
     
-    
+
     render() {
         const renderMovies = this.selectMovies();
         const display = renderMovies ? renderMovies.map(movie =>

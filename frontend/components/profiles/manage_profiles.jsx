@@ -20,27 +20,21 @@ class ManageProfiles extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
-
     handleProfileClick(e) {
         this.setState({show: 'edit form', profile:  {
             id: e.currentTarget.id, 
             name: e.currentTarget.attributes.name.value
         }});
     }
-
     handleAddClick() {
         this.setState({ show: 'add profile'});
     }
-
     handleCancel() {
         this.setState({ show: 'profiles'});
     }
-
     componentDidMount () {
-        
         this.props.fetchProfiles(this.props.userId);
     }
-
     async handleDelete(profileId) {
         const del = await this.props.deleteProfile(profileId);
         const fetch = await this.props.fetchProfiles(this.props.userId);
@@ -48,8 +42,6 @@ class ManageProfiles extends React.Component {
         fetch;
         this.setState({ show: 'profiles' });
     }
-
-
     render () {
         const profiles = this.props.profiles.map(profile => (
             <ProfileIndexItem
@@ -59,18 +51,14 @@ class ManageProfiles extends React.Component {
                 darken={'yes'}
             />
         ));
-
-        const addProfile = this.props.profiles.length === 4 ? null :
+      const addProfile = this.props.profiles.length === 4 ? null :
             <li className='edit-profile-container' onClick={() => this.handleAddClick()}>
                 <img id='edit-profile' src={window.addProfile} />
                 <p>Add Profile</p>
             </li>
-    
-
         const profileDisplay = (
             <div>
                 <Link to='/' className='profiles-home-btn'><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
-
                 <div className='edit-profiles-container'>
                     <h1>Manage Profiles:</h1>
                     <ul className='edit-profiles-list'>
@@ -81,7 +69,6 @@ class ManageProfiles extends React.Component {
                 </div>
             </div> 
         )
-        
         const editDisplay = (
             <EditProfile
             handleCancel={this.handleCancel}
@@ -90,7 +77,6 @@ class ManageProfiles extends React.Component {
             updateProfile={this.props.updateProfile}
             />
         )
-
         const addDisplay = (
             <div>
                 <AddProfile
@@ -99,7 +85,6 @@ class ManageProfiles extends React.Component {
 
             </div>
         )
-
     let display;
     switch (this.state.show) {
         case 'profiles':
@@ -118,7 +103,6 @@ class ManageProfiles extends React.Component {
                display
             )
     }
-
     }
 
     export default ManageProfiles;

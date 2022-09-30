@@ -13,11 +13,9 @@ class AddProfile extends React.Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
     update(field) {
        return e => this.setState({ [field]: e.currentTarget.value });
     }
-
     handleSubmit(e){
         e.preventDefault();
         if (this.state.name.length === 0) {
@@ -31,8 +29,6 @@ class AddProfile extends React.Component {
             window.location.reload();
         } 
     }
-
-
     render () {
         const filled = this.state.name === '' ? '' : 'profile-filled';
         return (
@@ -43,7 +39,7 @@ class AddProfile extends React.Component {
                 <div className='add-profile-content'>
                     <div className='add-profile-text'>
                         <h1>Add Profile</h1>
-                        <p>Add a profile for another person watching Netflix.</p>
+                        <p>Add a profile for another person watching AuteurFlix.</p>
                     </div>
                     <div className='add-profile-middle'>
                         <img src={window.avatar} />
@@ -55,7 +51,6 @@ class AddProfile extends React.Component {
                             />
                             <label id={filled}>Name</label>
                         </div>
-                        
                     </div>
                     <form className='add-profile-bottom' onSubmit={this.handleSubmit}>
                         <p className='profile-error'>{this.state.error}</p>
@@ -65,8 +60,6 @@ class AddProfile extends React.Component {
                         </div>
                     </form>
                 </div>
-                
-                
             </div>
         )
     }
