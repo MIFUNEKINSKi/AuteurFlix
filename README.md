@@ -2,7 +2,7 @@
 ![AuteurFlix](/app/assets/images/auteurflix_logo.png)
 ___
 ![AuteurFlix](/app/assets/images/readme/AuteurFLix.png)
-AuteurFlix is a fully-functioning clone of Netflix, consisting entirely of sleep- and dream-themed movie trailers. It was created in just two weeks using the following: 
+AuteurFlix is a fully-functioning clone of Netflix, consisting entirely of sleep- and dream-themed movie trailers. It was created using the following: 
 
 * Backend: Rails
 * Database: PostrgreSQL
