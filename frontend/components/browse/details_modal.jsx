@@ -11,12 +11,12 @@ class DetailsModal extends React.Component {
         this.modalAutoplay = this.modalAutoplay.bind(this);
         this.toggleListItem = this.toggleListItem.bind(this);
         this.soundOff = this.soundOff.bind(this);
+        this.clearT = this.clearT.bind(this);
        
     }
 
     modalAutoplay(e) {
-        
-        this.clearTimers();
+        this.clearT();
         const video = e.currentTarget.children[2].children[2];
         video.classList.remove('idle');
         video.previousElementSibling.classList.remove('invisible');
@@ -24,40 +24,23 @@ class DetailsModal extends React.Component {
         video.play();
     }
 
-    clearTimers() {
+    clearT() {
         let id = window.setTimeout(() => { }, 0);
-
         while (id--) {
             window.clearTimeout(id);
-           
         }
     }
-
     soundOff(e) {
         const bool = this.state.sound ? false : true;
         const opposite = bool ? false : true;
         e.currentTarget.previousElementSibling.muted = opposite;
         this.setState({ sound: bool });
     }
-
-
     convertLength(minutes) {
         const h = parseInt(minutes / 60);
         const m = minutes % 60;
-        return `${h} h ${m} m`;
+        return `${h}h ${m}m`;
     }
-
-    onEnd(e) {
-        e.currentTarget.classList.add('hide');
-        e.currentTarget.parentElement.previousElementSibling.classList.remove('hide');
-
-    }
-
-    onList() {
-        const match = this.props.myList.filter(listItem => listItem.movie_id === this.props.movie.id);
-        return match.length > 0;
-    }
-
     toggleListItem() {
         if (this.onList()) {
             const item = this.props.myList.filter(listItem =>
@@ -68,13 +51,18 @@ class DetailsModal extends React.Component {
             return this.props.createListItem(this.props.movie.id, this.props.currentProfileId);
         }
     }
-
-
-
+    onEnd(e) {
+        e.currentTarget.classList.add('hide');
+        e.currentTarget.parentElement.previousElementSibling.classList.remove('hide');
+    }
+    onList() {
+        const match = this.props.myList.filter(listItem => listItem.movie_id === this.props.movie.id);
+        return match.length > 0;
+    }
     render() {
         const displayLength = this.convertLength(this.props.movie.length);
-        const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
         const listButton = this.onList() ? '✓' : '+';
+        const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
         return (
         <div onMouseEnter={this.modalAutoplay} className='modal'>
             <button onClick={this.props.toggleModal} className='exit-modal'>X</button>
@@ -85,23 +73,18 @@ class DetailsModal extends React.Component {
                     <Link to={`/watch/${this.props.movie.id}`}className='modal-play'>&#9658; Play</Link>
                     <button 
                         id='modal-add-list'
-                        
                         onClick={ this.toggleListItem }
                         >{listButton}</button>
                 </div>
-
                 <video
                     id='modal-vid'
                     src={this.props.movie.videoUrl}
                     onEnded={this.onEnd}
                 ></video>
-
-
                 <img src={soundBtn}
                     className='modal-sound-off'
                     onClick={this.soundOff} />
             </div>
-
             <div className='modal-details'>
                 <div className='left-details'>
                     <div>
@@ -111,7 +94,6 @@ class DetailsModal extends React.Component {
                     </div>
                     <p>{this.props.movie.summary}</p>
                 </div>
-
             </div>
         </div>
         )

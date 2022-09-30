@@ -6,11 +6,11 @@ class GenreList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            xoffset: 75,
+            xoffset: 80,
             yoffset: 0,
             delta: 200,
             leftArrow: -100,
-            rightArrow: 75,
+            rightArrow: 80,
         };
 
         this.scrollLeft = this.scrollLeft.bind(this);
@@ -28,11 +28,9 @@ class GenreList extends React.Component {
             const selectedTags = this.props.tags.filter(tag =>
                 (tag.genre_id === this.props.genreId) || (tag.genre_id === this.props.genreId)
             );
-
             const selectedMovies = selectedTags.map(tag =>
                 this.props.movies[tag.movie_id]
             );
-            
             return selectedMovies;
         }
       
@@ -40,8 +38,9 @@ class GenreList extends React.Component {
 
     scrollLeft(e) {
         const lastItem = e.currentTarget.parentElement.lastElementChild.previousElementSibling
-        const coord = lastItem.getBoundingClientRect();
-        if (window.innerWidth - coord.right >= 20) {
+        // gets info about size and area relative to the viewport
+        const location = lastItem.getBoundingClientRect();
+        if (window.innerWidth - location.right >= 20) {
             return false;
         } else {
             const leftArrow = document.getElementById('left-arrow');
@@ -51,9 +50,8 @@ class GenreList extends React.Component {
             this.setState({ rightArrow: this.state.rightArrow -= this.state.delta });
         }
     }
-
     scrollRight(e) {
-        if (this.state.xoffset === 75) {
+        if (this.state.xoffset === 80) {
             return false;
         } else {
             const rightArrow = document.getElementById('right-arrow');
@@ -63,9 +61,6 @@ class GenreList extends React.Component {
             this.setState({ leftArrow: this.state.leftArrow -= this.state.delta });
         }
     }
-
-
-
     render() {
         const renderMovies = this.selectMovies();
         const display = renderMovies ? renderMovies.map(movie => 
@@ -89,17 +84,12 @@ class GenreList extends React.Component {
                     <p id='left-arrow' 
                         style={{ left: `${this.state.leftArrow}px` }}
                         onClick={this.scrollRight}>&#8249;</p>
-
                         {display}
-
                     <p id='right-arrow' 
                         onClick={this.scrollLeft}
                         style={{ right: `${this.state.rightArrow}px` }}
-                        >&#8250;</p>
-                    
+                        >&#FFF;</p>
                 </div>
-            
-           
         );
     }
 };

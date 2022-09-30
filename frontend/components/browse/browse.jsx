@@ -11,33 +11,26 @@ class Browse extends React.Component {
         }
         this.handleClick = this.handleClick.bind(this);
     }
-
     handleClick(e) {
         e.preventDefault();
         this.setState({showProfiles: false});
         this.props.switchProfile(e.currentTarget.id);
     }
-
     render () {
-
         const display = this.state.showProfiles ? 
-                
                 <ProfilesIndex
                     fetchMovies={this.props.fetchMovies}
                     show={this.state.show}
-                    profiles={this.props.profiles}
-                    userId={this.props.currentUserId}
-                    fetchProfiles={this.props.fetchProfiles}
                     handleClick={this.handleClick}
+                    profiles={this.props.profiles}
                     createProfile={this.props.createProfile}
+                    fetchProfiles={this.props.fetchProfiles}
+                    userId={this.props.currentUserId}
                 />  
              : 
             <div>
                 <GenresIndexContainer history={this.props.history}/>
             </div>
-           
-        
-        
         return (
             display   
         )

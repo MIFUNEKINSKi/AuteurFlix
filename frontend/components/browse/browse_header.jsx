@@ -10,8 +10,8 @@ class BrowseHeader extends React.Component {
             search: '',
             searching: bool
         }
-        this.openSearch = this.openSearch.bind(this);
-        this.closeSearch = this.closeSearch.bind(this);
+        this.oSearch = this.oSearch.bind(this);
+        this.finishSearch = this.finishSearch.bind(this);
         this.update = this.update.bind(this);
     }
 // heroku comment
@@ -36,13 +36,13 @@ class BrowseHeader extends React.Component {
        
     }
 
-    openSearch() {
+    oSearch() {
         this.props.history.push('/search');
         this.setState({searching: true});
     }
 
-    closeSearch() {
-       
+
+    finishSearch() {
         if (this.props.history.location.pathname.startsWith('/search')) {
             this.props.history.push('/browse');
         } else {
@@ -52,10 +52,9 @@ class BrowseHeader extends React.Component {
 
     render () {
         
-        const searchFn = this.state.searching ?
-            null : this.openSearch;
+        const search = this.state.searching ?
+            null : this.oSearch;
         const filled = this.state.search === '' ? '' : 'search-filled';
-        
         const searchImage = this.state.searching ?
             (
                 <div className='search-bar'>
@@ -69,19 +68,18 @@ class BrowseHeader extends React.Component {
                         type="text"
                         onChange={this.update}
                     />
-                    <label id={filled}>Title, Genre, Keyword</label>
+                    <label id={filled}>Title, Keyword</label>
                     <p
                         className='exit-search'
-                        onClick={this.closeSearch}
+                        onClick={this.finishSearch}
                     >X</p>
                 </div>
             ) :
             ( < img
                 className = 'search-icon'
                 src = { window.searchIcon }
-                onClick = { searchFn }
+                onClick = { search }
             /> ) 
-           
         return (
             <div className='browse-header'>
                 <Link to='/' className='home-button'><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
@@ -90,18 +88,14 @@ class BrowseHeader extends React.Component {
                     <Link to='/browse/my-list'><p>My List</p></Link>
                     <a href='https://github.com/MIFUNEKINSKi/AuteurFlix' target='_blank'>GitHub</a>
                     <a href='https://www.linkedin.com/in/chris-moore-27438989/' target='_blank'>LinkedIn</a>
-                    
-
                 </div>
                 <div className='right-nav'>
                     {searchImage}
                     <div className='profiles-dropdown'>
-
                         <div className='dropdown-btn'>
                             <img id='profiles-avatar' src={window.avatar} />
-                            <p id='profiles-arrow'>&#9663;</p>
+                            <p id='profiles-arrow'>&#FFF;</p>
                         </div>
-
                         <div className='profiles-dropdown-content'>
                             <p 
                                 onClick={() => this.handleSwitch()}>
@@ -117,7 +111,6 @@ class BrowseHeader extends React.Component {
                             </p>
                         </div>
                     </div>
-
                 </div>
             </div>
         )
