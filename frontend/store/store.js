@@ -11,6 +11,7 @@ const persistConfig = {
     whitelist: ['entities', 'session']
 };
 
+// green
 
 const middlewares = [thunk];
 
