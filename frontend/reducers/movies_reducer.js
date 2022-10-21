@@ -11,6 +11,7 @@ const moviesReducer = (state = {}, action) => {
         default:
             return state;
     }
+    // reducer
 }
 
 export default moviesReducer;
