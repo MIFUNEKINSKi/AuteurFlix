@@ -94,7 +94,7 @@ class BrowseHeader extends React.Component {
                     <div className='profiles-dropdown'>
                         <div className='dropdown-btn'>
                             <img id='profiles-avatar' src={window.avatar} />
-                            <p id='profiles-arrow'>&#FFF;</p>
+                            <p id='profiles-arrow'>Profiles</p>
                         </div>
                         <div className='profiles-dropdown-content'>
                             <p 

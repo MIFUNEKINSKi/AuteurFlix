@@ -88,7 +88,7 @@ class GenreList extends React.Component {
                     <p id='right-arrow' 
                         onClick={this.scrollLeft}
                         style={{ right: `${this.state.rightArrow}px` }}
-                        >&#FFF;</p>
+                        ></p>
                 </div>
         );
     }
