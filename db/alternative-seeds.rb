@@ -372,7 +372,7 @@ m9.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Seven-Samurai.
 #         director: "Bong Joon Ho"
 #     }
 # )
-# gr
+# green
 
 # Tag.create(movie_id: 15, genre_id: 5)
 # Tag.create(movie_id: 15, genre_id: 14)

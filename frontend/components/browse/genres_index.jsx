@@ -94,11 +94,11 @@ class GenresIndex extends React.Component {
                     <img src={this.props.topMovie.photoUrl} />
                     <h1>{this.props.topMovie.title}</h1>
                     <div className='top-movie-btns'>
-                        <Link to={`/watch/${this.props.topMovie.id}`} className='modal-play'>&#FFF; Play</Link>
+                        <Link to={`/watch/${this.props.topMovie.id}`} className='modal-play'>Play</Link>
                         <button
                             className='top-info'
                             onClick={this.toggleModal}
-                        >&#FFF; More info</button>
+                        >More info</button>
                     </div>
                     <img src={soundBtn}
                         id='top-sound-off'
