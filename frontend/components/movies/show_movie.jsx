@@ -14,7 +14,7 @@ class ShowMovie extends React.Component {
         arrow.classList.remove('hidden');
         setTimeout(() => arrow.classList.add('hidden'), 3000);
     }
-// gr
+// gre
     clearTimers() {
         let id = window.setTimeout(() => { }, 0);
 
