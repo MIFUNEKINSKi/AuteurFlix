@@ -1,3 +1,18 @@
+# # config/environments/development.rb
+# Rails.application.configure do
+#   # ...
+#   config.active_storage.service = :amazon
+#   # ...
+# end
+
+# # config/environments/production.rb
+# Rails.application.configure do
+#   # ...
+#   config.active_storage.service = :amazon
+#   # ...
+# end
+
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
