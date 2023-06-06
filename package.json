@@ -30,8 +30,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch --mode=development",
     "webpack": "webpack --mode=development --watch",
-    "build": "webpack --config=Scripts/config/webpack.prod.js",
-    "postinstall": "webpack"
+    "build": "webpack --mode production",
+    "postinstall": "npm run build"
   },
   "engines": {
     "node": "16.x",
