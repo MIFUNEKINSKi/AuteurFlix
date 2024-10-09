@@ -72,3 +72,4 @@ Thumbs.db
 # Ignore compiled assets in production
 /public/packs
 /public/packs-test
+config/storage.yml
