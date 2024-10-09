@@ -74,3 +74,4 @@ Thumbs.db
 /public/packs-test
 config/storage.yml
 config/credentials.yml.enc
+config/credentials.yml.enc
