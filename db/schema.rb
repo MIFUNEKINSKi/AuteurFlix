@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_15_171432) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_08_15_171432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,7 +19,7 @@ ActiveRecord::Schema.define(version: 2022_08_15_171432) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -32,7 +31,7 @@ ActiveRecord::Schema.define(version: 2022_08_15_171432) do
     t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -45,15 +44,15 @@ ActiveRecord::Schema.define(version: 2022_08_15_171432) do
 
   create_table "genres", force: :cascade do |t|
     t.string "genre", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "lists", force: :cascade do |t|
     t.integer "profile_id", null: false
     t.integer "movie_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["profile_id", "movie_id"], name: "index_lists_on_profile_id_and_movie_id"
   end
 
@@ -62,8 +61,8 @@ ActiveRecord::Schema.define(version: 2022_08_15_171432) do
     t.integer "year", null: false
     t.text "summary", null: false
     t.integer "length", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "director"
     t.index ["title"], name: "index_movies_on_title"
   end
@@ -71,16 +70,16 @@ ActiveRecord::Schema.define(version: 2022_08_15_171432) do
   create_table "profiles", force: :cascade do |t|
     t.string "name", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name", "user_id"], name: "index_profiles_on_name_and_user_id", unique: true
   end
 
   create_table "tags", force: :cascade do |t|
     t.integer "genre_id", null: false
     t.integer "movie_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["movie_id", "genre_id"], name: "index_tags_on_movie_id_and_genre_id", unique: true
   end
 
@@ -88,8 +87,8 @@ ActiveRecord::Schema.define(version: 2022_08_15_171432) do
     t.string "email", null: false
     t.string "password_digest", null: false
     t.string "session_token", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["session_token"], name: "index_users_on_session_token"
   end

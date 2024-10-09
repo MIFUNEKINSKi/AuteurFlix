@@ -42,7 +42,9 @@ group :development do
   # gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+<<<<<<< HEAD
 
+>>>>>>> 5c6a24f (Update session management and cleanup assets)
   gem 'annotate'
   gem 'pry-rails'
   gem 'binding_of_caller'

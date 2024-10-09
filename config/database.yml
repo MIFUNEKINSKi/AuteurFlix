@@ -21,7 +21,7 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-development:printenv
+development:
   <<: *default
   database: AuteurFlix_development
 
@@ -83,3 +83,7 @@ production:
   database: AuteurFlix_production
   username: AuteurFlix
   password: <%= ENV['AUTEURFLIX_DATABASE_PASSWORD'] %>
+
+  local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
