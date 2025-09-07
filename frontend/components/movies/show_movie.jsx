@@ -8,6 +8,20 @@ class ShowMovie extends React.Component {
         this.unmute = this.unmute.bind(this);
     }
 
+    componentDidMount() {
+        // Fetch movies if current movie is not available
+        if (!this.props.currentMovie) {
+            this.props.fetchMovies();
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        // Auto-fetch movies if we navigate to a new movie that isn't loaded
+        if (prevProps.movieId !== this.props.movieId && !this.props.currentMovie) {
+            this.props.fetchMovies();
+        }
+    }
+
     showControls() {
         this.clearTimers();
         const arrow = document.getElementById('back-arrow');
@@ -29,11 +43,18 @@ class ShowMovie extends React.Component {
     }
 
     goBack() {
-        this.props.history.push('/browse');
+        this.props.navigate('/browse');
     }
 
     render() {
-        
+        // Add error handling for missing movie
+        if (!this.props.currentMovie) {
+            return (
+                <div className='movie-container'>
+                    <div>Loading movie...</div>
+                </div>
+            );
+        }
     
         return(
             <div 

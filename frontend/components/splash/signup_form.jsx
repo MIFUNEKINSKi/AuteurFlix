@@ -1,13 +1,14 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import SignupFooter from "./signup_footer";
 import SplashHeader from "./splash_header";
 
 
-class SignupForm extends React.Component {
+class SignupFormClass extends React.Component {
     constructor(props) {
         super(props);
-        const historyEmail = (typeof props.location.email === 'undefined' ? '' :
-            props.location.email)
+        const historyEmail = (typeof props.locationState?.email === 'undefined' ? '' :
+            props.locationState.email)
 
         this.state = {
             email: historyEmail,
@@ -80,5 +81,11 @@ class SignupForm extends React.Component {
     }
 
 }
+
+// Wrapper component to use React Router v6 hooks
+const SignupForm = (props) => {
+    const location = useLocation();
+    return <SignupFormClass {...props} locationState={location.state} />;
+};
 
 export default SignupForm;

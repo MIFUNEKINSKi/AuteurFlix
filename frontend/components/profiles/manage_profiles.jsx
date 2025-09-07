@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import EditProfile from "./edit_profile";
 import AddProfile from "./add_profile";
 import { resolvePath } from "react-router";
-require("babel-polyfill");
 
 class ManageProfiles extends React.Component {
     constructor(props) {

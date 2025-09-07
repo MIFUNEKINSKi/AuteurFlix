@@ -29,7 +29,7 @@ class Browse extends React.Component {
                 />  
              : 
             <div>
-                <GenresIndexContainer history={this.props.history}/>
+                <GenresIndexContainer />
             </div>
         return (
             display   

@@ -1,10 +1,28 @@
 
+import React from 'react';
 import { connect } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchMovies } from '../../actions/movie_actions';
 import ShowMovie from './show_movie';
 
-const mSTP = (state, ownProps) => ({
-    currentMovie: state.entities.movies[ownProps.match.params.movieId],
-    history: ownProps.history
-});
+const ShowMovieWrapper = () => {
+    const { movieId } = useParams();
+    const navigate = useNavigate();
+    
+    const mSTP = (state) => {
+        return {
+            currentMovie: state.entities.movies[movieId],
+            movieId: movieId
+        };
+    };
 
-export default connect(mSTP, null)(ShowMovie);
+    const mDTP = dispatch => ({
+        fetchMovies: () => dispatch(fetchMovies())
+    });
+
+    const ConnectedShowMovie = connect(mSTP, mDTP)(ShowMovie);
+    
+    return <ConnectedShowMovie navigate={navigate} />;
+};
+
+export default ShowMovieWrapper;

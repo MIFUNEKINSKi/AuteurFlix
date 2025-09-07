@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-class BrowseHeader extends React.Component {
+class BrowseHeaderClass extends React.Component {
     constructor(props) {
         super(props)
-        const bool = props.history.location.pathname.startsWith('/search') ?
+        const bool = props.location.pathname.startsWith('/search') ?
             true : false;
         this.state = {
             search: '',
@@ -17,8 +17,8 @@ class BrowseHeader extends React.Component {
 // heroku comment 1
     handleSwitch() {
       this.props.resetProfile();
-      if (this.props.history.location.pathname.startsWith('/search')) {
-          this.props.history.push('/');
+      if (this.props.location.pathname.startsWith('/search')) {
+          this.props.navigate('/');
         } else {
           window.location.reload();
           } 
@@ -26,25 +26,28 @@ class BrowseHeader extends React.Component {
 
     handleManage() {
         this.props.resetProfile();
-        this.props.history.push('/manageprofiles');
+        this.props.navigate('/manageprofiles');
     }
 
     update(e) {
         this.setState({ search: e.currentTarget.value });
-        this.props.searchTitles(e.currentTarget.value);
-        this.props.searchGenres(e.currentTarget.value);
-       
+        if (this.props.searchTitles) {
+            this.props.searchTitles(e.currentTarget.value);
+        }
+        if (this.props.searchGenres) {
+            this.props.searchGenres(e.currentTarget.value);
+        }
     }
 
     oSearch() {
-        this.props.history.push('/search');
+        this.props.navigate('/search');
         this.setState({searching: true});
     }
 
 
     finishSearch() {
-        if (this.props.history.location.pathname.startsWith('/search')) {
-            this.props.history.push('/browse');
+        if (this.props.location.pathname.startsWith('/search')) {
+            this.props.navigate('/browse');
         } else {
             return;
         }
@@ -116,6 +119,13 @@ class BrowseHeader extends React.Component {
         )
     }
  
+};
+
+// Wrapper component to use React Router v6 hooks
+const BrowseHeader = (props) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    return <BrowseHeaderClass {...props} navigate={navigate} location={location} />;
 };
 
 export default BrowseHeader;

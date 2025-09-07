@@ -87,7 +87,6 @@ class GenresIndex extends React.Component {
         return (
             <div className='browse-main'>
                 <BrowseHeader
-                    history={this.props.history}
                     logout={this.props.logout}
                     resetProfile={this.props.resetProfile} />
                 <div className='top-movie'>

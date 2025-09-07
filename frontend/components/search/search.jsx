@@ -67,7 +67,6 @@ class Search extends React.Component {
                     searchGenres={this.searchGenres}
                     searchTitles={this.searchTitles}
                     updateSearch={this.updateSearch}
-                    history={this.props.history}
                     logout={this.props.logout}
                     resetProfile={this.props.resetProfile} />
                 <div key={this.props.currentProfileId} className='search-list-browse'>

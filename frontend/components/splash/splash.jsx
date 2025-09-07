@@ -15,14 +15,14 @@ export default props => (
   <div>
   <div className="splash-main">
         <SplashHeader />
-      <SignupField history={props.history}/>
+      <SignupField />
   </div>
     <KidsCard /> 
      <EnjoyCard />
       <DownloadCard /> 
       <WatchEverywhereCard /> 
       <FAQ /> 
-    <BottomSignupField history={props.history}/>
+    <BottomSignupField />
    <footer>
       <SignupFooter /> 
   </footer> 

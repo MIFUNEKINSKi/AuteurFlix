@@ -1,6 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-class SignupField extends React.Component {
+class SignupFieldClass extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,11 +25,10 @@ class SignupField extends React.Component {
         e.preventDefault();
         const email = this.state.email;
         const valid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        debugger
 
         // regex test 
         if (valid.test(email)) {
-            this.props.history.push({ pathname: `/signup`, email: email });
+            this.props.navigate('/signup', { state: { email: email } });
         } else {
             this.setState({ error: 'Please enter a valid email.' });
         }
@@ -63,5 +63,11 @@ class SignupField extends React.Component {
         )
     }
 }
+
+// Wrapper component to use React Router v6 hooks
+const SignupField = (props) => {
+    const navigate = useNavigate();
+    return <SignupFieldClass {...props} navigate={navigate} />;
+};
 
 export default SignupField;
