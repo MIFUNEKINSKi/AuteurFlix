@@ -43,7 +43,9 @@ class LoginForm extends React.Component {
     render() {
         const filled = this.state.email === '' ? '' : 'filled';
         const passFilled = this.state.password === '' ? '' : 'filled';
-        const errors = this.props.errors.map((error) => <li>{error}</li>);
+        const errors = this.props.errors && this.props.errors.length > 0 
+            ? this.props.errors.map((error, index) => <li key={index}>{error}</li>) 
+            : [];
 
         return (
             <div>
@@ -77,7 +79,7 @@ class LoginForm extends React.Component {
                                 <label id={passFilled}>Password</label>
                             </div>
 
-                            <ul className='error-list'>{errors}</ul>
+                            {errors.length > 0 && <ul className='error-list'>{errors}</ul>}
 
                             <button className='login-btn' onClick={this.handleSubmit}>Sign In</button>
                             <button className='login-btn' onClick={this.handleDemo}>Sign In as Demo User</button>

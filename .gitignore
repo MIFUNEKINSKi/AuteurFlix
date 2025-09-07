@@ -59,6 +59,12 @@ Thumbs.db
 # Ignore temporary files
 *.tmp
 
+# Ignore backup files
+*.backup
+*.bak
+*~
+*.orig
+
 # Ignore database files
 *.sqlite3
 *.sqlite3-journal

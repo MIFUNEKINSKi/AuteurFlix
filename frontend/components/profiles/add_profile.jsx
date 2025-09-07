@@ -18,6 +18,7 @@ class AddProfile extends React.Component {
     }
     handleSubmit(e){
         e.preventDefault();
+        console.log('Form submitted!', this.state); // Debug log
         if (this.state.name.length === 0) {
             this.setState({error: "Name can't be blank."});
         } else {
@@ -25,8 +26,20 @@ class AddProfile extends React.Component {
                 {user_id: this.state.user_id,
                 name: this.state.name
                 });
-            this.props.createProfile(profile);
-            window.location.reload();
+            console.log('Creating profile:', profile); // Debug log
+            console.log('createProfile function:', this.props.createProfile); // Debug log
+            this.props.createProfile(profile).then(() => {
+                console.log('Profile created successfully!'); // Debug log
+                this.props.handleCancel();
+            }).catch(error => {
+                console.error('Error creating profile:', error); // Debug log
+                // Handle validation errors
+                if (error.responseJSON && error.responseJSON.length > 0) {
+                    this.setState({error: error.responseJSON[0]});
+                } else {
+                    this.setState({error: "Something went wrong. Please try again."});
+                }
+            });
         } 
     }
     render () {

@@ -6,8 +6,9 @@ ruby '3.2.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '7.0.4.3'
 # Use postgresql as the database for Active Record
-
 gem 'pg', '1.5.3'
+# Use SQLite for testing only
+gem 'sqlite3', '~> 1.4', group: :test
 # Use Puma as the app server
 gem 'puma', '6.3.0'
 gem 'sass-rails', '6.0.0'

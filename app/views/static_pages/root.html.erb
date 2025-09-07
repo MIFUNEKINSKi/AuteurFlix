@@ -1,9 +1,15 @@
 <% if logged_in? %>
   <script type="text/javascript">
-    window.currentUser = <%= render(
-      "api/users/user.json.jbuilder",
-      user: current_user
-    ).html_safe %>
+    window.currentUser = <%= Jbuilder.encode do |json|
+      json.extract! current_user, :id, :email
+      json.profiles do
+        current_user.profiles.each do |profile|
+          json.set! profile.id do
+            json.extract! profile, :id, :name
+          end
+        end
+      end
+    end.html_safe %>
   </script>
 <% end %>
 

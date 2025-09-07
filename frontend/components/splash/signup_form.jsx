@@ -68,7 +68,7 @@ class SignupForm extends React.Component {
                             <label id={passFilled}>Add a password</label>
                         </div>
                         <p className='signup-error'>{passError}</p>
-                        <button className='sign-btn' type='submit'>Sign Up</button>
+                        <button className='signup-btn' type='submit'>Sign Up</button>
 
                     </form>
                 </div>

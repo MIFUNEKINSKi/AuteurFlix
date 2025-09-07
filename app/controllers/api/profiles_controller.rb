@@ -2,9 +2,10 @@ class Api::ProfilesController < ApplicationController
      def create
         @profile = Profile.new(profile_params)
         if @profile.save
+            @my_list = @profile.list_items
             render :show
         else   
-            render json: ['Something went wrong'], status: 422
+            render json: @profile.errors.full_messages, status: 422
         end
     end
 

@@ -51,10 +51,11 @@ class SignupField extends React.Component {
                             className='email'
                             type="email"
                             onChange={this.update('email')}
+                            placeholder={this.state.email === '' ? 'Email address' : ''}
                         />
-                        <label id={filled}>Email address</label>
-                    <button className='signup-btn' type='submit'>Get Started</button>
+                        {this.state.email !== '' && <label id="filled">Email address</label>}
                     </div>
+                    <button className='signup-btn' type='submit'>Get Started</button>
                 </form>
                 <div className='splash-errors'>{this.state.error}</div>
             </div>

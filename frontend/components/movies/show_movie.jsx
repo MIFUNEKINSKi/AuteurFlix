@@ -14,7 +14,7 @@ class ShowMovie extends React.Component {
         arrow.classList.remove('hidden');
         setTimeout(() => arrow.classList.add('hidden'), 3000);
     }
-// gree
+
     clearTimers() {
         let id = window.setTimeout(() => { }, 0);
 
@@ -29,8 +29,7 @@ class ShowMovie extends React.Component {
     }
 
     goBack() {
-        this.props.history.goBack();
-       
+        this.props.history.push('/browse');
     }
 
     render() {
@@ -41,11 +40,13 @@ class ShowMovie extends React.Component {
                 className='movie-container'
                 onMouseMove={this.showControls}
                 >
-                <p id='back-arrow' 
+                <div id='back-arrow' 
                     className='hidden'
                     onClick={this.goBack}
-                    >Back
-                </p>
+                    >
+                    <span className='arrow-icon'>←</span>
+                    <span className='back-text'>Back</span>
+                </div>
                 <video
                     autoPlay
                     muted

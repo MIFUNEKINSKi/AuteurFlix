@@ -19,6 +19,7 @@ class ManageProfiles extends React.Component {
         this.handleProfileClick = this.handleProfileClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleAddClick = this.handleAddClick.bind(this);
     }
     handleProfileClick(e) {
         this.setState({show: 'edit form', profile:  {
@@ -27,10 +28,13 @@ class ManageProfiles extends React.Component {
         }});
     }
     handleAddClick() {
+        console.log('Add profile clicked!'); // Debug log
         this.setState({ show: 'add profile'});
     }
     handleCancel() {
         this.setState({ show: 'profiles'});
+        // Refresh profiles when coming back from add/edit
+        this.props.fetchProfiles(this.props.userId);
     }
     componentDidMount () {
         this.props.fetchProfiles(this.props.userId);
@@ -81,7 +85,8 @@ class ManageProfiles extends React.Component {
             <div>
                 <AddProfile
                     userId={this.props.userId}
-                    handleCancel={this.handleCancel} />
+                    handleCancel={this.handleCancel}
+                    createProfile={this.props.createProfile} />
 
             </div>
         )
