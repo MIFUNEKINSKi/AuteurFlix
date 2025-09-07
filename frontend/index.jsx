@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import configureStore from './store/store';
 import Root from './components/root';
 // import "core-js/stable";
@@ -21,8 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     init = configureStore();
 
   }
-  const root = document.getElementById('root');
-  ReactDOM.render(<Root store={init.store} persistor={init.persistor} />, root);
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+  root.render(<Root store={init.store} persistor={init.persistor} />);
   // gr
 
 });
