@@ -89,7 +89,7 @@
     }
 }
 
-/* Disable hover effects when modal is open */
+/* Disable hover effects when modal is open for specific item */
 .list-item.modal-open {
     pointer-events: none;
 }

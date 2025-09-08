@@ -99,10 +99,6 @@ class GenresIndex extends React.Component {
                             onClick={this.toggleModal}
                         >More info</button>
                     </div>
-                    <img src={soundBtn}
-                        id='top-sound-off'
-                        className='hidden'
-                        onClick={this.soundOff} />
                 </div>
                 <div className='genres-browse'>
                     {myList}

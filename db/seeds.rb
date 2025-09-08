@@ -243,245 +243,244 @@ m9.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Seven-Samurai.
                 filename: 'Seven-Samurai.jpeg')
 
 
-# Movie.create( 
-#     {   id: 10, 
-#         title: 'Yojimbo', 
-#         year: 1961, 
-#         summary: "A crafty ronin comes to a town divided by two criminal gangs and decides to play them against each other to free the town.", 
-#         length: 110,
-#         director: "Kurosawa"
-#     }
-# )
+Movie.create( 
+    {   id: 10, 
+        title: 'Yojimbo', 
+        year: 1961, 
+        summary: "A crafty ronin comes to a town divided by two criminal gangs and decides to play them against each other to free the town.", 
+        length: 110,
+        director: "Kurosawa"
+    }
+)
 
-# Tag.create(movie_id: 10, genre_id: 1)
-# Tag.create(movie_id: 10, genre_id: 9)
-
-
-# m10 = Movie.find(10)
-# m10.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/lf.jpeg'), 
-#                 filename: 'lf.jpeg
-# ')
-# m10.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/YOJIMBO+Trailer+(1961)+-+The+Criterion+Collection+(720p_24fps_H264-192kbit_AAC).mp4'), 
-#                 filename: 'YOJIMBO Trailer (1961) - The Criterion Collection (720p_24fps_H264-192kbit_AAC).mp4')
-# m10.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/yojimbo-1200-1200-675-675-crop-000000.jpeg'), 
-#                 filename: 'yojimbo-1200-1200-675-675-crop-000000.jpeg')
+Tag.create(movie_id: 10, genre_id: 1)
+Tag.create(movie_id: 10, genre_id: 9)
 
 
-# Movie.create( 
-#     {   id: 11, 
-#         title: 'Still Walking', 
-#         year: 2008, 
-#         summary: "A family gathers together for a commemorative ritual whose nature only gradually becomes clear.", 
-#         length: 115,
-#         director: "Koreeda"
-#     }
-# )
-
-# Tag.create(movie_id: 11, genre_id: 3)
-# Tag.create(movie_id: 11, genre_id: 14)
+m10 = Movie.find(10)
+m10.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/lf.jpeg'), 
+                filename: 'lf.jpeg
+')
+m10.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/YOJIMBO+Trailer+(1961)+-+The+Criterion+Collection+(720p_24fps_H264-192kbit_AAC).mp4'), 
+                filename: 'YOJIMBO Trailer (1961) - The Criterion Collection (720p_24fps_H264-192kbit_AAC).mp4')
+m10.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/yojimbo-1200-1200-675-675-crop-000000.jpeg'), 
+                filename: 'yojimbo-1200-1200-675-675-crop-000000.jpeg')
 
 
-# m11 = Movie.find(11)
-# m11.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/still_walking_thumbnail.jpeg'), 
-#                 filename: 'still_walking_thumbnail.jpeg
-# ')
-# m11.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/STILL+WALKING+Trailer+(2008)+-+The+Criterion+Collection+(1080p_24fps_H264-128kbit_AAC).mp4'), 
-#                 filename: 'STILL WALKING Trailer (2008) - The Criterion Collection (1080p_24fps_H264-128kbit_AAC).mp4')
-# m11.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/still_walking_image.jpeg'), 
-#                 filename: 'still_walking_image.jpeg')
+Movie.create( 
+    {   id: 11, 
+        title: 'Still Walking', 
+        year: 2008, 
+        summary: "A family gathers together for a commemorative ritual whose nature only gradually becomes clear.", 
+        length: 115,
+        director: "Koreeda"
+    }
+)
+
+Tag.create(movie_id: 11, genre_id: 3)
+Tag.create(movie_id: 11, genre_id: 14)
 
 
-# Movie.create( 
-#     {   id: 12, 
-#         title: 'Shoplifters', 
-#         year: 2018, 
-#         summary: "A family of small-time crooks take in a child they find outside in the cold.", 
-#         length: 121,
-#         director: "Koreeda"
-#     }
-# )
-
-# Tag.create(movie_id: 12, genre_id: 3)
-# Tag.create(movie_id: 12, genre_id: 14)
+m11 = Movie.find(11)
+m11.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/still_walking_thumbnail.jpeg'), 
+                filename: 'still_walking_thumbnail.jpeg
+')
+m11.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/STILL+WALKING+Trailer+(2008)+-+The+Criterion+Collection+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'STILL WALKING Trailer (2008) - The Criterion Collection (1080p_24fps_H264-128kbit_AAC).mp4')
+m11.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/still_walking_image.jpeg'), 
+                filename: 'still_walking_image.jpeg')
 
 
-# m12 = Movie.find(12)
-# m12.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Shoplifters+-+Official+Trailer+(BQ).jpg'), 
-#                 filename: 'Shoplifters - Official Trailer (BQ).jpg
-# ')
-# m12.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Shoplifters+-+Official+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
-#                 filename: 'Shoplifters - Official Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
-# m12.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/shoplifters_image.jpeg'), 
-#                 filename: 'shoplifters_image.jpeg')
+Movie.create( 
+    {   id: 12, 
+        title: 'Shoplifters', 
+        year: 2018, 
+        summary: "A family of small-time crooks take in a child they find outside in the cold.", 
+        length: 121,
+        director: "Koreeda"
+    }
+)
+
+Tag.create(movie_id: 12, genre_id: 3)
+Tag.create(movie_id: 12, genre_id: 14)
 
 
-# Movie.create( 
-#     {   id: 13, 
-#         title: 'La Dolce Vita', 
-#         year: 1960, 
-#         summary: "A series of stories following a week in the life of a philandering tabloid journalist living in Rome.", 
-#         length: 174,
-#         director: "Fellini"
-#     }
-# )
-
-# Tag.create(movie_id: 13, genre_id: 4)
-# Tag.create(movie_id: 13, genre_id: 9)
+m12 = Movie.find(12)
+m12.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Shoplifters+-+Official+Trailer+(BQ).jpg'), 
+                filename: 'Shoplifters - Official Trailer (BQ).jpg
+')
+m12.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Shoplifters+-+Official+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Shoplifters - Official Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
+m12.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/shoplifters_image.jpeg'), 
+                filename: 'shoplifters_image.jpeg')
 
 
-# m13 = Movie.find(13)
-# m13.thumbnail.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/New+trailer+for+Fellini's+La+dolce+vita+-+back+in+cinemas+3+January+2020+_+BFI+(BQ).jpg"), 
-#                 filename: "New trailer for Fellini's La dolce vita - back in cinemas 3 January 2020 _ BFI (BQ).jpg"
-# )
-# m13.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/New+trailer+for+Fellini's+La+dolce+vita+-+back+in+cinemas+3+January+2020+_+BFI+(1080p_24fps_H264-128kbit_AAC).mp4"), 
-#                 filename: "New trailer for Fellini's La dolce vita - back in cinemas 3 January 2020 _ BFI (1080p_24fps_H264-128kbit_AAC).mp4")
-# m13.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/la_dolce_image.jpeg'), 
-#                 filename: 'la_dolce_image.jpeg')
+Movie.create( 
+    {   id: 13, 
+        title: 'La Dolce Vita', 
+        year: 1960, 
+        summary: "A series of stories following a week in the life of a philandering tabloid journalist living in Rome.", 
+        length: 174,
+        director: "Fellini"
+    }
+)
+
+Tag.create(movie_id: 13, genre_id: 4)
+Tag.create(movie_id: 13, genre_id: 9)
 
 
-# Movie.create( 
-#     {   id: 14, 
-#         title: 'Amarcord', 
-#         year: 1973, 
-#         summary: "A series of comedic and nostalgic vignettes set in a 1930s Italian coastal town.", 
-#         length: 123,
-#         director: "Fellini"
-#     }
-# )
-
-# Tag.create(movie_id: 14, genre_id: 4)
-# Tag.create(movie_id: 14, genre_id: 10)
+m13 = Movie.find(13)
+m13.thumbnail.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/New+trailer+for+Fellini's+La+dolce+vita+-+back+in+cinemas+3+January+2020+_+BFI+(BQ).jpg"), 
+                filename: "New trailer for Fellini's La dolce vita - back in cinemas 3 January 2020 _ BFI (BQ).jpg"
+)
+m13.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/New+trailer+for+Fellini's+La+dolce+vita+-+back+in+cinemas+3+January+2020+_+BFI+(1080p_24fps_H264-128kbit_AAC).mp4"), 
+                filename: "New trailer for Fellini's La dolce vita - back in cinemas 3 January 2020 _ BFI (1080p_24fps_H264-128kbit_AAC).mp4")
+m13.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/la_dolce_image.jpeg'), 
+                filename: 'la_dolce_image.jpeg')
 
 
-# m14 = Movie.find(14)
-# m14.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/amarcord-md-web.jpeg'), 
-#                 filename: 'amarcord-md-web.jpeg
-# ')
-# m14.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Amarcord+Trailer+(Federico+Fellini%2C+1973)+(360p_24fps_H264-128kbit_AAC).mp4'), 
-#                 filename: 'Amarcord Trailer (Federico Fellini, 1973) (360p_24fps_H264-128kbit_AAC).mp4')
-# m14.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/amc_image.jpeg'), 
-#                 filename: 'amc_image.jpeg')
+Movie.create( 
+    {   id: 14, 
+        title: 'Amarcord', 
+        year: 1973, 
+        summary: "A series of comedic and nostalgic vignettes set in a 1930s Italian coastal town.", 
+        length: 123,
+        director: "Fellini"
+    }
+)
+
+Tag.create(movie_id: 14, genre_id: 4)
+Tag.create(movie_id: 14, genre_id: 10)
 
 
-# Movie.create( 
-#     {   id: 15, 
-#         title: 'Parasite', 
-#         year: 2019, 
-#         summary: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.", 
-#         length: 132,
-#         director: "Bong Joon Ho"
-#     }
-# )
-# green
-
-# Tag.create(movie_id: 15, genre_id: 5)
-# Tag.create(movie_id: 15, genre_id: 14)
+m14 = Movie.find(14)
+m14.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/amarcord-md-web.jpeg'), 
+                filename: 'amarcord-md-web.jpeg
+')
+m14.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Amarcord+Trailer+(Federico+Fellini%2C+1973)+(360p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Amarcord Trailer (Federico Fellini, 1973) (360p_24fps_H264-128kbit_AAC).mp4')
+m14.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/amc_image.jpeg'), 
+                filename: 'amc_image.jpeg')
 
 
-# m15 = Movie.find(15)
-# m15.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Parasite+%5BOfficial+Trailer%5D+%E2%80%93+In+Theaters+October+11%2C+2019+(BQ).jpg'), 
-#                 filename: 'Parasite [Official Trailer] – In Theaters October 11, 2019 (BQ).jpg
-# ')
-# m15.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Parasite+%5BOfficial+Trailer%5D+%E2%80%93+In+Theaters+October+11%2C+2019+(1080p_24fps_H264-128kbit_AAC).mp4'), 
-#                 filename: 'Parasite [Official Trailer] – In Theaters October 11, 2019 (1080p_24fps_H264-128kbit_AAC).mp4')
-# m15.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Brody-Parasite.webp'), 
-#                 filename: 'Brody-Parasite.webp')
+Movie.create( 
+    {   id: 15, 
+        title: 'Parasite', 
+        year: 2019, 
+        summary: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.", 
+        length: 132,
+        director: "Bong Joon Ho"
+    }
+)
+
+Tag.create(movie_id: 15, genre_id: 5)
+Tag.create(movie_id: 15, genre_id: 14)
 
 
-# Movie.create( 
-#     {   id: 16, 
-#         title: 'Memories of Murder', 
-#         year: 2003, 
-#         summary: "In a small Korean province in 1986, two detectives struggle with the case of multiple young women being found raped and murdered by an unknown culprit.", 
-#         length: 132,
-#         director: "Bong Joon Ho"
-#     }
-# )
-
-# Tag.create(movie_id: 16, genre_id: 4)
-# Tag.create(movie_id: 16, genre_id: 14)
+m15 = Movie.find(15)
+m15.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Parasite+%5BOfficial+Trailer%5D+%E2%80%93+In+Theaters+October+11%2C+2019+(BQ).jpg'), 
+                filename: 'Parasite [Official Trailer] – In Theaters October 11, 2019 (BQ).jpg
+')
+m15.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Parasite+%5BOfficial+Trailer%5D+%E2%80%93+In+Theaters+October+11%2C+2019+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Parasite [Official Trailer] – In Theaters October 11, 2019 (1080p_24fps_H264-128kbit_AAC).mp4')
+m15.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Brody-Parasite.webp'), 
+                filename: 'Brody-Parasite.webp')
 
 
-# m16 = Movie.find(16)
-# m16.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/mom_thumbnail.jpeg'), 
-#                 filename: 'mom_thumbnail.jpeg
-# ')
-# m16.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/MEMORIES+OF+MURDER+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
-#                 filename: 'MEMORIES OF MURDER Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
-# m16.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/memories-of-murder-1108x0-c-default.jpeg'), 
-#                 filename: 'memories-of-murder-1108x0-c-default.jpeg')
+Movie.create( 
+    {   id: 16, 
+        title: 'Memories of Murder', 
+        year: 2003, 
+        summary: "In a small Korean province in 1986, two detectives struggle with the case of multiple young women being found raped and murdered by an unknown culprit.", 
+        length: 132,
+        director: "Bong Joon Ho"
+    }
+)
+
+Tag.create(movie_id: 16, genre_id: 4)
+Tag.create(movie_id: 16, genre_id: 14)
 
 
-# Movie.create( 
-#     {   id: 17, 
-#         title: 'The Discreet Charm of the Bourgeoisie', 
-#         year: 1972, 
-#         summary: "A surreal, virtually plotless series of dreams centered around six middle-class people and their consistently interrupted attempts to have a meal together.", 
-#         length: 102,
-#         director: "Buñuel"
-#     }
-# )
-
-# Tag.create(movie_id: 17, genre_id: 6)
-# Tag.create(movie_id: 17, genre_id: 10)
+m16 = Movie.find(16)
+m16.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/mom_thumbnail.jpeg'), 
+                filename: 'mom_thumbnail.jpeg
+')
+m16.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/MEMORIES+OF+MURDER+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4'), 
+                filename: 'MEMORIES OF MURDER Trailer (1080p_24fps_H264-128kbit_AAC).mp4')
+m16.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/memories-of-murder-1108x0-c-default.jpeg'), 
+                filename: 'memories-of-murder-1108x0-c-default.jpeg')
 
 
-# m17 = Movie.find(17)
-# m17.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/discreet_thumbnail.jpeg'), 
-#                 filename: 'discreet_thumbnail.jpeg
-# ')
-# m17.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Discreet+Charm+of+the+Bourgeosie+(Trailer)+(480p_30fps_H264-128kbit_AAC).mp4'), 
-#                 filename: 'Discreet Charm of the Bourgeosie (Trailer) (480p_30fps_H264-128kbit_AAC).mp4')
-# m17.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/discreet_image.jpeg'), 
-#                 filename: 'discreet_image.jpeg')
+Movie.create( 
+    {   id: 17, 
+        title: 'The Discreet Charm of the Bourgeoisie', 
+        year: 1972, 
+        summary: "A surreal, virtually plotless series of dreams centered around six middle-class people and their consistently interrupted attempts to have a meal together.", 
+        length: 102,
+        director: "Buñuel"
+    }
+)
+
+Tag.create(movie_id: 17, genre_id: 6)
+Tag.create(movie_id: 17, genre_id: 10)
 
 
-# Movie.create( 
-#     {   id: 18, 
-#         title: '2001: A Space Odyssey', 
-#         year: 1968, 
-#         summary: "After uncovering a mysterious artifact buried beneath the Lunar surface, a spacecraft is sent to Jupiter to find its origins - a spacecraft manned by two men and the supercomputer H.A.L. 9000.", 
-#         length: 149,
-#         director: "Kubrick"
-#     }
-# )
-
-# Tag.create(movie_id: 18, genre_id: 8)
-# Tag.create(movie_id: 18, genre_id: 9)
+m17 = Movie.find(17)
+m17.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/discreet_thumbnail.jpeg'), 
+                filename: 'discreet_thumbnail.jpeg
+')
+m17.video.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/Discreet+Charm+of+the+Bourgeosie+(Trailer)+(480p_30fps_H264-128kbit_AAC).mp4'), 
+                filename: 'Discreet Charm of the Bourgeosie (Trailer) (480p_30fps_H264-128kbit_AAC).mp4')
+m17.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/discreet_image.jpeg'), 
+                filename: 'discreet_image.jpeg')
 
 
-# m18 = Movie.find(18)
-# m18.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/odyssey_thumbnail.jpeg'), 
-#                 filename: 'odyssey_thumbnail.jpeg
-# ')
-# m18.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/2001_+A+SPACE+ODYSSEY+-+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4"), 
-#                 filename: "2001_ A SPACE ODYSSEY - Trailer (1080p_24fps_H264-128kbit_AAC).mp4")
-# m18.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/2001_+A+SPACE+ODYSSEY+-+Trailer+(BQ).jpg'), 
-#                 filename: '2001_ A SPACE ODYSSEY - Trailer (BQ).jpg')
+Movie.create( 
+    {   id: 18, 
+        title: '2001: A Space Odyssey', 
+        year: 1968, 
+        summary: "After uncovering a mysterious artifact buried beneath the Lunar surface, a spacecraft is sent to Jupiter to find its origins - a spacecraft manned by two men and the supercomputer H.A.L. 9000.", 
+        length: 149,
+        director: "Kubrick"
+    }
+)
+
+Tag.create(movie_id: 18, genre_id: 8)
+Tag.create(movie_id: 18, genre_id: 9)
 
 
-# Movie.create( 
-#     {   id: 19, 
-#         title: 'Barry Lyndon', 
-#         year: 1975, 
-#         summary: "An Irish rogue wins the heart of a rich widow and assumes her dead husband's aristocratic position in 18th-century England.", 
-#         length: 185,
-#         director: "Kubrick"
-#     }
-# )
-
-# Tag.create(movie_id: 19, genre_id: 8)
-# Tag.create(movie_id: 19, genre_id: 10)
+m18 = Movie.find(18)
+m18.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/odyssey_thumbnail.jpeg'), 
+                filename: 'odyssey_thumbnail.jpeg
+')
+m18.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/2001_+A+SPACE+ODYSSEY+-+Trailer+(1080p_24fps_H264-128kbit_AAC).mp4"), 
+                filename: "2001_ A SPACE ODYSSEY - Trailer (1080p_24fps_H264-128kbit_AAC).mp4")
+m18.photo.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/2001_+A+SPACE+ODYSSEY+-+Trailer+(BQ).jpg'), 
+                filename: '2001_ A SPACE ODYSSEY - Trailer (BQ).jpg')
 
 
-# m19 = Movie.find(19)
-# m19.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/barry_thumbnail.jpeg'), 
-#                 filename: 'barry_thumbnail.jpeg
-# ')
-# m19.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/Stanley+Kubrick's+Barry+Lyndon+(New+Trailer+2016)+-+In+cinemas+29+July+_+BFI+release+(1080p_24fps_H264-128kbit_AAC).mp4"), 
-#                 filename: "Stanley Kubrick's Barry Lyndon (New Trailer 2016) - In cinemas 29 July _ BFI release (1080p_24fps_H264-128kbit_AAC).mp4")
-# m19.photo.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/Stanley+Kubrick's+Barry+Lyndon+(New+Trailer+2016)+-+In+cinemas+29+July+_+BFI+release+(BQ).jpg"), 
-#                 filename: "Stanley Kubrick's Barry Lyndon (New Trailer 2016) - In cinemas 29 July _ BFI release (BQ).jpg")
+Movie.create( 
+    {   id: 19, 
+        title: 'Barry Lyndon', 
+        year: 1975, 
+        summary: "An Irish rogue wins the heart of a rich widow and assumes her dead husband's aristocratic position in 18th-century England.", 
+        length: 185,
+        director: "Kubrick"
+    }
+)
+
+Tag.create(movie_id: 19, genre_id: 8)
+Tag.create(movie_id: 19, genre_id: 10)
+
+
+m19 = Movie.find(19)
+m19.thumbnail.attach(io: URI.open('https://auteurflix.s3.amazonaws.com/barry_thumbnail.jpeg'), 
+                filename: 'barry_thumbnail.jpeg
+')
+m19.video.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/Stanley+Kubrick's+Barry+Lyndon+(New+Trailer+2016)+-+In+cinemas+29+July+_+BFI+release+(1080p_24fps_H264-128kbit_AAC).mp4"), 
+                filename: "Stanley Kubrick's Barry Lyndon (New Trailer 2016) - In cinemas 29 July _ BFI release (1080p_24fps_H264-128kbit_AAC).mp4")
+m19.photo.attach(io: URI.open("https://auteurflix.s3.amazonaws.com/Stanley+Kubrick's+Barry+Lyndon+(New+Trailer+2016)+-+In+cinemas+29+July+_+BFI+release+(BQ).jpg"), 
+                filename: "Stanley Kubrick's Barry Lyndon (New Trailer 2016) - In cinemas 29 July _ BFI release (BQ).jpg")
 
 
 

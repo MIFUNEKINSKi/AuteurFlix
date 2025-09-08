@@ -16,6 +16,20 @@ class DetailsModal extends React.Component {
     }
 
     componentDidMount() {
+        // Add body class to prevent scrolling
+        document.body.classList.add('modal-open-body');
+        
+        // Force modal to correct position immediately
+        setTimeout(() => {
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.style.position = 'fixed';
+                modal.style.top = '50%';
+                modal.style.left = '50%';
+                modal.style.transform = 'translate3d(-50%, -50%, 0)';
+            }
+        }, 0);
+        
         // Start video when modal loads
         setTimeout(() => {
             const video = document.getElementById('modal-vid');
@@ -26,6 +40,11 @@ class DetailsModal extends React.Component {
                 });
             }
         }, 100);
+    }
+
+    componentWillUnmount() {
+        // Remove body class when modal closes
+        document.body.classList.remove('modal-open-body');
     }
 
     modalAutoplay(e) {
@@ -54,15 +73,20 @@ class DetailsModal extends React.Component {
         }
     }
     soundOff(e) {
+        e.stopPropagation(); // Prevent event bubbling
         const bool = this.state.sound ? false : true;
-        this.setState({ sound: bool });
         
-        const modal = e.currentTarget.closest('.modal');
-        const video = modal?.querySelector('#modal-vid');
-        
-        if (video) {
-            video.muted = !bool;
-        }
+        this.setState({ sound: bool }, () => {
+            // Use document.getElementById since we know the video ID
+            const video = document.getElementById('modal-vid');
+            
+            if (video) {
+                video.muted = !bool;
+                console.log('Video muted set to:', video.muted);
+            } else {
+                console.log('Modal video element not found');
+            }
+        });
     }
     convertLength(minutes) {
         const h = parseInt(minutes / 60);
@@ -112,35 +136,35 @@ class DetailsModal extends React.Component {
                             }}
                             >{listButton}</button>
                     </div>
-                <video
-                    id='modal-vid'
-                    src={this.props.movie.videoUrl}
-                    muted={true}
-                    preload="metadata"
-                    autoPlay={true}
-                    onEnded={this.onEnd}
-                    onLoadedData={() => {
-                        console.log('Modal video loaded');
-                    }}
-                    onError={(e) => {
-                        console.log('Modal video error:', e);
-                    }}
-                ></video>
-                <img src={soundBtn}
-                    className='modal-sound-off'
-                    onClick={this.soundOff} />
-            </div>
-            <div className='modal-details'>
-                <div className='left-details'>
-                    <div>
-                        <p>{this.props.movie.year}</p>
-                        <p className='modal-director'>{this.props.movie.director}</p>
-                        <p>{displayLength}</p>
+                    <video
+                        id='modal-vid'
+                        src={this.props.movie.videoUrl}
+                        muted={!this.state.sound}
+                        preload="metadata"
+                        autoPlay={true}
+                        onEnded={this.onEnd}
+                        onLoadedData={() => {
+                            console.log('Modal video loaded');
+                        }}
+                        onError={(e) => {
+                            console.log('Modal video error:', e);
+                        }}
+                    ></video>
+                    <img src={soundBtn}
+                        className='modal-sound-off'
+                        onClick={this.soundOff} />
+                </div>
+                <div className='modal-details'>
+                    <div className='left-details'>
+                        <div>
+                            <p>{this.props.movie.year}</p>
+                            <p className='modal-director'>{this.props.movie.director}</p>
+                            <p>{displayLength}</p>
+                        </div>
+                        <p>{this.props.movie.summary}</p>
                     </div>
-                    <p>{this.props.movie.summary}</p>
                 </div>
             </div>
-        </div>
         </>
         )
     

@@ -1,14 +1,78 @@
+/* Prevent scrolling when modal is open - high priority */
+body.modal-open-body {
+    overflow: hidden !important;
+    height: 100vh !important;
+    position: relative !important;
+}
+
+/* Prevent scrolling when modal is open */
+.modal-open-body {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+/* Disable only movie thumbnail interactions when modal is open */
+.modal-open-body .list-item {
+    pointer-events: none !important;
+}
+
+.modal-open-body .list-item:hover {
+    transform: none !important;
+    width: 250px !important;
+    height: 140px !important;
+    z-index: 1 !important;
+    box-shadow: none !important;
+}
+
+.modal-open-body .list-item:hover .thumbnail {
+    opacity: 1 !important;
+}
+
+.modal-open-body .list-item:hover .movie-details {
+    opacity: 0 !important;
+}
+
+.modal-open-body .list-item:hover .details-vid-container {
+    opacity: 0 !important;
+}
+
+/* Ensure modal is always fully interactive */
+.modal, 
+.modal *, 
+.modal-backdrop {
+    pointer-events: auto !important;
+}
+
 .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate3d(-50%, -50%, 0) !important;
+    z-index: 10000 !important;
     width: 1000px;
-    height: 1000px;
+    height: auto;
+    max-height: 90vh;
     background: rgb(34, 34, 34);
     border-radius: 4px;
-    overflow-y: hidden;
+    overflow-y: auto;
+    max-width: 90vw;
+    /* Prevent jittering and ensure fixed positioning */
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    contain: layout style paint;
+    pointer-events: auto;
+    /* Force immediate centering on mount */
+    margin: 0 !important;
+    display: block !important;
+}
+
+.modal:hover,
+.modal:focus,
+.modal:active {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate3d(-50%, -50%, 0) !important;
 }
 
 /* Modal backdrop overlay */
@@ -19,16 +83,18 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
-    z-index: 999;
-    pointer-events: auto; /* Capture all clicks */
+    z-index: 9999;
+    pointer-events: auto;
 }
 
 #modal-vid {
-    transition: fadeIn ease 2s;
-    
     width: 1000px;
     height: 562px;
     cursor: auto;
+    display: block;
+    position: relative;
+    max-width: 100%;
+    object-fit: cover;
 }
 
 .modal-thumbnail {

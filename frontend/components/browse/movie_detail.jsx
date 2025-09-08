@@ -27,18 +27,28 @@ class MovieDetail extends React.Component {
     }
     autoplay(e) {
         const video = e.currentTarget.children[1].children[1];
+        if (!video || typeof video.play !== 'function') {
+            console.log('Video element not found or invalid in autoplay');
+            return;
+        }
         video.currentTime = 0;
         setTimeout(() => {
             video.classList.remove('idle');
             video.nextElementSibling.classList.remove('invisible');
             video.previousElementSibling.classList.remove('invisible');
             this.state.sound ? video.muted = false : video.muted = true;
-            video.play();
+            video.play().catch(err => {
+                console.log('Video play error:', err);
+            });
         }, 1999);
     }
     stop(e) {
         this.clearTimers();
         const video = e.currentTarget.children[1].children[1];
+        if (!video || typeof video.pause !== 'function') {
+            console.log('Video element not found or invalid in stop');
+            return;
+        }
         video.pause();
         video.classList.add('idle');
         video.parentElement.previousElementSibling.classList.remove('invisible');
