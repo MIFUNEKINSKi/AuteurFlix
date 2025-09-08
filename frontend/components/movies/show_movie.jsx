@@ -9,16 +9,18 @@ class ShowMovie extends React.Component {
     }
 
     componentDidMount() {
-        // Fetch movies if current movie is not available
-        if (!this.props.currentMovie) {
-            this.props.fetchMovies();
+        // Fetch movie if it's not already loaded
+        if (!this.props.currentMovie && this.props.movieId) {
+            this.props.fetchMovie(this.props.movieId);
         }
     }
 
     componentDidUpdate(prevProps) {
-        // Auto-fetch movies if we navigate to a new movie that isn't loaded
-        if (prevProps.movieId !== this.props.movieId && !this.props.currentMovie) {
-            this.props.fetchMovies();
+        // If we still don't have the movie after the fetch attempt, 
+        // and the movieId has changed, try fetching again
+        if (!this.props.currentMovie && this.props.movieId && 
+            prevProps.movieId !== this.props.movieId) {
+            this.props.fetchMovie(this.props.movieId);
         }
     }
 
@@ -47,15 +49,11 @@ class ShowMovie extends React.Component {
     }
 
     render() {
-        // Add error handling for missing movie
+        // Add safety check for currentMovie
         if (!this.props.currentMovie) {
-            return (
-                <div className='movie-container'>
-                    <div>Loading movie...</div>
-                </div>
-            );
+            return <div style={{color: 'white', fontSize: '24px', textAlign: 'center', marginTop: '50px'}}>Loading...</div>;
         }
-    
+        
         return(
             <div 
                 className='movie-container'

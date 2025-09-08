@@ -1,20 +1,26 @@
 .modal {
-    // position: absolute;
-  
     position: fixed;
-    top: 65%;
+    top: 50%;
     left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-
-    z-index: 60;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
     width: 1000px;
     height: 1000px;
     background: rgb(34, 34, 34);
     border-radius: 4px;
     overflow-y: hidden;
-    // border-left: 200px solid rgba(0, 0, 0, 0);
-    // border-right: 200px solid rgba(0, 0, 0, 0);
+}
+
+/* Modal backdrop overlay */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    pointer-events: auto; /* Capture all clicks */
 }
 
 #modal-vid {

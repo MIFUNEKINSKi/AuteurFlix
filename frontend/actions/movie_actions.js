@@ -9,9 +9,18 @@ const receiveAllMovies = movies => ({
     movies
 });
 
+const receiveMovie = movie => ({
+    type: RECEIVE_MOVIE,
+    movie
+});
+
 export const fetchMovies = () => dispatch =>
     MovieApiUtil.fetchMovies()
         .then(movies => dispatch(receiveAllMovies(movies)));
+
+export const fetchMovie = movieId => dispatch =>
+    MovieApiUtil.fetchMovie(movieId)
+        .then(movie => dispatch(receiveMovie(movie)));
 
 export const createListItem = (movieId, profileId) => dispatch =>
     MovieApiUtil.createListItem(movieId, profileId)

@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     init = configureStore();
 
   }
-  const container = document.getElementById('root');
-  const root = createRoot(container);
+  const rootElement = document.getElementById('root');
+  const root = createRoot(rootElement);
   root.render(<Root store={init.store} persistor={init.persistor} />);
   // gr
 

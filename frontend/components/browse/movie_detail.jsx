@@ -8,15 +8,17 @@ class MovieDetail extends React.Component {
 
         this.state = {
             sound: true,
-            showModal: false
+            showModal: false,
+            isClicked: false
         }
         this.toggleModal = this.toggleModal.bind(this);
-    this.autoplay = this.autoplay.bind(this);
-    this.soundOff = this.soundOff.bind(this);
-    this.toggleListItem = this.toggleListItem.bind(this);
-    this.stop = this.stop.bind(this);
-    this.clearTimers = this.clearTimers.bind(this);
-    this.stopAll = this.stopAll.bind(this);
+        this.autoplay = this.autoplay.bind(this);
+        this.soundOff = this.soundOff.bind(this);
+        this.toggleListItem = this.toggleListItem.bind(this);
+        this.stop = this.stop.bind(this);
+        this.clearTimers = this.clearTimers.bind(this);
+        this.stopAll = this.stopAll.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     movieGenres() {
         const selectedTags = this.props.tags.filter(tag => tag.movie_id === this.props.movie.id);
@@ -90,6 +92,17 @@ class MovieDetail extends React.Component {
             return this.props.createListItem(this.props.movie.id, this.props.currentProfileId);
         }
     }
+    
+    handleClick() {
+        this.setState(prevState => ({
+            isClicked: !prevState.isClicked
+        }));
+        
+        // Reset the clicked state after animation
+        setTimeout(() => {
+            this.setState({ isClicked: false });
+        }, 300);
+    }
     render() {
         if (this.state.showModal) {
             this.stopAll();
@@ -113,9 +126,10 @@ class MovieDetail extends React.Component {
         const soundBtn = this.state.sound ? window.volumeOff : window.volumeOn;
         const listButton = this.onList() ? '✓' : '+';
         return (
-                <div className='list-item'
+                <div className={`list-item ${this.state.isClicked ? 'clicked' : ''} ${this.state.showModal ? 'modal-open' : ''}`}
                     onMouseEnter={this.autoplay}
                     onMouseLeave={this.stop}
+                    onClick={this.handleClick}
                 >
                     <img className='thumbnail' 
                         src={this.props.movie.thumbnailUrl} 

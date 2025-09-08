@@ -2,27 +2,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchMovies } from '../../actions/movie_actions';
+import { fetchMovie } from '../../actions/movie_actions';
 import ShowMovie from './show_movie';
 
-const ShowMovieWrapper = () => {
-    const { movieId } = useParams();
+// Functional component wrapper to use hooks directly
+const ShowMovieWrapper = (props) => {
+    const params = useParams();
     const navigate = useNavigate();
     
-    const mSTP = (state) => {
-        return {
-            currentMovie: state.entities.movies[movieId],
-            movieId: movieId
-        };
-    };
-
-    const mDTP = dispatch => ({
-        fetchMovies: () => dispatch(fetchMovies())
-    });
-
-    const ConnectedShowMovie = connect(mSTP, mDTP)(ShowMovie);
+    const movieId = params.movieId;
+    const currentMovie = movieId ? props.movies[movieId] : null;
     
-    return <ConnectedShowMovie navigate={navigate} />;
+    return (
+        <ShowMovie 
+            {...props}
+            currentMovie={currentMovie}
+            movieId={movieId}
+            navigate={navigate}
+        />
+    );
 };
 
-export default ShowMovieWrapper;
+const mSTP = (state) => ({
+    movies: state.entities.movies || {}
+});
+
+const mDTP = dispatch => ({
+    fetchMovie: movieId => dispatch(fetchMovie(movieId))
+});
+
+export default connect(mSTP, mDTP)(ShowMovieWrapper);
