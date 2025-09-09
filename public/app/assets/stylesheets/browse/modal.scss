@@ -1,0 +1,304 @@
+/* Prevent scrolling when modal is open - high priority */
+body.modal-open-body {
+    overflow: hidden !important;
+    height: 100vh !important;
+    position: relative !important;
+}
+
+/* Prevent scrolling when modal is open */
+.modal-open-body {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+/* Disable only movie thumbnail interactions when modal is open */
+.modal-open-body .list-item {
+    pointer-events: none !important;
+}
+
+.modal-open-body .list-item:hover {
+    transform: none !important;
+    width: 250px !important;
+    height: 140px !important;
+    z-index: 1 !important;
+    box-shadow: none !important;
+}
+
+.modal-open-body .list-item:hover .thumbnail {
+    opacity: 1 !important;
+}
+
+.modal-open-body .list-item:hover .movie-details {
+    opacity: 0 !important;
+}
+
+.modal-open-body .list-item:hover .details-vid-container {
+    opacity: 0 !important;
+}
+
+/* Ensure modal is always fully interactive */
+.modal, 
+.modal *, 
+.modal-backdrop {
+    pointer-events: auto !important;
+}
+
+.modal {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate3d(-50%, -50%, 0) !important;
+    z-index: 10000 !important;
+    width: 1000px;
+    height: auto;
+    max-height: 90vh;
+    background: rgb(34, 34, 34);
+    border-radius: 4px;
+    overflow-y: auto;
+    max-width: 90vw;
+    /* Prevent jittering and ensure fixed positioning */
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    contain: layout style paint;
+    pointer-events: auto;
+    /* Force immediate centering on mount */
+    margin: 0 !important;
+    display: block !important;
+}
+
+.modal:hover,
+.modal:focus,
+.modal:active {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate3d(-50%, -50%, 0) !important;
+}
+
+/* Modal backdrop overlay */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+#modal-vid {
+    width: 1000px;
+    height: 562px;
+    cursor: auto;
+    display: block;
+    position: relative;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.modal-thumbnail {
+    position: absolute;
+    // top: 70%;
+    left: 0;
+    width: 1000;
+    height: 562px;
+    opacity: 1;
+    z-index: 60;
+    transition: fadeOut ease 2s;
+
+    cursor: auto;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0}
+  100% {opacity:1}
+}
+
+@keyframes fadeOut {
+  100% {opacity:1}
+  0% {opacity:0}
+}
+
+.hide {
+    transition: fadeIn ease 2s;
+    position: absolute;
+    // top: 70%;
+    left: 3px;
+    width: 1000;
+    height: 562px;
+    width: 1000;
+    z-index: 60;
+    opacity: 0;
+}
+
+.exit-modal {
+    position: absolute;
+    left: 940px;
+    top: 20px;
+    border-radius: 50%;
+    color: white;
+    background: black;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    font-weight:lighter;
+    z-index: 62;
+    text-align: center;
+    cursor: pointer;
+}
+
+.modal-title {
+    position: absolute;
+    font-size: 40px;
+    left: 40px;
+    top: 400px;
+    font-weight: bold;
+}
+
+.modal-play {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    height: 45px;
+    font-size: 18px;
+    font-weight: 600;
+    padding-left: 24px;
+    padding-right: 24px;
+    background-color: white;
+    border-radius: 6px;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.modal-play::before {
+    content: '▶';
+    font-size: 16px;
+}
+
+.modal-play:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
+}
+
+#modal-add-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    font-size: 24px;
+    background: rgba(42, 42, 42, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+#modal-add-list:hover {
+    border: 2px solid white;
+    background: rgba(42, 42, 42, 0.8);
+    transform: scale(1.1);
+}
+
+.modal-btns {
+    z-index: 61;
+     position: absolute;
+    left: 40px;
+    top: 450px;
+    display: flex;
+    align-items: center;
+}
+
+.modal-sound-off {
+       height: 20px;
+    width: 20px;
+    z-index: 61;
+    position: absolute;
+    color: gray;
+    right: 20px;
+    top: 450px;
+    filter: brightness(75%);
+    opacity: .85;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 50%;
+    transition: 1s ease-in-out;
+    cursor: pointer;
+}
+
+.modal-sound-off:hover {
+    filter: none;
+    transition: none;
+}
+
+.modal-details {
+    cursor: auto;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    top: 500px;
+    padding-top: 30px;
+    height: 500px;
+    width: 1000px;
+    z-index: 62;
+    background-image: 
+        linear-gradient(to top, rgba(34, 34, 34, 1) 90%, rgba(0, 0, 0, 0) 100%);
+}
+
+.left-details {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 40px;
+}
+
+.left-details > div{
+    font-size: 18px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 50%;
+    height: fit-content;
+}
+
+.modal-director {
+    text-align: center;
+    margin: 20px;
+    padding: 5px;
+    border: 1px solid gray;
+    width: fit-content;
+    height: fit-content;
+}
+
+.left-details > p {
+    width: 100%;
+    font-size: 18px;
+    
+    line-height: 2;
+}
+
+.modal-tags {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.modal-tags p {
+    font-size: 18px;
+    padding-top: 30px;
+}
+
+.modal-tags p:first-child {
+    color: gray;
+}

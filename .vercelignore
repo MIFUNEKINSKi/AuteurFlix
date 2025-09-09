@@ -1,0 +1,24 @@
+# Ignore Ruby/Rails files for static build
+Gemfile
+Gemfile.lock
+config.ru
+Rakefile
+app/
+config/
+db/
+lib/
+log/
+tmp/
+vendor/
+test/
+storage/
+bin/
+
+# Keep frontend assets
+!app/assets/
+!public/
+
+# Ignore Rails-specific directories
+.bundle/
+vendor/bundle/
+node_modules/.cache/
