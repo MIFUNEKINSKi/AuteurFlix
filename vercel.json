@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm run build:production",
+  "installCommand": "npm install",
+  "framework": null,
   "builds": [
     {
       "src": "package.json",
@@ -22,8 +25,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "buildCommand": "npm run build:production",
-  "installCommand": "npm install",
-  "framework": null
+  ]
 }
