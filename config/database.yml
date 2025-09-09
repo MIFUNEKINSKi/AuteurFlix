@@ -85,9 +85,14 @@ test:
 #
 production:
   <<: *default
-  database: AuteurFlix_production
-  username: AuteurFlix
-  password: <%= ENV['AUTEURFLIX_DATABASE_PASSWORD'] %>
+  # Use DATABASE_URL if available (Railway, Heroku, etc.)
+  url: <%= ENV['DATABASE_URL'] %>
+  # Fallback to individual environment variables
+  database: <%= ENV['PGDATABASE'] || 'AuteurFlix_production' %>
+  username: <%= ENV['PGUSER'] || 'AuteurFlix' %>
+  password: <%= ENV['PGPASSWORD'] || ENV['AUTEURFLIX_DATABASE_PASSWORD'] %>
+  host: <%= ENV['PGHOST'] || 'localhost' %>
+  port: <%= ENV['PGPORT'] || 5432 %>
 
   local:
   service: Disk
