@@ -21,8 +21,11 @@ class MovieDetail extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
     movieGenres() {
+        if (!this.props.movie || !this.props.movie.id) {
+            return [];
+        }
         const selectedTags = this.props.tags.filter(tag => tag.movie_id === this.props.movie.id);
-        const selectedGenres = selectedTags.map(tag => this.props.genres[tag.genre_id-1]);
+        const selectedGenres = selectedTags.map(tag => this.props.genres[tag.genre_id-1]).filter(genre => genre !== undefined);
         return selectedGenres;
     }
     autoplay(e) {
@@ -89,10 +92,16 @@ class MovieDetail extends React.Component {
 
     }
     onList() {
+        if (!this.props.movie || !this.props.movie.id) {
+            return false;
+        }
         const match = this.props.myList.filter(listItem => listItem.movie_id === this.props.movie.id);
         return match.length > 0;
     }
     toggleListItem() {
+        if (!this.props.movie || !this.props.movie.id) {
+            return;
+        }
         if (this.onList()) {
             const item = this.props.myList.filter(listItem => 
                 listItem.movie_id === this.props.movie.id
@@ -114,11 +123,14 @@ class MovieDetail extends React.Component {
         }, 300);
     }
     render() {
+        if (!this.props.movie) {
+            return null;
+        }
         if (this.state.showModal) {
             this.stopAll();
         }
         const tags = this.movieGenres();
-        const display = tags.map(tag => <p key={tag.id}>{tag.genre}</p> );
+        const display = tags.filter(tag => tag && tag.id).map(tag => <p key={tag.id}>{tag.genre}</p> );
         const modal = this.state.showModal ? 
             <DetailsModal 
                 myList={this.props.myList}

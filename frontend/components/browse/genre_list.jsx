@@ -22,7 +22,7 @@ class GenreList extends React.Component {
         
         if (!this.props.genreId) {
             const selectedMovies = this.props.myList.map(item => 
-                this.props.movies[item.movie_id]);
+                this.props.movies[item.movie_id]).filter(movie => movie !== undefined);
             return selectedMovies;
         } else {
             const selectedTags = this.props.tags.filter(tag =>
@@ -30,7 +30,7 @@ class GenreList extends React.Component {
             );
             const selectedMovies = selectedTags.map(tag =>
                 this.props.movies[tag.movie_id]
-            );
+            ).filter(movie => movie !== undefined);
             return selectedMovies;
         }
       
@@ -63,7 +63,7 @@ class GenreList extends React.Component {
     }
     render() {
         const renderMovies = this.selectMovies();
-        const display = renderMovies ? renderMovies.map(movie => 
+        const display = renderMovies ? renderMovies.filter(movie => movie && movie.id).map(movie => 
             <MovieDetail 
                 myList={this.props.myList}
                 currentProfileId={this.props.currentProfileId}

@@ -17,6 +17,10 @@ class GenresIndex extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.soundOff = this.soundOff.bind(this);
     }
+    
+    componentDidMount() {
+        this.props.fetchMovies();
+    }
     soundOff(e) {
         const bool = this.state.sound ? false : true;
         this.setState({ sound: bool });
@@ -36,13 +40,28 @@ class GenresIndex extends React.Component {
         return `${h}h ${m}m`;
     }
     movieGenres() {
+        if (!this.props.topMovie) return [];
         const selectedTags = this.props.tags.filter(tag => tag.movie_id === this.props.topMovie.id);
-        const selectedGenres = selectedTags.map(tag => this.props.genres[tag.genre_id - 1]);
+        const selectedGenres = selectedTags.map(tag => this.props.genres[tag.genre_id - 1]).filter(genre => genre !== undefined);
         return selectedGenres;
     }
     render() {
+        // Add safety check for topMovie
+        if (!this.props.topMovie || !this.props.movies || Object.keys(this.props.movies).length === 0) {
+            return (
+                <div className='browse-main'>
+                    <BrowseHeader
+                        logout={this.props.logout}
+                        resetProfile={this.props.resetProfile} />
+                    <div style={{color: 'white', fontSize: '24px', textAlign: 'center', marginTop: '50px'}}>
+                        Loading movies...
+                    </div>
+                </div>
+            );
+        }
+        
         const tags = this.movieGenres();
-        const display = tags.map(tag => <p key={tag.id}>{tag.genre}</p>);
+        const display = tags.filter(tag => tag && tag.id).map(tag => <p key={tag.id}>{tag.genre}</p>);
         const genres = this.props.genres.map(genre =>
             <div key={genre.id} className='genre-name'>
                 <h1>{genre.genre}</h1>
