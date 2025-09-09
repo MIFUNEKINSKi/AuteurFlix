@@ -30,7 +30,6 @@
     "start": "webpack --watch --mode=development",
     "webpack": "webpack --mode=development --watch",
     "build": "webpack --mode production",
-    "build:production": "webpack --mode production",
     "postinstall": "npm run build"
   },
   "engines": {
