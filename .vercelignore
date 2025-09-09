@@ -1,0 +1,14 @@
+Gemfile
+Gemfile.lock
+vendor/
+.bundle/
+app/
+config/
+db/
+lib/
+log/
+tmp/
+test/
+bin/
+Rakefile
+config.ru
