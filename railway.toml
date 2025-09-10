@@ -2,8 +2,8 @@
 builder = "nixpacks"
 
 [deploy]
-healthcheckPath = "/"
-startCommand = "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
+healthcheckPath = "/health"
+startCommand = "./bin/railway-start"
 
 [environments.production]
 RAILS_ENV = "production"

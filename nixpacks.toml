@@ -9,4 +9,4 @@ dependsOn = ["setup"]
 DISABLE_DATABASE_ENVIRONMENT_CHECK = "1"
 
 [start]
-cmd = "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
+cmd = "./bin/railway-start"

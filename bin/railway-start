@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo "=== Railway Startup Script ==="
+echo "Environment: $RAILS_ENV"
+echo "Port: $PORT"
+echo "Database URL available: ${DATABASE_URL:+YES}"
+echo "Secret Key Base available: ${SECRET_KEY_BASE:+YES}"
+echo "Current directory: $(pwd)"
+echo "Ruby version: $(ruby -v)"
+echo "Bundle version: $(bundle -v)"
+
+echo "=== Testing database connection ==="
+if bundle exec rails runner "ActiveRecord::Base.connection.execute('SELECT 1')" 2>&1; then
+    echo "Database connection: SUCCESS"
+else
+    echo "Database connection: FAILED"
+fi
+
+echo "=== Running database migrations ==="
+if bundle exec rails db:migrate; then
+    echo "Database migrations: SUCCESS"
+else
+    echo "Database migrations: FAILED"
+    exit 1
+fi
+
+echo "=== Starting Puma server ==="
+echo "Binding to: 0.0.0.0:$PORT"
+exec bundle exec puma -C config/puma.rb

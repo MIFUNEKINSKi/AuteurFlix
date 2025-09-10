@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root to: 'static_pages#root'
+  
+  # Health check endpoint for Railway
+  get '/health', to: proc { [200, {}, ['OK']] }
 
   namespace :api, defaults: {format: :json} do 
     resources :users, only: [:create, :show] do
