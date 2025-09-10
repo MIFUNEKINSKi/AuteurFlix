@@ -11,6 +11,11 @@ threads threads_count, threads_count
 #
 port        ENV.fetch("PORT") { 3000 }
 
+# Bind to all interfaces for production deployments (Railway, Heroku, etc.)
+if ENV["RAILS_ENV"] == "production" || ENV["RAILWAY_ENVIRONMENT"] || ENV["PORT"]
+  bind "tcp://0.0.0.0:#{ENV.fetch("PORT") { 3000 }}"
+end
+
 # Specifies the `environment` that Puma will run in.
 #
 environment ENV.fetch("RAILS_ENV") { "development" }
