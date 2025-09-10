@@ -1,0 +1,12 @@
+[phases.build]
+dependsOn = ["install"]
+
+[phases.install]
+dependsOn = ["setup"]
+
+# Skip database tasks during build
+[phases.build.env]
+DISABLE_DATABASE_ENVIRONMENT_CHECK = "1"
+
+[start]
+cmd = "bundle exec rails db:migrate && bundle exec rails server -p $PORT"

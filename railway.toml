@@ -3,6 +3,7 @@ builder = "nixpacks"
 
 [deploy]
 healthcheckPath = "/"
+startCommand = "bundle exec rails db:migrate && bundle exec rails server -p $PORT"
 
 [environments.production]
 RAILS_ENV = "production"
