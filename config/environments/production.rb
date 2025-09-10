@@ -41,7 +41,9 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # Use local storage for Railway deployment, amazon_prod for other production
-  config.active_storage.service = ENV['RAILWAY_ENVIRONMENT'].present? ? :local : :amazon_prod
+  # Railway detection: check for DATABASE_URL with Railway-specific format or RAILWAY_STATIC_URL
+  is_railway = ENV['DATABASE_URL']&.include?('railway.app') || ENV['RAILWAY_STATIC_URL'].present?
+  config.active_storage.service = is_railway ? :local : :amazon_dev
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
