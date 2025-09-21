@@ -23,7 +23,7 @@ else
   exit 1
 fi
 
-echo "=== Testing database connection (without migrations) ==="
+echo "=== Testing database connection ==="
 if rails runner "ActiveRecord::Base.connection.execute('SELECT 1')" 2>&1; then
   echo "Database connection: SUCCESS"
 else
@@ -31,6 +31,11 @@ else
   exit 1
 fi
 
-echo "=== Bypassing migrations for now - starting server directly ==="
+echo "=== Running database migrations ==="
+if rails db:migrate 2>&1; then
+  echo "Database migrations: SUCCESS"
+else
+  echo "Database migrations: FAILED - but continuing"
+fi
 echo "Starting Puma on port $PORT"
 exec bundle exec puma -p $PORT -b tcp://0.0.0.0

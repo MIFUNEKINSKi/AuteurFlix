@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   # Health check endpoint for Railway
   get '/health', to: proc { [200, {}, ['OK']] }
   
+  # Favicon route to prevent 404 errors
+  get '/favicon.ico', to: proc { [204, {}, ['']] }
+  
   # Debug endpoint to show startup logs
   get '/debug', to: proc { 
     log_content = File.exist?('/tmp/railway-startup.log') ? File.read('/tmp/railway-startup.log') : 'No startup log found'
