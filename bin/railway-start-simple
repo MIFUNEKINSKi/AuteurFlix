@@ -4,6 +4,11 @@ echo "=== Simple Railway Startup Script ==="
 echo "Environment: $RAILS_ENV"
 echo "Port: $PORT"
 
+# Ensure RAILS_ENV is set to production
+export RAILS_ENV=production
+
+echo "=== Updated Environment: $RAILS_ENV ==="
+
 # Create necessary directories
 mkdir -p tmp/storage
 mkdir -p storage

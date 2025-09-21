@@ -125,4 +125,13 @@ Rails.application.configure do
   config.hosts << "healthcheck.railway.app"
   config.hosts << "auteurflix-production.up.railway.app"
   config.hosts << ENV['RAILWAY_PUBLIC_DOMAIN'] if ENV['RAILWAY_PUBLIC_DOMAIN'].present?
+  config.hosts << ENV['RAILWAY_STATIC_URL'] if ENV['RAILWAY_STATIC_URL'].present?
+  
+  # Allow all hosts in Railway environment for debugging
+  if ENV['RAILWAY_ENVIRONMENT'].present?
+    config.hosts.clear
+    config.hosts << /.*\.railway\.app/
+    config.hosts << /.*\.up\.railway\.app/
+    config.hosts << "healthcheck.railway.app"
+  end
 end
