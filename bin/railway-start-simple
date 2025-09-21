@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "=== Simple Railway Startup Script ==="
+echo "Environment: $RAILS_ENV"
+echo "Port: $PORT"
+
+# Create necessary directories
+mkdir -p tmp/storage
+mkdir -p storage
+mkdir -p tmp/pids
+
+echo "=== Testing basic Rails functionality ==="
+# Test if Rails can load
+if rails runner "puts 'Rails loaded successfully'" 2>&1; then
+  echo "Rails loads: SUCCESS"
+else
+  echo "Rails loads: FAILED"
+  exit 1
+fi
+
+echo "=== Testing database connection (without migrations) ==="
+if rails runner "ActiveRecord::Base.connection.execute('SELECT 1')" 2>&1; then
+  echo "Database connection: SUCCESS"
+else
+  echo "Database connection: FAILED"
+  exit 1
+fi
+
+echo "=== Bypassing migrations for now - starting server directly ==="
+echo "Starting Puma on port $PORT"
+exec bundle exec puma -p $PORT -b tcp://0.0.0.0
