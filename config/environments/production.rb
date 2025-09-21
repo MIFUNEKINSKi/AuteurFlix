@@ -40,10 +40,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  # Use local storage for Railway deployment, amazon_prod for other production
-  # Railway detection: check for DATABASE_URL with Railway-specific format or RAILWAY_STATIC_URL
-  is_railway = ENV['DATABASE_URL']&.include?('railway.app') || ENV['RAILWAY_STATIC_URL'].present?
-  config.active_storage.service = is_railway ? :local : :amazon_dev
+  # Use production storage configuration for Railway deployment
+  config.active_storage.service = :production
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
