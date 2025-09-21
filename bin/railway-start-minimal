@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "=== Minimal Railway Startup ==="
+echo "Environment: $RAILS_ENV"
+echo "Port: $PORT"
+echo "Current directory: $(pwd)"
+echo "Ruby version: $(ruby -v)"
+
+# Just start Puma directly with minimal configuration
+echo "Starting Puma directly on port $PORT"
+exec puma -p $PORT -e $RAILS_ENV
