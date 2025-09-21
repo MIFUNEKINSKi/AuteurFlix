@@ -9,4 +9,4 @@ dependsOn = ["setup"]
 DISABLE_DATABASE_ENVIRONMENT_CHECK = "1"
 
 [start]
-cmd = "./bin/railway-start"
+cmd = "./bin/railway-start-debug"

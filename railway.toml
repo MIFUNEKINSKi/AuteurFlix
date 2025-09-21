@@ -3,7 +3,7 @@ builder = "nixpacks"
 
 [deploy]
 healthcheckPath = "/health"
-startCommand = "./bin/railway-start"
+startCommand = "./bin/railway-start-debug"
 
 [environments.production]
 RAILS_ENV = "production"
