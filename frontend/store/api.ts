@@ -44,6 +44,8 @@ export const createListItem = createAsyncThunk(
 
 export const deleteListItem = createAsyncThunk('lists/delete', MovieAPI.deleteListItem);
 
+export const fetchRecommendations = createAsyncThunk('movies/fetchRecommendations', MovieAPI.fetchRecommendations);
+
 // Profile thunks
 
 export const fetchProfiles = createAsyncThunk('profiles/fetchAll', ProfileAPI.fetchProfiles);

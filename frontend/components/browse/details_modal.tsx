@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import type { Movie, ListItem } from '../../types';
+import type { Movie, ListItem, RecommendedMovie } from '../../types';
+import { fetchRecommendations } from '../../util/movie_api_util';
+import { useAppSelector } from '../../store/hooks';
 
 interface Props {
   movie: Movie;
@@ -19,6 +21,10 @@ const DetailsModal: React.FC<Props> = ({
   toggleModal, soundOff, display, createListItem, deleteListItem,
 }) => {
   const [sound, setSound] = useState(initialSound);
+  const [recommendations, setRecommendations] = useState<RecommendedMovie[]>([]);
+  const [activeMovie, setActiveMovie] = useState<Movie>(movie);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const allMovies = useAppSelector((state) => state.entities.movies);
 
   useEffect(() => {
     document.body.classList.add('modal-open-body');
@@ -35,12 +41,29 @@ const DetailsModal: React.FC<Props> = ({
       const video = document.getElementById('modal-vid') as HTMLVideoElement;
       if (video) video.play().catch(() => {});
     }, 100);
+
+    fetchRecommendations(activeMovie.id)
+      .then(setRecommendations)
+      .catch(() => {});
+
     return () => {
       document.body.classList.remove('modal-open-body');
       clearTimeout(timer);
       clearTimeout(videoTimer);
     };
-  }, []);
+  }, [activeMovie.id]);
+
+  const handleRecommendationClick = (e: React.MouseEvent, rec: RecommendedMovie) => {
+    e.stopPropagation();
+    const localMovie = allMovies[rec.id];
+    if (localMovie) {
+      setActiveMovie(localMovie);
+      setRecommendations([]);
+      if (modalRef.current) modalRef.current.scrollTop = 0;
+    } else if (rec.tmdbId) {
+      window.open(`https://www.themoviedb.org/movie/${rec.tmdbId}`, '_blank');
+    }
+  };
 
   const handleSoundOff = (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();
@@ -56,14 +79,14 @@ const DetailsModal: React.FC<Props> = ({
     return `${h}h ${m}m`;
   };
 
-  const onList = () => myList.some((item) => item.movie_id === movie.id);
+  const onList = () => myList.some((item) => item.movie_id === activeMovie.id);
 
   const toggleListItem = () => {
     if (onList()) {
-      const item = myList.find((li) => li.movie_id === movie.id)!;
+      const item = myList.find((li) => li.movie_id === activeMovie.id)!;
       deleteListItem(item.id);
     } else {
-      createListItem({ movieId: movie.id, profileId: currentProfileId! });
+      createListItem({ movieId: activeMovie.id, profileId: currentProfileId! });
     }
   };
 
@@ -72,25 +95,26 @@ const DetailsModal: React.FC<Props> = ({
     (e.currentTarget.parentElement!.previousElementSibling as HTMLElement).classList.remove('hide');
   };
 
-  const displayLength = convertLength(movie.length);
+  const displayLength = convertLength(activeMovie.length);
   const listButton = onList() ? '✓' : '+';
   const soundBtn = sound ? window.volumeOff : window.volumeOn;
 
   return (
     <>
       <div className="modal-backdrop" onClick={toggleModal} />
-      <div className="modal">
+      <div className="modal" ref={modalRef}>
         <button onClick={toggleModal} className="exit-modal">X</button>
-        <img className="modal-thumbnail hide" src={movie.photoUrl} alt="" />
+        <img className="modal-thumbnail hide" src={activeMovie.photoUrl} alt="" />
         <div className="modal-vid-container">
-          <p className="modal-title">{movie.title}</p>
+          <p className="modal-title">{activeMovie.title}</p>
           <div className="modal-btns">
-            <Link to={`/watch/${movie.id}`} className="modal-play">&#9658; Play</Link>
-            <button id="modal-add-list" onClick={toggleListItem}>{listButton}</button>
+            <Link to={`/watch/${activeMovie.id}`} className="modal-play">&#9658; Play</Link>
+            <button id="modal-add-list" className="tooltip" title={onList() ? 'Remove from List' : 'Add to List'} onClick={toggleListItem}>{listButton}</button>
           </div>
           <video
             id="modal-vid"
-            src={movie.videoUrl}
+            key={activeMovie.id}
+            src={activeMovie.videoUrl}
             muted={!sound}
             preload="metadata"
             autoPlay
@@ -101,13 +125,41 @@ const DetailsModal: React.FC<Props> = ({
         <div className="modal-details">
           <div className="left-details">
             <div>
-              <p>{movie.year}</p>
-              <p className="modal-director">{movie.director}</p>
+              <p>{activeMovie.year}</p>
+              <p className="modal-director">{activeMovie.director}</p>
               <p>{displayLength}</p>
+              {activeMovie.tmdbRating && (
+                <p className="tmdb-rating" title={`${activeMovie.tmdbVoteCount} votes on TMDB`}>
+                  ★ {activeMovie.tmdbRating.toFixed(1)}
+                </p>
+              )}
             </div>
-            <p>{movie.summary}</p>
+            <p>{activeMovie.summary}</p>
           </div>
         </div>
+        {recommendations.length > 0 && (
+          <div className="modal-recommendations">
+            <h3>More Like This</h3>
+            <div className="recommendations-grid">
+              {recommendations.map((rec) => (
+                <div
+                  key={rec.id}
+                  className="recommendation-card"
+                  onClick={(e) => handleRecommendationClick(e, rec)}
+                >
+                  {rec.thumbnailUrl && (
+                    <img src={rec.thumbnailUrl} alt={rec.title} loading="lazy" />
+                  )}
+                  <div className="recommendation-info">
+                    <p className="recommendation-title">{rec.title}</p>
+                    <span>{rec.year} &middot; {rec.director}</span>
+                    {rec.tmdbRating && <span className="tmdb-rating">★ {rec.tmdbRating.toFixed(1)}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

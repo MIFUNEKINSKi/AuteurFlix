@@ -27,6 +27,9 @@ export interface Movie {
   videoUrl: string;
   thumbnailUrl: string;
   genre_ids?: number[];
+  tmdbRating?: number;
+  tmdbVoteCount?: number;
+  tmdbPosterUrl?: string;
 }
 
 export interface Genre {
@@ -57,6 +60,16 @@ export interface MoviesResponse {
 
 export interface MovieResponse {
   movie: Movie;
+}
+
+export interface RecommendedMovie {
+  id: number;
+  title: string;
+  year: number;
+  director: string;
+  thumbnailUrl?: string;
+  tmdbRating?: number;
+  tmdbId?: number;
 }
 
 // Redux state shape

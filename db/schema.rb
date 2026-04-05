@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_15_171432) do
+ActiveRecord::Schema[7.0].define(version: 2026_04_05_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,7 +64,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_15_171432) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "director"
+    t.integer "tmdb_id"
+    t.float "tmdb_rating"
+    t.integer "tmdb_vote_count"
+    t.string "tmdb_poster_path"
+    t.string "tmdb_backdrop_path"
+    t.text "tmdb_overview"
+    t.datetime "tmdb_last_synced_at"
     t.index ["title"], name: "index_movies_on_title"
+    t.index ["tmdb_id"], name: "index_movies_on_tmdb_id", unique: true
   end
 
   create_table "profiles", force: :cascade do |t|

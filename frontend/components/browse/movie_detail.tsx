@@ -51,6 +51,10 @@ const MovieDetail: React.FC<Props> = ({
   const autoplay = (e: React.MouseEvent<HTMLDivElement>) => {
     const video = e.currentTarget.children[1]?.children[1] as HTMLVideoElement;
     if (!video || typeof video.play !== 'function') return;
+    // Load video source on hover instead of on mount
+    if (!video.src && movie.videoUrl) {
+      video.src = movie.videoUrl;
+    }
     video.currentTime = 0;
     timerRef.current = window.setTimeout(() => {
       video.classList.remove('idle');
@@ -90,9 +94,13 @@ const MovieDetail: React.FC<Props> = ({
     }
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    // Don't open modal if clicking inside modal or on a button/link
+    const target = e.target as HTMLElement;
+    if (target.closest('.modal, .modal-backdrop, a, button, .sound-off')) return;
     setIsClicked(true);
     setTimeout(() => setIsClicked(false), 300);
+    setShowModal(true);
   };
 
   const onEnd = (e: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -131,13 +139,13 @@ const MovieDetail: React.FC<Props> = ({
       onMouseLeave={stop}
       onClick={handleClick}
     >
-      <img className="thumbnail" src={movie.thumbnailUrl} />
+      <img className="thumbnail" src={movie.thumbnailUrl} loading="lazy" />
       <div className="details-vid-container">
         <p className="details-title invisible">{movie.title}</p>
         <video
           id={String(movie.id)}
           className="thumbnail-vid idle"
-          src={movie.videoUrl}
+          preload="none"
           onEnded={onEnd}
         />
         <img src={soundBtn} className="sound-off invisible" onClick={handleSoundOff} />
@@ -146,7 +154,7 @@ const MovieDetail: React.FC<Props> = ({
         <div className="details-btns">
           <div className="details-left-btns">
             <Link to={`/watch/${movie.id}`} id="details-play">&#9658;</Link>
-            <button id="details-add-list" onClick={toggleListItem}>{listButton}</button>
+            <button id="details-add-list" className="tooltip" title={onList() ? 'Remove from List' : 'Add to List'} onClick={toggleListItem}>{listButton}</button>
           </div>
           <button title="More Info" onClick={() => setShowModal(true)} id="details-info-btn">
             <p>&#8964;</p>

@@ -1,8 +1,11 @@
-json.movie do 
+json.movie do
     json.extract! @movie, :id, :title, :year, :director, :summary, :length
-    json.photoUrl url_for(@movie.photo)
-    json.videoUrl url_for(@movie.video)
-    json.thumbnailUrl url_for(@movie.thumbnail)
+    json.photoUrl rails_storage_proxy_url(@movie.photo) if @movie.photo.attached?
+    json.videoUrl rails_storage_proxy_url(@movie.video) if @movie.video.attached?
+    json.thumbnailUrl rails_storage_proxy_url(@movie.thumbnail) if @movie.thumbnail.attached?
+    json.tmdbRating @movie.tmdb_rating
+    json.tmdbVoteCount @movie.tmdb_vote_count
+    json.tmdbPosterUrl "https://image.tmdb.org/t/p/w500#{@movie.tmdb_poster_path}" if @movie.tmdb_poster_path
 end
 
 json.tags do 
