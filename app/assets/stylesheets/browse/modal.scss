@@ -133,19 +133,27 @@ body.modal-open-body {
 }
 
 .exit-modal {
-    position: absolute;
-    left: 940px;
-    top: 20px;
+    position: sticky;
+    float: right;
+    right: 16px;
+    top: 16px;
     border-radius: 50%;
     color: white;
-    background: black;
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-    font-weight:lighter;
+    background: rgba(0, 0, 0, 0.7);
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    font-weight: lighter;
     z-index: 62;
     text-align: center;
     cursor: pointer;
+    border: none;
+    line-height: 36px;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.9);
+    }
 }
 
 .modal-title {
@@ -201,12 +209,28 @@ body.modal-open-body {
     cursor: pointer;
     transition: all 0.2s ease;
     backdrop-filter: blur(10px);
+    position: relative;
 }
 
 #modal-add-list:hover {
     border: 2px solid white;
     background: rgba(42, 42, 42, 0.8);
     transform: scale(1.1);
+}
+
+#modal-add-list:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: black;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 100;
 }
 
 .modal-btns {
@@ -242,15 +266,14 @@ body.modal-open-body {
 
 .modal-details {
     cursor: auto;
-    position: absolute;
+    position: relative;
     display: flex;
     justify-content: space-between;
-    top: 500px;
+    margin-top: -62px;
     padding-top: 30px;
-    height: 500px;
-    width: 1000px;
+    width: 100%;
     z-index: 62;
-    background-image: 
+    background-image:
         linear-gradient(to top, rgba(34, 34, 34, 1) 90%, rgba(0, 0, 0, 0) 100%);
 }
 
@@ -301,4 +324,68 @@ body.modal-open-body {
 
 .modal-tags p:first-child {
     color: gray;
+}
+
+.tmdb-rating {
+    color: #f5c518;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 20px;
+}
+
+.modal-recommendations {
+    position: relative;
+    z-index: 62;
+    padding: 20px 40px 40px;
+    background: rgb(34, 34, 34);
+
+    h3 {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.recommendation-card {
+    background: rgb(45, 45, 45);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.03);
+    }
+
+    img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+    }
+}
+
+.recommendation-info {
+    padding: 10px;
+
+    .recommendation-title {
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    span {
+        font-size: 13px;
+        color: #aaa;
+        margin-right: 8px;
+    }
+
+    .tmdb-rating {
+        margin-left: 0;
+        font-size: 13px;
+    }
 }

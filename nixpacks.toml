@@ -1,10 +1,14 @@
-[phases.build]
-dependsOn = ["install"]
+[phases.setup]
+nixPkgs = ["...", "nodejs_22"]
 
 [phases.install]
 dependsOn = ["setup"]
+cmds = ["bundle install", "npm install"]
 
-# Skip database tasks during build
+[phases.build]
+dependsOn = ["install"]
+cmds = ["npm run build"]
+
 [phases.build.env]
 DISABLE_DATABASE_ENVIRONMENT_CHECK = "1"
 
