@@ -5,13 +5,15 @@ ___
 AuteurFlix is a fully-functioning clone of Netflix, consisting entirely of sleep- and dream-themed movie trailers. It was created using the following: 
 
 * Backend: Rails
-* Database: PostrgreSQL
-* Frontend: React-Redux
-* Hosting: Heroku
+* Database: PostgreSQL
+* Frontend: React/Redux (TypeScript)
+* Hosting: Render (free tier)
 * Storage: AWS S3
-* Languages: Ruby, Javascript, CSS, HTML
+* Languages: Ruby, TypeScript, CSS, HTML
 
-Check out the site [here](http://AuteurFlix.herokuapp.com/). 
+Check out the site [here](https://auteurflix-0vvx.onrender.com/#/browse).
+
+> **Note:** This app is hosted on Render's free tier, so it may take 30–60 seconds to load on the first visit while the server spins up. 
 
 ## MVP Features
 ### 1. Profiles
