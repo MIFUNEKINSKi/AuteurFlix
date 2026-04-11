@@ -16,11 +16,7 @@ const BrowseHeader: React.FC<Props> = ({ logout, resetProfile, searchTitles, sea
 
   const handleSwitch = () => {
     resetProfile();
-    if (location.pathname.startsWith('/search')) {
-      navigate('/');
-    } else {
-      window.location.reload();
-    }
+    navigate('/browse');
   };
 
   const handleManage = () => {

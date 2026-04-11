@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProfilesIndex from '../profiles/profiles_index';
 import GenresIndex from './genres_index';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -9,15 +9,13 @@ const Browse: React.FC = () => {
   const currentUserId = useAppSelector((state) => state.session.id!);
   const profiles = useAppSelector((state) => Object.values(state.entities.profiles));
   const currentProfile = useAppSelector((state) => state.session.profileId);
-  const [showProfiles, setShowProfiles] = useState(!currentProfile);
 
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
-    setShowProfiles(false);
     dispatch(fetchCurrentProfile(Number(e.currentTarget.id)));
   };
 
-  if (showProfiles) {
+  if (!currentProfile) {
     return (
       <ProfilesIndex
         fetchMovies={() => dispatch(fetchMovies())}
