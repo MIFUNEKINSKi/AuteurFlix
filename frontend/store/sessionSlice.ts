@@ -24,6 +24,7 @@ const sessionSlice = createSlice({
         state.id = action.payload.id;
       })
       .addCase(logout.fulfilled, () => initialState)
+      .addCase(logout.rejected, () => initialState)
       .addCase(fetchCurrentProfile.fulfilled, (state, action) => {
         state.profileId = action.payload.id;
       })

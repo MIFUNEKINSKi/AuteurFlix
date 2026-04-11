@@ -76,7 +76,7 @@ const BrowseHeader: React.FC<Props> = ({ logout, resetProfile, searchTitles, sea
           <div className="profiles-dropdown-content">
             <p onClick={handleSwitch}>Switch Profiles</p>
             <p onClick={handleManage}>Manage Profiles</p>
-            <p onClick={logout}>Sign Out of AuteurFlix</p>
+            <p onClick={() => { logout(); navigate('/'); }}>Sign Out of AuteurFlix</p>
           </div>
         </div>
       </div>

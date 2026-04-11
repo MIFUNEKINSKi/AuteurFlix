@@ -21,6 +21,12 @@ export const login = async (user: { email: string; password: string }): Promise<
 };
 
 export const logout = async (): Promise<void> => {
-  const res = await fetch('/api/session', { method: 'DELETE' });
-  if (!res.ok) throw await res.json();
+  // Logout is best-effort: even if the server returns an error (e.g. the
+  // session already expired server-side), the client must still clear its
+  // own state. Swallow non-OK responses rather than throwing.
+  try {
+    await fetch('/api/session', { method: 'DELETE' });
+  } catch {
+    // network failure — still proceed with client-side logout
+  }
 };

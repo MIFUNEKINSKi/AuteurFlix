@@ -9,7 +9,7 @@ import errorsReducer from './errorsSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['entities', 'session'],
+  whitelist: ['entities'],
 };
 
 const rootReducer = combineReducers({
