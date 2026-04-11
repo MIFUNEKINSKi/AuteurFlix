@@ -1,7 +1,7 @@
 class Api::MoviesController < ApplicationController
 
    def index
-      @movies = Movie.with_attached_thumbnail.with_attached_photo.with_attached_video
+      @movies = Movie.all
       @genres = Genre.all
       @tags = Tag.all
 
@@ -11,7 +11,7 @@ class Api::MoviesController < ApplicationController
    end
 
    def show
-      @movie = Movie.with_attached_thumbnail.with_attached_photo.with_attached_video.find(params[:id])
+      @movie = Movie.find(params[:id])
       @genres = Genre.all
       @tags = Tag.all
       render :show
@@ -19,7 +19,7 @@ class Api::MoviesController < ApplicationController
 
    def recommendations
       movie = Movie.find(params[:id])
-      @movies = Movie.recommendations_for(movie).with_attached_thumbnail
+      @movies = Movie.recommendations_for(movie)
       render :recommendations
    end
 

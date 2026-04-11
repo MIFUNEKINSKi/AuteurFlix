@@ -1,60 +1,81 @@
-
-
 .movie-container {
-    overflow: hidden;
+    position: relative;
     margin: 0 auto;
-    width: auto;
-    height: 95vh;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 97vh;
-    width: auto;
+    background: #000;
     overflow: hidden;
-}
+    opacity: 0;
+    transition: opacity 0.35s ease;
 
-#back-arrow {
-    display: flex;
-    align-items: center;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    position: absolute;
-    z-index: 10;
-    left: 30px;
-    top: 30px;
-    cursor: pointer;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 12px 20px;
-    border-radius: 8px;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    
-    &:hover {
-        background: rgba(0, 0, 0, 0.9);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        border-color: rgba(255, 255, 255, 0.2);
+    &.mounted {
+        opacity: 1;
     }
-    
-    .arrow-icon {
-        font-size: 20px;
-        margin-right: 8px;
-        font-weight: bold;
-    }
-    
-    .back-text {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        letter-spacing: 0.5px;
-    }
-}
 
-#back-arrow.hidden {
-    display: none;
+    &.leaving {
+        opacity: 0;
+    }
 }
 
 .show-movie {
-    width: auto;
-    height: 97vh;
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;
+    display: block;
+    background: #000;
+}
+
+.show-movie-loading {
+    color: #fff;
+    font-size: 22px;
+    opacity: 0.8;
+}
+
+.show-back {
+    position: absolute;
+    top: 28px;
+    left: 28px;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px 12px 14px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease,
+        background-color 0.18s ease,
+        border-color 0.18s ease;
+
+    svg {
+        display: block;
+    }
+
+    &.visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.85);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
 }

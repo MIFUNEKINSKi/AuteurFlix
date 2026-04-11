@@ -18,65 +18,82 @@ interface Props {
 
 const DetailsModal: React.FC<Props> = ({
   movie, sound: initialSound, myList, currentProfileId,
-  toggleModal, soundOff, display, createListItem, deleteListItem,
+  toggleModal, createListItem, deleteListItem,
 }) => {
   const [sound, setSound] = useState(initialSound);
   const [recommendations, setRecommendations] = useState<RecommendedMovie[]>([]);
   const [activeMovie, setActiveMovie] = useState<Movie>(movie);
+  const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const allMovies = useAppSelector((state) => state.entities.movies);
 
+  // Trigger entrance animation on mount
   useEffect(() => {
     document.body.classList.add('modal-open-body');
-    const timer = setTimeout(() => {
-      const modal = document.querySelector('.modal') as HTMLElement;
-      if (modal) {
-        modal.style.position = 'fixed';
-        modal.style.top = '50%';
-        modal.style.left = '50%';
-        modal.style.transform = 'translate3d(-50%, -50%, 0)';
-      }
-    }, 0);
-    const videoTimer = setTimeout(() => {
-      const video = document.getElementById('modal-vid') as HTMLVideoElement;
-      if (video) video.play().catch(() => {});
-    }, 100);
+    const raf = requestAnimationFrame(() => setOpen(true));
+    return () => {
+      cancelAnimationFrame(raf);
+      document.body.classList.remove('modal-open-body');
+    };
+  }, []);
 
+  // Fetch recommendations + reset video state whenever active movie changes
+  useEffect(() => {
+    setVideoReady(false);
+    setRecommendations([]);
     fetchRecommendations(activeMovie.id)
       .then(setRecommendations)
       .catch(() => {});
 
-    return () => {
-      document.body.classList.remove('modal-open-body');
-      clearTimeout(timer);
-      clearTimeout(videoTimer);
-    };
+    const video = videoRef.current;
+    if (video) {
+      video.load();
+      video.play().catch(() => {});
+    }
+    if (modalRef.current) modalRef.current.scrollTop = 0;
   }, [activeMovie.id]);
+
+  // Escape key to close
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setOpen(false);
+    window.setTimeout(toggleModal, 260);
+  };
 
   const handleRecommendationClick = (e: React.MouseEvent, rec: RecommendedMovie) => {
     e.stopPropagation();
     const localMovie = allMovies[rec.id];
     if (localMovie) {
       setActiveMovie(localMovie);
-      setRecommendations([]);
-      if (modalRef.current) modalRef.current.scrollTop = 0;
     } else if (rec.tmdbId) {
       window.open(`https://www.themoviedb.org/movie/${rec.tmdbId}`, '_blank');
     }
   };
 
-  const handleSoundOff = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleSoundToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const newSound = !sound;
     setSound(newSound);
-    const video = document.getElementById('modal-vid') as HTMLVideoElement;
-    if (video) video.muted = !newSound;
+    if (videoRef.current) videoRef.current.muted = !newSound;
   };
 
   const convertLength = (minutes: number) => {
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
-    return `${h}h ${m}m`;
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
   };
 
   const onList = () => myList.some((item) => item.movie_id === activeMovie.id);
@@ -90,72 +107,137 @@ const DetailsModal: React.FC<Props> = ({
     }
   };
 
-  const onEnd = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    (e.currentTarget as HTMLElement).classList.add('hide');
-    (e.currentTarget.parentElement!.previousElementSibling as HTMLElement).classList.remove('hide');
-  };
-
   const displayLength = convertLength(activeMovie.length);
-  const listButton = onList() ? '✓' : '+';
-  const soundBtn = sound ? window.volumeOff : window.volumeOn;
+  const modalState = closing ? 'closing' : open ? 'open' : 'opening';
 
   return (
     <>
-      <div className="modal-backdrop" onClick={toggleModal} />
-      <div className="modal" ref={modalRef}>
-        <button onClick={toggleModal} className="exit-modal">X</button>
-        <img className="modal-thumbnail hide" src={activeMovie.photoUrl} alt="" />
-        <div className="modal-vid-container">
-          <p className="modal-title">{activeMovie.title}</p>
-          <div className="modal-btns">
-            <Link to={`/watch/${activeMovie.id}`} className="modal-play">&#9658; Play</Link>
-            <button id="modal-add-list" className="tooltip" title={onList() ? 'Remove from List' : 'Add to List'} onClick={toggleListItem}>{listButton}</button>
-          </div>
+      <div
+        className={`modal-backdrop ${modalState}`}
+        onClick={handleClose}
+      />
+      <div
+        className={`modal ${modalState}`}
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={activeMovie.title}
+      >
+        <button onClick={handleClose} className="exit-modal" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M6 6L18 18M18 6L6 18" />
+          </svg>
+        </button>
+
+        <div className="modal-hero">
+          <img
+            className={`modal-hero-image ${videoReady ? 'faded' : ''}`}
+            src={activeMovie.photoUrl}
+            alt=""
+          />
           <video
+            ref={videoRef}
             id="modal-vid"
+            className={`modal-hero-video ${videoReady ? 'visible' : ''}`}
             key={activeMovie.id}
             src={activeMovie.videoUrl}
             muted={!sound}
+            playsInline
             preload="metadata"
             autoPlay
-            onEnded={onEnd}
+            onCanPlay={() => setVideoReady(true)}
+            onEnded={() => setVideoReady(false)}
           />
-          <img src={soundBtn} className="modal-sound-off" onClick={handleSoundOff} />
-        </div>
-        <div className="modal-details">
-          <div className="left-details">
-            <div>
-              <p>{activeMovie.year}</p>
-              <p className="modal-director">{activeMovie.director}</p>
-              <p>{displayLength}</p>
-              {activeMovie.tmdbRating && (
-                <p className="tmdb-rating" title={`${activeMovie.tmdbVoteCount} votes on TMDB`}>
-                  ★ {activeMovie.tmdbRating.toFixed(1)}
-                </p>
-              )}
+          <div className="modal-hero-gradient" />
+          <div className="modal-hero-content">
+            <h2 className="modal-title">{activeMovie.title}</h2>
+            <div className="modal-btns">
+              <Link to={`/watch/${activeMovie.id}`} className="modal-play">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Play
+              </Link>
+              <button
+                className="modal-icon-btn"
+                title={onList() ? 'Remove from List' : 'Add to List'}
+                onClick={toggleListItem}
+                aria-label={onList() ? 'Remove from List' : 'Add to List'}
+              >
+                {onList() ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12l5 5L20 7" />
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                )}
+              </button>
             </div>
-            <p>{activeMovie.summary}</p>
           </div>
+          <button
+            className="modal-sound-btn"
+            onClick={handleSoundToggle}
+            aria-label={sound ? 'Mute' : 'Unmute'}
+          >
+            {sound ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                <path d="M15.54 8.46a5 5 0 010 7.07" />
+                <path d="M19.07 4.93a10 10 0 010 14.14" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                <path d="M23 9l-6 6M17 9l6 6" />
+              </svg>
+            )}
+          </button>
         </div>
+
+        <div className="modal-details">
+          <div className="modal-meta">
+            <span className="meta-year">{activeMovie.year}</span>
+            <span className="meta-director">{activeMovie.director}</span>
+            <span className="meta-length">{displayLength}</span>
+            {activeMovie.tmdbRating ? (
+              <span className="tmdb-rating" title={`${activeMovie.tmdbVoteCount ?? 0} votes on TMDB`}>
+                ★ {activeMovie.tmdbRating.toFixed(1)}
+              </span>
+            ) : null}
+          </div>
+          <p className="modal-summary">{activeMovie.summary}</p>
+        </div>
+
         {recommendations.length > 0 && (
           <div className="modal-recommendations">
             <h3>More Like This</h3>
             <div className="recommendations-grid">
               {recommendations.map((rec) => (
-                <div
+                <button
                   key={rec.id}
+                  type="button"
                   className="recommendation-card"
                   onClick={(e) => handleRecommendationClick(e, rec)}
                 >
                   {rec.thumbnailUrl && (
-                    <img src={rec.thumbnailUrl} alt={rec.title} loading="lazy" />
+                    <div className="recommendation-thumb">
+                      <img src={rec.thumbnailUrl} alt={rec.title} loading="lazy" />
+                    </div>
                   )}
                   <div className="recommendation-info">
                     <p className="recommendation-title">{rec.title}</p>
-                    <span>{rec.year} &middot; {rec.director}</span>
-                    {rec.tmdbRating && <span className="tmdb-rating">★ {rec.tmdbRating.toFixed(1)}</span>}
+                    <div className="recommendation-meta">
+                      <span>{rec.year}</span>
+                      <span>·</span>
+                      <span>{rec.director}</span>
+                      {rec.tmdbRating ? (
+                        <span className="tmdb-rating-sm">★ {rec.tmdbRating.toFixed(1)}</span>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>

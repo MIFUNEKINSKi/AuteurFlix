@@ -1,4 +1,13 @@
 namespace :tmdb do
+  desc "Sync all movies with TMDB metadata only when TMDB_API_KEY is set (safe for deploy hooks)"
+  task sync_if_configured: :environment do
+    if ENV['TMDB_API_KEY'].to_s.strip.empty?
+      puts "TMDB_API_KEY not set — skipping tmdb:sync."
+    else
+      Rake::Task['tmdb:sync'].invoke
+    end
+  end
+
   desc "Sync all movies with TMDB metadata (ratings, posters, overviews)"
   task sync: :environment do
     puts "Starting TMDB sync..."

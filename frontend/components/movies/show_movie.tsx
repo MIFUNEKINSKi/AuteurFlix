@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchMovie } from '../../store/api';
@@ -9,6 +9,9 @@ const ShowMovie: React.FC = () => {
   const dispatch = useAppDispatch();
   const movies = useAppSelector((state) => state.entities.movies);
   const currentMovie = movieId ? movies[Number(movieId)] : null;
+  const [mounted, setMounted] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(false);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -16,6 +19,12 @@ const ShowMovie: React.FC = () => {
       dispatch(fetchMovie(Number(movieId)));
     }
   }, [dispatch, currentMovie, movieId]);
+
+  // Fade in on mount
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const clearTimers = () => {
     if (timerRef.current) {
@@ -26,32 +35,49 @@ const ShowMovie: React.FC = () => {
 
   const showControls = () => {
     clearTimers();
-    const arrow = document.getElementById('back-arrow');
-    if (arrow) {
-      arrow.classList.remove('hidden');
-      timerRef.current = window.setTimeout(() => arrow.classList.add('hidden'), 3000);
-    }
+    setControlsVisible(true);
+    timerRef.current = window.setTimeout(() => setControlsVisible(false), 2800);
   };
 
-  const goBack = () => navigate('/browse');
+  const goBack = () => {
+    setLeaving(true);
+    window.setTimeout(() => navigate('/browse'), 220);
+  };
 
   if (!currentMovie) {
-    return <div style={{ color: 'white', fontSize: '24px', textAlign: 'center', marginTop: '50px' }}>Loading...</div>;
+    return (
+      <div className="movie-container">
+        <div className="show-movie-loading">Loading…</div>
+      </div>
+    );
   }
 
+  const state = leaving ? 'leaving' : mounted ? 'mounted' : 'entering';
+
   return (
-    <div className="movie-container" onMouseMove={showControls}>
-      <div id="back-arrow" className="hidden" onClick={goBack}>
-        <span className="arrow-icon">&larr;</span>
-        <span className="back-text">Back</span>
-      </div>
+    <div
+      className={`movie-container ${state}`}
+      onMouseMove={showControls}
+      onTouchStart={showControls}
+    >
+      <button
+        type="button"
+        className={`show-back ${controlsVisible ? 'visible' : ''}`}
+        onClick={goBack}
+        aria-label="Back to browse"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span>Back</span>
+      </button>
       <video
         autoPlay
         muted
         className="show-movie"
         src={currentMovie.videoUrl}
         controls
-        width={1000}
+        playsInline
       />
     </div>
   );
