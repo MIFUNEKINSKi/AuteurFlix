@@ -10,18 +10,29 @@ development:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-# S3 service used by both production and any blob with service_name = 'amazon_dev'
-# in the database (most existing records). Credentials fall through to the
-# AWS SDK default credential chain (env vars → ~/.aws/credentials → instance role)
-# when AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY are not set.
+# In production, prefer S3 when AWS credentials are available (e.g. a real
+# AWS_ACCESS_KEY_ID env var on the host). Otherwise fall back to Disk so the
+# app can boot, seed, and serve on platforms that don't have S3 configured
+# (Render free tier, local production smoke tests, etc.).
+#
+# Both `production` and `amazon_dev` are defined because existing blob rows
+# in the database were written with service_name = 'amazon_dev'; they must
+# resolve to the same backend as `production` so Active Storage can load them.
+<% if ENV['AWS_ACCESS_KEY_ID'].present? %>
 production: &amazon
   service: S3
-  <% if ENV['AWS_ACCESS_KEY_ID'].present? %>
   access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
   secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-  <% end %>
   region: <%= ENV.fetch('AWS_REGION', 'us-east-1') %>
   bucket: <%= ENV.fetch('AWS_S3_BUCKET', 'auteurflix-prod') %>
 
 amazon_dev:
   <<: *amazon
+<% else %>
+production: &disk_prod
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+amazon_dev:
+  <<: *disk_prod
+<% end %>
