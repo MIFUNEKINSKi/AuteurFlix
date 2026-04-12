@@ -18,8 +18,9 @@ const MovieDetail: React.FC<Props> = ({
 }) => {
   const [sound, setSound] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-  const timerRef = useRef<number | null>(null);
+  const [hovered, setHovered] = useState(false);
+  const hoverTimer = useRef<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const movieGenres = useCallback(() => {
     if (!movie?.id) return [];
@@ -29,62 +30,43 @@ const MovieDetail: React.FC<Props> = ({
       .filter((g): g is Genre => g !== undefined);
   }, [movie, tags, genres]);
 
-  const clearTimers = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+  const handleMouseEnter = () => {
+    hoverTimer.current = window.setTimeout(() => {
+      setHovered(true);
+      const vid = videoRef.current;
+      if (vid) {
+        if (!vid.src && movie.videoUrl) vid.src = movie.videoUrl;
+        vid.currentTime = 0;
+        vid.muted = !sound;
+        vid.play().catch(() => {});
+      }
+    }, 600);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+    setHovered(false);
+    const vid = videoRef.current;
+    if (vid) {
+      vid.pause();
+      vid.currentTime = 0;
     }
   };
 
-  const stopAll = () => {
-    clearTimers();
-    const videos = document.querySelectorAll<HTMLVideoElement>('.thumbnail-vid');
-    videos.forEach((video) => {
-      video.pause();
-      video.classList.add('idle');
-      (video.parentElement!.previousElementSibling as HTMLElement).classList.remove('invisible');
-      (video.previousElementSibling as HTMLElement).classList.add('invisible');
-      (video.nextElementSibling as HTMLElement).classList.add('invisible');
-    });
-  };
-
-  const autoplay = (e: React.MouseEvent<HTMLDivElement>) => {
-    const video = e.currentTarget.children[1]?.children[1] as HTMLVideoElement;
-    if (!video || typeof video.play !== 'function') return;
-    // Load video source on hover instead of on mount
-    if (!video.src && movie.videoUrl) {
-      video.src = movie.videoUrl;
-    }
-    video.currentTime = 0;
-    timerRef.current = window.setTimeout(() => {
-      video.classList.remove('idle');
-      (video.nextElementSibling as HTMLElement).classList.remove('invisible');
-      (video.previousElementSibling as HTMLElement).classList.remove('invisible');
-      video.muted = !sound;
-      video.play().catch(() => {});
-    }, 1999);
-  };
-
-  const stop = (e: React.MouseEvent<HTMLDivElement>) => {
-    clearTimers();
-    const video = e.currentTarget.children[1]?.children[1] as HTMLVideoElement;
-    if (!video || typeof video.pause !== 'function') return;
-    video.pause();
-    video.classList.add('idle');
-    (video.parentElement!.previousElementSibling as HTMLElement).classList.remove('invisible');
-    (video.previousElementSibling as HTMLElement).classList.add('invisible');
-    (video.nextElementSibling as HTMLElement).classList.add('invisible');
-  };
-
-  const handleSoundOff = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleSoundOff = (e: React.MouseEvent) => {
+    e.stopPropagation();
     const newSound = !sound;
     setSound(newSound);
-    (e.currentTarget.previousElementSibling as HTMLVideoElement).muted = !newSound;
+    if (videoRef.current) videoRef.current.muted = !newSound;
   };
 
   const onList = () => myList.some((item) => item.movie_id === movie.id);
 
-  const toggleListItem = () => {
+  const toggleListItem = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!movie?.id) return;
     if (onList()) {
       const item = myList.find((li) => li.movie_id === movie.id)!;
@@ -94,26 +76,17 @@ const MovieDetail: React.FC<Props> = ({
     }
   };
 
-  const handleClick = (e: React.MouseEvent) => {
-    // Don't open modal if clicking inside modal or on a button/link
-    const target = e.target as HTMLElement;
-    if (target.closest('.modal, .modal-backdrop, a, button, .sound-off')) return;
-    setIsClicked(true);
-    setTimeout(() => setIsClicked(false), 300);
+  const openModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleMouseLeave();
     setShowModal(true);
   };
 
-  const onEnd = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    (e.currentTarget as HTMLElement).classList.add('idle');
-    (e.currentTarget.parentElement!.previousElementSibling as HTMLElement).classList.remove('invisible');
-  };
-
   if (!movie) return null;
-  if (showModal) stopAll();
 
-  const tagDisplay = movieGenres()
-    .filter((tag) => tag?.id)
-    .map((tag) => <p key={tag.id}>{tag.genre}</p>);
+  const tagDisplay = movieGenres().map((g) => (
+    <span key={g.id} className="card-genre-tag">{g.genre}</span>
+  ));
 
   const modal = showModal ? (
     <DetailsModal
@@ -123,47 +96,77 @@ const MovieDetail: React.FC<Props> = ({
       currentProfileId={currentProfileId}
       movie={movie}
       toggleModal={() => setShowModal(false)}
-      soundOff={handleSoundOff}
-      display={tagDisplay}
+      soundOff={() => {}}
+      display={null}
       sound={sound}
     />
   ) : null;
 
-  const soundBtn = sound ? window.volumeOff : window.volumeOn;
-  const listButton = onList() ? '✓' : '+';
-
   return (
-    <div
-      className={`list-item ${isClicked ? 'clicked' : ''} ${showModal ? 'modal-open' : ''}`}
-      onMouseEnter={autoplay}
-      onMouseLeave={stop}
-      onClick={handleClick}
-    >
-      <img className="thumbnail" src={movie.thumbnailUrl} loading="lazy" />
-      <div className="details-vid-container">
-        <p className="details-title invisible">{movie.title}</p>
-        <video
-          id={String(movie.id)}
-          className="thumbnail-vid idle"
-          preload="none"
-          onEnded={onEnd}
-        />
-        <img src={soundBtn} className="sound-off invisible" onClick={handleSoundOff} />
-      </div>
-      <div className="movie-details hidden">
-        <div className="details-btns">
-          <div className="details-left-btns">
-            <Link to={`/watch/${movie.id}`} id="details-play">&#9658;</Link>
-            <button id="details-add-list" className="tooltip" title={onList() ? 'Remove from List' : 'Add to List'} onClick={toggleListItem}>{listButton}</button>
-          </div>
-          <button title="More Info" onClick={() => setShowModal(true)} id="details-info-btn">
-            <p>&#8964;</p>
-          </button>
+    <>
+      <div
+        className={`card ${hovered ? 'card-hovered' : ''}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="card-media">
+          <img
+            className="card-thumbnail"
+            src={movie.thumbnailUrl}
+            alt={movie.title}
+            loading="lazy"
+          />
+          <video
+            ref={videoRef}
+            className={`card-video ${hovered ? 'playing' : ''}`}
+            preload="none"
+            muted
+            playsInline
+            onEnded={() => setHovered(false)}
+          />
+          {hovered && (
+            <button className="card-sound-btn" onClick={handleSoundOff}>
+              {sound ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M15.54 8.46a5 5 0 010 7.07" /><path d="M19.07 4.93a10 10 0 010 14.14" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M23 9l-6 6M17 9l6 6" />
+                </svg>
+              )}
+            </button>
+          )}
         </div>
-        <div className="details-tags">{tagDisplay}</div>
+
+        <div className="card-info">
+          <div className="card-buttons">
+            <div className="card-buttons-left">
+              <Link to={`/watch/${movie.id}`} className="card-btn card-play" onClick={(e) => e.stopPropagation()}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+              </Link>
+              <button className="card-btn card-add" onClick={toggleListItem} title={onList() ? 'Remove from List' : 'Add to List'}>
+                {onList() ? (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+                )}
+              </button>
+            </div>
+            <button className="card-btn card-expand" onClick={openModal} title="More Info">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+          <p className="card-title">{movie.title}</p>
+          <div className="card-meta">
+            {tagDisplay}
+          </div>
+        </div>
       </div>
       {modal}
-    </div>
+    </>
   );
 };
 

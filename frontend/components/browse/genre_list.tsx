@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import MovieDetail from './movie_detail';
 import type { Movie, Genre, Tag, ListItem } from '../../types';
 
@@ -16,12 +16,11 @@ interface Props {
 const GenreList: React.FC<Props> = ({
   movies, genres, tags, myList, currentProfileId, genreId, createListItem, deleteListItem,
 }) => {
-  const [xoffset, setXoffset] = useState(80);
-  const [leftArrow, setLeftArrow] = useState(-100);
-  const [rightArrow, setRightArrow] = useState(80);
-  const delta = 200;
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const selectMovies = (): Movie[] => {
+  const selectMovies = useCallback((): Movie[] => {
     if (!genreId) {
       return myList
         .map((item) => movies[item.movie_id])
@@ -31,57 +30,82 @@ const GenreList: React.FC<Props> = ({
     return selectedTags
       .map((tag) => movies[tag.movie_id])
       .filter((m): m is Movie => m !== undefined);
-  };
+  }, [movies, tags, myList, genreId]);
 
-  const scrollLeft = (e: React.MouseEvent) => {
-    const lastItem = (e.currentTarget.parentElement as HTMLElement).lastElementChild?.previousElementSibling as HTMLElement;
-    if (!lastItem) return;
-    const location = lastItem.getBoundingClientRect();
-    if (window.innerWidth - location.right >= 20) return;
-    setXoffset((prev) => prev - delta);
-    setLeftArrow((prev) => prev + delta);
-    setRightArrow((prev) => prev - delta);
-  };
+  const checkScroll = useCallback(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  }, []);
 
-  const scrollRight = () => {
-    if (xoffset === 80) return;
-    setXoffset((prev) => prev + delta);
-    setRightArrow((prev) => prev + delta);
-    setLeftArrow((prev) => prev - delta);
+  useEffect(() => {
+    checkScroll();
+    const el = sliderRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [checkScroll]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const scrollAmount = el.clientWidth * 0.85;
+    el.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
   };
 
   const renderMovies = selectMovies();
-  const display = renderMovies
-    .filter((movie) => movie && movie.id)
-    .map((movie) => (
-      <MovieDetail
-        myList={myList}
-        currentProfileId={currentProfileId}
-        createListItem={createListItem}
-        deleteListItem={deleteListItem}
-        key={movie.id}
-        movie={movie}
-        tags={tags}
-        genres={genres}
-      />
-    ));
+  if (renderMovies.length === 0) return null;
 
   return (
-    <div
-      className="genre-list"
-      style={{ position: 'relative', left: `${xoffset}px` }}
-    >
-      <p
-        id="left-arrow"
-        style={{ left: `${leftArrow}px` }}
-        onClick={scrollRight}
-      >&#8249;</p>
-      {display}
-      <p
-        id="right-arrow"
-        onClick={scrollLeft}
-        style={{ right: `${rightArrow}px` }}
-      />
+    <div className="carousel">
+      {canScrollLeft && (
+        <button
+          className="carousel-arrow carousel-arrow-left"
+          onClick={() => scroll('left')}
+          aria-label="Scroll left"
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+      )}
+
+      <div className="carousel-slider" ref={sliderRef}>
+        {renderMovies
+          .filter((movie) => movie && movie.id)
+          .map((movie) => (
+            <MovieDetail
+              key={movie.id}
+              movie={movie}
+              tags={tags}
+              genres={genres}
+              myList={myList}
+              currentProfileId={currentProfileId}
+              createListItem={createListItem}
+              deleteListItem={deleteListItem}
+            />
+          ))}
+      </div>
+
+      {canScrollRight && (
+        <button
+          className="carousel-arrow carousel-arrow-right"
+          onClick={() => scroll('right')}
+          aria-label="Scroll right"
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 };

@@ -129,7 +129,10 @@ const GenresIndex: React.FC = () => {
         <img src={topMovie.photoUrl} />
         <h1>{topMovie.title}</h1>
         <div className="top-movie-btns">
-          <Link to={`/watch/${topMovie.id}`} className="modal-play">Play</Link>
+          <Link to={`/watch/${topMovie.id}`} className="modal-play">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+            Play
+          </Link>
           <button className="top-info" onClick={toggleModal}>More info</button>
         </div>
       </div>

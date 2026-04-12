@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchMovie } from '../../store/api';
@@ -11,7 +11,7 @@ const ShowMovie: React.FC = () => {
   const currentMovie = movieId ? movies[Number(movieId)] : null;
   const [mounted, setMounted] = useState(false);
   const [leaving, setLeaving] = useState(false);
-  const [controlsVisible, setControlsVisible] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -26,6 +26,21 @@ const ShowMovie: React.FC = () => {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const goBack = useCallback(() => {
+    if (leaving) return;
+    setLeaving(true);
+    window.setTimeout(() => navigate('/browse'), 220);
+  }, [leaving, navigate]);
+
+  // Escape key to go back
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') goBack();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [goBack]);
+
   const clearTimers = () => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -36,17 +51,12 @@ const ShowMovie: React.FC = () => {
   const showControls = () => {
     clearTimers();
     setControlsVisible(true);
-    timerRef.current = window.setTimeout(() => setControlsVisible(false), 2800);
-  };
-
-  const goBack = () => {
-    setLeaving(true);
-    window.setTimeout(() => navigate('/browse'), 220);
+    timerRef.current = window.setTimeout(() => setControlsVisible(false), 3000);
   };
 
   if (!currentMovie) {
     return (
-      <div className="movie-container">
+      <div className="movie-container mounted">
         <div className="show-movie-loading">Loading…</div>
       </div>
     );
