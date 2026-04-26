@@ -3,6 +3,7 @@ import ProfileIndexItem from './profile_index_item';
 import { Link } from 'react-router-dom';
 import AddProfile from './add_profile';
 import type { Profile } from '../../types';
+import { logoURL, addProfileURL } from '../../assets';
 
 interface Props {
   profiles: Profile[];
@@ -32,14 +33,14 @@ const ProfilesIndex: React.FC<Props> = ({ profiles, userId, handleClick, fetchPr
 
   const addProfile = profiles.length === 4 ? null : (
     <li className="add-profile-container" onClick={() => setShow('add profile')}>
-      <img id="add-profile" src={window.addProfile} />
+      <img id="add-profile" src={addProfileURL} />
       <p>Add Profile</p>
     </li>
   );
 
   return (
     <div>
-      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
+      <Link to="/" className="profiles-home-btn"><img id="logo" src={logoURL} alt="AuteurFlix" /></Link>
       <div className="profiles-container">
         <h1>Who's Watching?</h1>
         <ul className="profiles-list">

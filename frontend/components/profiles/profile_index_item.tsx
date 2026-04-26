@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Profile } from '../../types';
+import { avatarURL, editPencilURL } from '../../assets';
 
 interface Props {
   profile: Profile;
@@ -18,9 +19,9 @@ const ProfileIndexItem: React.FC<Props> = ({ profile, handleClick, darken, penci
       onClick={handleClick}
       className="profile-item"
     >
-      <img src={window.avatar} className={dark} />
+      <img src={avatarURL} className={dark} />
       <img
-        src={window.editPencil}
+        src={editPencilURL}
         className={pencil === 'hidden' ? 'pencil hidden' : 'pencil'}
       />
       <p>{profile.name}</p>

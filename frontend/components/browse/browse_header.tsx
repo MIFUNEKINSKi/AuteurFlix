@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { logoURL, avatarURL } from '../../assets';
 
 interface Props {
   logout: () => void;
@@ -80,7 +81,7 @@ const BrowseHeader: React.FC<Props> = ({ logout, resetProfile, searchTitles, sea
   return (
     <div className={`browse-header ${scrolled ? 'browse-header-scrolled' : ''}`}>
       <Link to="/" className="home-button">
-        <img id="logo" src={window.logoURL} alt="AuteurFlix" />
+        <img id="logo" src={logoURL} alt="AuteurFlix" />
       </Link>
       <nav className="left-nav">
         <Link to="/browse/">Home</Link>
@@ -92,7 +93,7 @@ const BrowseHeader: React.FC<Props> = ({ logout, resetProfile, searchTitles, sea
         {searchControl}
         <div className="profiles-dropdown">
           <div className="dropdown-btn">
-            <img id="profiles-avatar" src={window.avatar} alt="" />
+            <img id="profiles-avatar" src={avatarURL} alt="" />
             <span id="profiles-arrow">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 9l6 6 6-6" />

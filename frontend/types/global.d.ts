@@ -1,15 +1,24 @@
 interface Window {
   currentUser?: { id: number; email: string };
-  logoURL: string;
-  avatar: string;
-  editPencil: string;
-  addProfile: string;
-  searchIcon: string;
-  volumeOn: string;
-  volumeOff: string;
-  watchGif: string;
-  downloadGif: string;
-  everywhereGif: string;
-  kidsIntroUrl: string;
-  faqGif: string;
+}
+
+declare module '*.png' {
+  const url: string;
+  export default url;
+}
+declare module '*.jpg' {
+  const url: string;
+  export default url;
+}
+declare module '*.jpeg' {
+  const url: string;
+  export default url;
+}
+declare module '*.gif' {
+  const url: string;
+  export default url;
+}
+declare module '*.webp' {
+  const url: string;
+  export default url;
 }

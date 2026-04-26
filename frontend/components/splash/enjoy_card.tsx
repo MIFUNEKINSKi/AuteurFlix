@@ -1,4 +1,5 @@
 import React from 'react';
+import { netflixAndChillURL } from '../../assets';
 
 const EnjoyCard: React.FC = () => (
   <div className="card cards-below">
@@ -6,7 +7,7 @@ const EnjoyCard: React.FC = () => (
       <h1>Enjoy on your TV</h1>
       <h2>Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.</h2>
     </div>
-    <img src={window.watchGif} className="img-splash" />
+    <img src={netflixAndChillURL} className="img-splash" />
   </div>
 );
 

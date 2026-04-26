@@ -79,6 +79,9 @@ Thumbs.db
 # Ignore compiled assets in production
 /public/packs
 /public/packs-test
+/public/images
+/public/bundle.js
+/public/bundle.js.map
 config/storage.yml
 config/credentials.yml.enc
 config/credentials.yml.enc

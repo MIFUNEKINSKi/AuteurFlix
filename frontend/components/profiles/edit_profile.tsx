@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { updateProfile } from '../../store/api';
+import { logoURL, avatarURL } from '../../assets';
 
 interface Props {
   profile: { id: number | string; name: string };
@@ -27,14 +28,14 @@ const EditProfile: React.FC<Props> = ({ profile, handleCancel, handleDelete }) =
 
   return (
     <div className="edit-profile-main">
-      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
+      <Link to="/" className="profiles-home-btn"><img id="logo" src={logoURL} alt="AuteurFlix" /></Link>
       <div className="edit-profile-content">
         <div className="edit-profile-text">
           <h1>Edit Profile</h1>
         </div>
         <form className="edit-profile-form" onSubmit={handleEditSubmit}>
           <div className="img-input-container">
-            <img src={window.avatar} alt="" />
+            <img src={avatarURL} alt="" />
             <input
               type="text"
               value={name}

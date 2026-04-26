@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { createProfile } from '../../store/api';
+import { logoURL, avatarURL } from '../../assets';
 
 interface Props {
   userId: number;
@@ -36,7 +37,7 @@ const AddProfile: React.FC<Props> = ({ userId, handleCancel }) => {
   return (
     <div className="add-profile-main">
       <header>
-        <Link to="/" className="home-button"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
+        <Link to="/" className="home-button"><img id="logo" src={logoURL} alt="AuteurFlix" /></Link>
       </header>
       <div className="add-profile-content">
         <div className="add-profile-text">
@@ -44,7 +45,7 @@ const AddProfile: React.FC<Props> = ({ userId, handleCancel }) => {
           <p>Add a profile for another person watching AuteurFlix.</p>
         </div>
         <div className="add-profile-middle">
-          <img src={window.avatar} />
+          <img src={avatarURL} />
           <div className="add-profile-input-container">
             <input
               className="profile-name-input"

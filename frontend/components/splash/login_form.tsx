@@ -4,6 +4,7 @@ import SignupFooter from './signup_footer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { login } from '../../store/api';
 import { resetSessionErrors } from '../../store/errorsSlice';
+import { logoURL } from '../../assets';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ const LoginForm: React.FC = () => {
     <div>
       <div className="login-main">
         <header className="login-header">
-          <Link to="./" className="home-button"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
+          <Link to="./" className="home-button"><img id="logo" src={logoURL} alt="AuteurFlix" /></Link>
         </header>
         <div className="login-container">
           <h2>Sign In</h2>

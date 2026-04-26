@@ -5,6 +5,7 @@ import EditProfile from './edit_profile';
 import AddProfile from './add_profile';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchProfiles, updateProfile, deleteProfile, createProfile } from '../../store/api';
+import { logoURL, addProfileURL } from '../../assets';
 
 const ManageProfiles: React.FC = () => {
   const [show, setShow] = useState<'profiles' | 'edit form' | 'add profile'>('profiles');
@@ -56,14 +57,14 @@ const ManageProfiles: React.FC = () => {
 
   const addProfileButton = profiles.length === 4 ? null : (
     <li className="edit-profile-container" onClick={() => setShow('add profile')}>
-      <img id="edit-profile" src={window.addProfile} />
+      <img id="edit-profile" src={addProfileURL} />
       <p>Add Profile</p>
     </li>
   );
 
   return (
     <div>
-      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
+      <Link to="/" className="profiles-home-btn"><img id="logo" src={logoURL} alt="AuteurFlix" /></Link>
       <div className="edit-profiles-container">
         <h1>Manage Profiles:</h1>
         <ul className="edit-profiles-list">
