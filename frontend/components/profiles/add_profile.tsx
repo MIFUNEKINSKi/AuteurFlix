@@ -36,7 +36,7 @@ const AddProfile: React.FC<Props> = ({ userId, handleCancel }) => {
   return (
     <div className="add-profile-main">
       <header>
-        <Link to="/" className="home-button"><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
+        <Link to="/" className="home-button"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
       </header>
       <div className="add-profile-content">
         <div className="add-profile-text">
@@ -58,7 +58,7 @@ const AddProfile: React.FC<Props> = ({ userId, handleCancel }) => {
           <p className="profile-error">{error}</p>
           <div className="add-profile-btns">
             <button type="submit" className="save-btn">Continue</button>
-            <button onClick={handleCancel} className="cancel-btn">Cancel</button>
+            <button type="button" onClick={handleCancel} className="cancel-btn">Cancel</button>
           </div>
         </form>
       </div>

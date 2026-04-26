@@ -27,14 +27,14 @@ const EditProfile: React.FC<Props> = ({ profile, handleCancel, handleDelete }) =
 
   return (
     <div className="edit-profile-main">
-      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
+      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
       <div className="edit-profile-content">
         <div className="edit-profile-text">
           <h1>Edit Profile</h1>
         </div>
-        <form className="edit-profile-form">
+        <form className="edit-profile-form" onSubmit={handleEditSubmit}>
           <div className="img-input-container">
-            <img src={window.avatar} />
+            <img src={window.avatar} alt="" />
             <input
               type="text"
               value={name}
@@ -44,9 +44,9 @@ const EditProfile: React.FC<Props> = ({ profile, handleCancel, handleDelete }) =
           <div className="edit-profile-bottom">
             <p className="profile-error">{error}</p>
             <div className="edit-buttons-container">
-              <button className="save-btn" onClick={handleEditSubmit}>Save</button>
-              <button className="cancel-btn" onClick={() => handleCancel()}>Cancel</button>
-              <button className="cancel-btn" onClick={() => handleDelete(profile.id)}>Delete Profile</button>
+              <button type="submit" className="save-btn">Save</button>
+              <button type="button" className="cancel-btn" onClick={() => handleCancel()}>Cancel</button>
+              <button type="button" className="cancel-btn" onClick={() => handleDelete(profile.id)}>Delete Profile</button>
             </div>
           </div>
         </form>

@@ -52,7 +52,8 @@ const entitiesSlice = createSlice({
         state.profiles[action.payload.id] = action.payload;
       })
       .addCase(deleteProfile.fulfilled, (state, action) => {
-        delete state.profiles[action.payload.id];
+        // API returns the refreshed profiles index after destroy.
+        state.profiles = action.payload;
       })
 
       // Current profile / myList

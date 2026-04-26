@@ -32,7 +32,7 @@ export const updateProfile = async (profile: { id: number; name: string }): Prom
   return res.json();
 };
 
-export const deleteProfile = async (profileId: number): Promise<Profile> => {
+export const deleteProfile = async (profileId: number): Promise<Record<number, Profile>> => {
   const res = await fetch(`/api/profiles/${profileId}`, { method: 'DELETE' });
   if (!res.ok) throw await res.json();
   return res.json();
