@@ -49,10 +49,23 @@ const DirectorPage: React.FC = () => {
     return '';
   };
 
-  const initials = (name: string): string => {
-    const parts = name.split(' ').filter(Boolean);
-    if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
-    return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
+  const monogram = (name: string): string => {
+    const parts = name.split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '';
+    return parts[parts.length - 1]!.slice(0, 3).toUpperCase();
+  };
+
+  const hueFor = (name: string): number => {
+    let h = 0;
+    for (let i = 0; i < name.length; i += 1) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+    return h % 360;
+  };
+
+  const placeholderStyle = (name: string): React.CSSProperties => {
+    const h = hueFor(name);
+    return {
+      background: `linear-gradient(135deg, hsl(${h}deg 35% 28%) 0%, hsl(${(h + 40) % 360}deg 30% 14%) 100%)`,
+    };
   };
 
   if (error === 'not_found') {
@@ -90,8 +103,12 @@ const DirectorPage: React.FC = () => {
           {director.portraitUrl ? (
             <img className="director-portrait" src={director.portraitUrl} alt={director.name} />
           ) : (
-            <div className="director-portrait director-portrait-placeholder" aria-hidden="true">
-              <span>{initials(director.name)}</span>
+            <div
+              className="director-portrait director-portrait-placeholder"
+              style={placeholderStyle(director.name)}
+              aria-hidden="true"
+            >
+              <span>{monogram(director.name)}</span>
             </div>
           )}
           <div className="director-hero-text">

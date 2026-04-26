@@ -3,10 +3,28 @@ import { Link } from 'react-router-dom';
 import { fetchDirectors } from '../../util/movie_api_util';
 import type { DirectorSummary } from '../../types';
 
-const initials = (name: string): string => {
-  const parts = name.split(' ').filter(Boolean);
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
-  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
+// Three-letter monogram from the most distinctive surname, or first 3 letters
+// of a single-word name. Distinguishes "Kubrick" (KUB) from "Kurosawa" (KUR).
+const monogram = (name: string): string => {
+  const parts = name.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '';
+  const surname = parts[parts.length - 1]!;
+  return surname.slice(0, 3).toUpperCase();
+};
+
+// Deterministic per-name hue so each director's placeholder reads as
+// distinct color even before TMDB portraits load.
+const hueFor = (name: string): number => {
+  let h = 0;
+  for (let i = 0; i < name.length; i += 1) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return h % 360;
+};
+
+const placeholderStyle = (name: string): React.CSSProperties => {
+  const h = hueFor(name);
+  return {
+    background: `linear-gradient(135deg, hsl(${h}deg 35% 28%) 0%, hsl(${(h + 40) % 360}deg 30% 14%) 100%)`,
+  };
 };
 
 const AuteursRow: React.FC = () => {
@@ -50,8 +68,10 @@ const AuteursRow: React.FC = () => {
   return (
     <div className="genre-name auteurs-row">
       <h2 className="row-title">
-        <span>Featured Auteurs</span>
-        <span className="row-explore" aria-hidden="true">Browse all ›</span>
+        <Link to="/directors" className="row-title-link">
+          <span>Featured Auteurs</span>
+          <span className="row-explore" aria-hidden="true">Browse all ›</span>
+        </Link>
       </h2>
       <div className="carousel auteurs-carousel">
         {canScrollLeft && (
@@ -74,8 +94,12 @@ const AuteursRow: React.FC = () => {
                 {d.portraitUrl ? (
                   <img src={d.portraitUrl} alt={d.name} loading="lazy" />
                 ) : (
-                  <div className="auteur-portrait-placeholder" aria-hidden="true">
-                    <span>{initials(d.name)}</span>
+                  <div
+                    className="auteur-portrait-placeholder"
+                    style={placeholderStyle(d.name)}
+                    aria-hidden="true"
+                  >
+                    <span>{monogram(d.name)}</span>
                   </div>
                 )}
               </div>

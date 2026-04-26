@@ -54,13 +54,14 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-    color: #d8d8d8;
-    font-size: 56px;
+    color: #f0f0f0;
+    font-size: 48px;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
 
     @media (max-width: 740px) {
-        font-size: 38px;
+        font-size: 32px;
     }
 }
 
@@ -144,6 +145,128 @@
 .director-empty {
     color: #b8b8b8;
     font-size: 16px;
+}
+
+/* Directors index page -------------------------------------------- */
+
+.directors-index-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #141414;
+}
+
+.directors-index-hero {
+    padding: 130px 4vw 30px;
+    max-width: 900px;
+    margin: 0 auto;
+
+    .directors-index-eyebrow {
+        margin: 0 0 8px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #e50914;
+    }
+
+    .directors-index-title {
+        margin: 0 0 12px;
+        font-size: #{"clamp(2rem, 4vw, 3.4rem)"};
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        color: #fff;
+    }
+
+    .directors-index-sub {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.55;
+        color: #b8b8b8;
+        max-width: 60ch;
+    }
+}
+
+.directors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 28px 16px;
+    padding: 30px 4vw 80px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.directors-grid-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 8px 4px;
+    border-radius: 8px;
+    transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.22s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .directors-grid-portrait {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #222;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+        transition: box-shadow 0.22s ease;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    }
+
+    &:hover .directors-grid-portrait {
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(229, 9, 20, 0.6);
+    }
+
+    .directors-grid-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #f0f0f0;
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    .directors-grid-name {
+        margin: 4px 0 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.2;
+        max-width: 170px;
+    }
+
+    .directors-grid-meta {
+        margin: 0;
+        font-size: 12px;
+        color: #a8a8a8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .dot {
+            color: #555;
+        }
+    }
 }
 
 /* Error / not-found ------------------------------------------------ */
