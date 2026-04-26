@@ -236,12 +236,20 @@ MOVIES.each do |data|
   end
 end
 
-# Drop any movies that are no longer in the seed list (and their tags + list items).
-stale_ids = Movie.where.not(id: MOVIES.map { |m| m[:id] }).pluck(:id)
-if stale_ids.any?
-  Tag.where(movie_id: stale_ids).delete_all
-  List.where(movie_id: stale_ids).delete_all if defined?(List)
-  Movie.where(id: stale_ids).delete_all
+# Drop any *seeded* movies that are no longer in the seed list. Movies that
+# were created by `rake tmdb:ingest_director` (i.e. live outside the explicit
+# id range below) must NEVER be deleted by db:seed -- they're real catalog
+# data populated from TMDB and only exist on production.
+seeded_ids = MOVIES.map { |m| m[:id] }
+stale_seeded_ids = Movie
+  .where(id: 1..(seeded_ids.max + 1000)) # only scan the seed-id range
+  .where.not(id: seeded_ids)
+  .where(tmdb_id: nil)                   # belt-and-suspenders: never touch tmdb-synced rows
+  .pluck(:id)
+if stale_seeded_ids.any?
+  Tag.where(movie_id: stale_seeded_ids).delete_all
+  List.where(movie_id: stale_seeded_ids).delete_all if defined?(List)
+  Movie.where(id: stale_seeded_ids).delete_all
 end
 
 # --- Directors --------------------------------------------------------------
