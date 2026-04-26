@@ -265,6 +265,7 @@ DIRECTORS = [
   },
   {
     name: 'Powell and Pressburger',
+    tmdb_person_id: 68424,
     country: 'United Kingdom',
     birth_year: 1905,
     bio: "The Archers - Michael Powell and Emeric Pressburger - wrote, produced, and directed " \
@@ -275,6 +276,7 @@ DIRECTORS = [
   },
   {
     name: 'Koreeda',
+    tmdb_person_id: 25645,
     country: 'Japan',
     birth_year: 1962,
     bio: "Hirokazu Kore-eda began in documentary and brings that observational stillness to his " \
@@ -295,6 +297,7 @@ DIRECTORS = [
   },
   {
     name: 'Bong Joon Ho',
+    tmdb_person_id: 21684,
     country: 'South Korea',
     birth_year: 1969,
     bio: "Bong Joon-ho works across genres - monster movie (The Host), procedural " \
@@ -305,6 +308,7 @@ DIRECTORS = [
   },
   {
     name: 'Buñuel',
+    tmdb_person_id: 793,
     country: 'Spain',
     birth_year: 1900,
     death_year: 1983,
