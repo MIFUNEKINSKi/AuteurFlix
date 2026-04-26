@@ -88,24 +88,25 @@ const GenresIndex: React.FC = () => {
     .filter(isDecadeGenre)
     .sort((a, b) => parseInt(a.genre, 10) - parseInt(b.genre, 10));
 
+  const rowTitle = (text: string, linkTo?: string, linkLabel = 'Explore All') => (
+    <h2 className="row-title">
+      {linkTo ? (
+        <Link to={linkTo} className="row-title-link">
+          <span>{text}</span>
+          <span className="row-explore" aria-hidden="true">{linkLabel} ›</span>
+        </Link>
+      ) : (
+        <span>{text}</span>
+      )}
+    </h2>
+  );
+
   const genreRow = (genre: { id: number; genre: string }, label?: string) => {
     const isDirectorRow = !isDecadeGenre(genre);
     const slug = isDirectorRow ? slugifyDirector(genre.genre) : null;
     return (
       <div key={genre.id} className="genre-name">
-        <h2 className="row-title">
-          {slug ? (
-            <Link to={`/director/${slug}`} className="row-title-link">
-              <span>{label ?? genre.genre}</span>
-              <span className="row-explore" aria-hidden="true">View director ›</span>
-            </Link>
-          ) : (
-            <>
-              <span>{label ?? genre.genre}</span>
-              <span className="row-explore" aria-hidden="true">Explore All ›</span>
-            </>
-          )}
-        </h2>
+        {rowTitle(label ?? genre.genre, slug ? `/director/${slug}` : undefined, slug ? 'View director' : undefined)}
         <GenreList
           myList={myList}
           currentProfileId={currentProfileId}
@@ -122,10 +123,7 @@ const GenresIndex: React.FC = () => {
 
   const myListSection = myList.length ? (
     <div key={currentProfileId} className="genre-name">
-      <h2 className="row-title">
-        <span>My List</span>
-        <span className="row-explore" aria-hidden="true">Explore All ›</span>
-      </h2>
+      {rowTitle('My List', '/browse/my-list')}
       <GenreList
         currentProfileId={currentProfileId}
         createListItem={handleCreateListItem}
@@ -141,10 +139,7 @@ const GenresIndex: React.FC = () => {
 
   const criticsPicksSection = criticsPicks.length > 0 ? (
     <div className="genre-name">
-      <h2 className="row-title">
-        <span>Critics' Picks</span>
-        <span className="row-explore" aria-hidden="true">Explore All ›</span>
-      </h2>
+      {rowTitle("Critics' Picks")}
       <GenreList
         myList={myList}
         currentProfileId={currentProfileId}

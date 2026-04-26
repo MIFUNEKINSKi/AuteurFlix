@@ -58,6 +58,14 @@ const GenreList: React.FC<Props> = ({
     };
   }, [checkScroll]);
 
+  // Reset scroll position when the row's content changes (e.g. movies load
+  // late and the carousel was already at a non-zero scroll from a transient
+  // mount). Without this, Critics' Picks can render with its first card
+  // already scrolled off the left edge.
+  useEffect(() => {
+    if (sliderRef.current) sliderRef.current.scrollLeft = 0;
+  }, [genreId, movieIds]);
+
   const scroll = (direction: 'left' | 'right') => {
     const el = sliderRef.current;
     if (!el) return;
