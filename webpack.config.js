@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   context: __dirname,
@@ -28,18 +29,27 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpe?g|gif|webp)$/i,
+        test: /\.scss$/,
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'images/[name].[contenthash:8].[ext]',
-              publicPath: '/',
-            },
-          },
-        ]
+          MiniCssExtractPlugin.loader,
+          { loader: 'css-loader', options: { url: { filter: (url) => !url.startsWith('/') } } },
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif|webp|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name].[contenthash:8][ext]',
+          publicPath: '/',
+        },
       },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'application.css',
+    }),
+  ],
   devtool: 'source-map'
 };

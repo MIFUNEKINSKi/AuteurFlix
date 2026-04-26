@@ -11,7 +11,7 @@
             transparent 50%,
             rgba(139, 69, 19, 0.1) 100%
         ),
-        image-url('splash-background.jpg');
+        url('../../../app/assets/images/splash-background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;

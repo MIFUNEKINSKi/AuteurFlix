@@ -82,6 +82,8 @@ Thumbs.db
 /public/images
 /public/bundle.js
 /public/bundle.js.map
+/public/application.css
+/public/application.css.map
 config/storage.yml
 config/credentials.yml.enc
 config/credentials.yml.enc

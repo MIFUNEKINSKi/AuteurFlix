@@ -3,6 +3,10 @@ import { createRoot } from 'react-dom/client';
 import setupStore from './store/store';
 import Root from './components/root';
 
+// Pulled into the bundle by MiniCssExtractPlugin -> /application.css
+// (Bypasses the Rails Sprockets pipeline so SCSS rebuilds on every webpack run.)
+import '../app/assets/stylesheets/application.scss';
+
 document.addEventListener('DOMContentLoaded', () => {
   let init;
   if (window.currentUser) {

@@ -6,8 +6,8 @@
     <%= csp_meta_tag %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%# CSS is built by webpack alongside bundle.js — bypasses Sprockets entirely %>
+    <link rel="stylesheet" href="/application.css" media="all">
     <script src="/bundle.js" defer></script>
 
   </head>
