@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_04_26_000001) do
+ActiveRecord::Schema[7.0].define(version: 2026_04_26_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,6 +90,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_04_26_000001) do
     t.string "thumbnail_url"
     t.string "video_url"
     t.string "photo_url"
+    t.string "tmdb_video_key"
+    t.string "tmdb_video_site"
     t.index ["title"], name: "index_movies_on_title"
     t.index ["tmdb_id"], name: "index_movies_on_tmdb_id", unique: true
   end

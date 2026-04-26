@@ -30,6 +30,10 @@ export interface Movie {
   tmdbRating?: number;
   tmdbVoteCount?: number;
   tmdbPosterUrl?: string;
+  tmdbBackdropUrl?: string;
+  tmdbCardUrl?: string;
+  tmdbVideoKey?: string;
+  tmdbVideoSite?: string;
 }
 
 export interface Genre {
@@ -68,6 +72,7 @@ export interface RecommendedMovie {
   year: number;
   director: string;
   thumbnailUrl?: string;
+  tmdbCardUrl?: string;
   tmdbRating?: number;
   tmdbId?: number;
 }

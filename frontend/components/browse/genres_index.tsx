@@ -183,7 +183,7 @@ const GenresIndex: React.FC = () => {
         <div className="hero-media">
           <img
             className={`hero-image ${heroVideoReady ? 'faded' : ''}`}
-            src={topMovie.photoUrl}
+            src={topMovie.tmdbBackdropUrl ?? topMovie.photoUrl}
             alt=""
           />
           {topMovie.videoUrl ? (

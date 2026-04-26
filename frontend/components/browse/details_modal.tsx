@@ -129,9 +129,9 @@ const DetailsModal: React.FC<Props> = ({
       className="recommendation-card"
       onClick={(e) => handleRecommendationClick(e, rec)}
     >
-      {rec.thumbnailUrl ? (
+      {(rec.tmdbCardUrl || rec.thumbnailUrl) ? (
         <div className="recommendation-thumb">
-          <img src={rec.thumbnailUrl} alt={rec.title} loading="lazy" />
+          <img src={rec.tmdbCardUrl ?? rec.thumbnailUrl} alt={rec.title} loading="lazy" />
         </div>
       ) : (
         <div className="recommendation-thumb recommendation-thumb-placeholder" aria-hidden="true" />
@@ -171,7 +171,7 @@ const DetailsModal: React.FC<Props> = ({
         <div className="modal-hero">
           <img
             className={`modal-hero-image ${videoReady ? 'faded' : ''}`}
-            src={activeMovie.photoUrl}
+            src={activeMovie.tmdbBackdropUrl ?? activeMovie.photoUrl}
             alt=""
           />
           <video

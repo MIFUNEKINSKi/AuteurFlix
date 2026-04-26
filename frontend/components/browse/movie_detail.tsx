@@ -111,7 +111,7 @@ const MovieDetail: React.FC<Props> = ({
         <div className="card-media">
           <img
             className="card-thumbnail"
-            src={movie.thumbnailUrl}
+            src={movie.tmdbCardUrl ?? movie.thumbnailUrl}
             alt={movie.title}
             loading="lazy"
           />

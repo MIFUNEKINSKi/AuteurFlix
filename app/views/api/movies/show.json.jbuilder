@@ -6,6 +6,10 @@ json.movie do
     json.tmdbRating @movie.tmdb_rating
     json.tmdbVoteCount @movie.tmdb_vote_count
     json.tmdbPosterUrl "https://image.tmdb.org/t/p/w500#{@movie.tmdb_poster_path}" if @movie.tmdb_poster_path
+    json.tmdbBackdropUrl "https://image.tmdb.org/t/p/w1280#{@movie.tmdb_backdrop_path}" if @movie.tmdb_backdrop_path
+    json.tmdbCardUrl "https://image.tmdb.org/t/p/w780#{@movie.tmdb_backdrop_path}" if @movie.tmdb_backdrop_path
+    json.tmdbVideoKey @movie.tmdb_video_key if @movie.tmdb_video_key.present?
+    json.tmdbVideoSite @movie.tmdb_video_site if @movie.tmdb_video_site.present?
 end
 
 json.tags do 

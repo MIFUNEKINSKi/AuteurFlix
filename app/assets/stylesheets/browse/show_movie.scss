@@ -30,10 +30,39 @@
     background: #000;
 }
 
+.show-movie-iframe {
+    border: none;
+    aspect-ratio: 16 / 9;
+    width: 100vw;
+    height: 56.25vw;
+    max-height: 100vh;
+    max-width: 177.78vh;
+    background: #000;
+}
+
 .show-movie-loading {
     color: #fff;
     font-size: 22px;
     opacity: 0.8;
+}
+
+.show-movie-empty {
+    color: #fff;
+    text-align: center;
+    padding: 40px;
+    max-width: 600px;
+
+    h2 {
+        margin: 0 0 8px;
+        font-size: 26px;
+        font-weight: 800;
+    }
+
+    p {
+        margin: 0;
+        font-size: 16px;
+        color: #b8b8b8;
+    }
 }
 
 .show-back {

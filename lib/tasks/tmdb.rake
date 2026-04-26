@@ -69,6 +69,43 @@ namespace :tmdb do
     end
   end
 
+  desc "Sync all directors with TMDB person data (bio, portrait, birth/death year)"
+  task sync_directors: :environment do
+    puts "Syncing directors with TMDB..."
+    service = TmdbService.new
+    Director.where.not(tmdb_person_id: nil).find_each do |director|
+      result = service.sync_director(director)
+      case result[:status]
+      when :synced
+        puts "  v #{director.name} (#{director.country}, b. #{director.birth_year})"
+      when :no_tmdb_id
+        puts "  - #{director.name} skipped (no tmdb_person_id)"
+      when :error
+        puts "  x #{director.name}: #{result[:error]}"
+      end
+      sleep(0.3)
+    end
+  end
+
+  desc "Ingest a director's filmography from TMDB. Usage: rake 'tmdb:ingest_director[Bong Joon Ho]' or 'tmdb:ingest_director[Bong Joon Ho,15]'"
+  task :ingest_director, [:director_name, :limit, :min_year] => :environment do |_t, args|
+    name = args[:director_name]
+    raise "Usage: rake 'tmdb:ingest_director[Director Name]'" if name.blank?
+
+    director = Director.find_by(name: name) || Director.find_by(slug: name.parameterize)
+    raise "Director '#{name}' not found in DB. Seed it first." unless director
+    raise "Director '#{name}' has no tmdb_person_id set." if director.tmdb_person_id.blank?
+
+    limit = (args[:limit] || 25).to_i
+    min_year = args[:min_year] ? args[:min_year].to_i : nil
+
+    puts "Ingesting up to #{limit} films directed by #{director.name} (TMDB ##{director.tmdb_person_id})..."
+    service = TmdbService.new
+    result = service.ingest_director_filmography(director, limit: limit, min_year: min_year)
+
+    puts "  created: #{result[:created]}, updated: #{result[:updated]}, skipped: #{result[:skipped]}"
+  end
+
   desc "Show TMDB sync status for all movies"
   task status: :environment do
     puts "TMDB Sync Status"

@@ -81,14 +81,31 @@ const ShowMovie: React.FC = () => {
         </svg>
         <span>Back</span>
       </button>
-      <video
-        autoPlay
-        muted
-        className="show-movie"
-        src={currentMovie.videoUrl}
-        controls
-        playsInline
-      />
+      {currentMovie.videoUrl ? (
+        <video
+          autoPlay
+          muted
+          className="show-movie"
+          src={currentMovie.videoUrl}
+          controls
+          playsInline
+        />
+      ) : currentMovie.tmdbVideoKey && currentMovie.tmdbVideoSite === 'YouTube' ? (
+        <iframe
+          className="show-movie show-movie-iframe"
+          src={`https://www.youtube.com/embed/${currentMovie.tmdbVideoKey}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
+          title={currentMovie.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <div className="show-movie-empty">
+          <div>
+            <h2>Trailer not available</h2>
+            <p>We don't have a trailer for "{currentMovie.title}" yet.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
