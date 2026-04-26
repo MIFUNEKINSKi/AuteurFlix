@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { login } from '../../store/api';
 
 const SignupField: React.FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,13 +19,30 @@ const SignupField: React.FC = () => {
     }
   };
 
+  const handleDemo = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(login({ email: 'dan@gmail.com', password: 'password' }));
+  };
+
   return (
     <div className="signup-container">
       <section className="hero-text">
-        <h1>Curated list of movies from Auteur directors and their eras!</h1>
-        <h2>Auteur - a filmmaker whose personal influence and artistic control over a movie are so great that the filmmaker is regarded as the author of the movie.</h2>
-        <h3>Ready to watch? Enter your email to so we can get to the payment.</h3>
+        <p className="hero-eyebrow">The director's cinema, streamed.</p>
+        <h1>Films by the people who made them.</h1>
+        <h2>
+          Kurosawa. Bergman. Lynch. Bong Joon-ho. 27 more auteurs, every
+          one of their films, every trailer.
+        </h2>
+        <h3>Free demo, no email needed — built as a portfolio piece.</h3>
       </section>
+
+      <div className="splash-cta-row">
+        <button type="button" className="signup-btn signup-btn-primary" onClick={handleDemo}>
+          Try the Demo
+        </button>
+        <span className="splash-cta-or">or sign up with your email</span>
+      </div>
+
       <form className="signup-field-form" onSubmit={handleSubmit}>
         <div className="input-container">
           <input
