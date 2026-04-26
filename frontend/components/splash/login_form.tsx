@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
     <div>
       <div className="login-main">
         <header className="login-header">
-          <Link to="./" className="home-button"><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
+          <Link to="./" className="home-button"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
         </header>
         <div className="login-container">
           <h2>Sign In</h2>

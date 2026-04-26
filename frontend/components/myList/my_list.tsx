@@ -40,7 +40,18 @@ const MyList: React.FC = () => {
       <BrowseHeader logout={handleLogout} resetProfile={handleResetProfile} />
       <div key={currentProfileId} className="my-list-browse">
         <h1>My List</h1>
-        <div className="my-list-list">{display}</div>
+        {selectedMovies.length === 0 ? (
+          <div className="my-list-empty">
+            <strong>Your list is empty.</strong>
+            <span>
+              Find a film you love on the home page, hover over it, and tap the
+              <span aria-hidden="true"> + </span>
+              icon to save it here.
+            </span>
+          </div>
+        ) : (
+          <div className="my-list-list">{display}</div>
+        )}
       </div>
     </div>
   );

@@ -28,9 +28,11 @@ const Search: React.FC = () => {
       setMovieMatches([]);
       setSearchString(query);
     } else {
-      const byTitle = movies.filter((m) => m.title.toLowerCase().includes(query.toLowerCase()));
-      const bySummary = movies.filter((m) => m.summary.toLowerCase().includes(query.toLowerCase()));
-      setMovieMatches([byTitle, bySummary]);
+      const q = query.toLowerCase();
+      const byTitle = movies.filter((m) => m.title.toLowerCase().includes(q));
+      const byDirector = movies.filter((m) => m.director?.toLowerCase().includes(q));
+      const bySummary = movies.filter((m) => m.summary.toLowerCase().includes(q));
+      setMovieMatches([byTitle, byDirector, bySummary]);
       setSearchString(query);
     }
   };

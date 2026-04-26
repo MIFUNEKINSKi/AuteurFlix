@@ -1,8 +1,7 @@
 /* ------------------------------------------------------------------ */
-/* Details modal — modern, fluid, animated                             */
+/* Details modal - auteur-focused, fluid, animated                     */
 /* ------------------------------------------------------------------ */
 
-/* Lock the page when modal is open */
 body.modal-open-body {
     overflow: hidden !important;
     height: 100vh !important;
@@ -16,7 +15,8 @@ body.modal-open-body {
     transform: none;
 }
 
-/* Backdrop */
+/* Backdrop --------------------------------------------------------- */
+
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -31,7 +31,7 @@ body.modal-open-body {
         opacity 0.25s ease;
 
     &.open {
-        background: rgba(0, 0, 0, 0.75);
+        background: rgba(0, 0, 0, 0.78);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
         opacity: 1;
@@ -42,12 +42,13 @@ body.modal-open-body {
     }
 }
 
-/* Modal panel */
+/* Panel ------------------------------------------------------------ */
+
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: min(92vw, 960px);
+    width: #{"min(92vw, 960px)"};
     max-height: 90vh;
     background: #181818;
     color: #fff;
@@ -74,7 +75,6 @@ body.modal-open-body {
         opacity: 0;
     }
 
-    /* Modern scrollbar inside modal */
     &::-webkit-scrollbar {
         width: 8px;
     }
@@ -90,7 +90,8 @@ body.modal-open-body {
     }
 }
 
-/* Hero (video + poster) */
+/* Hero ------------------------------------------------------------- */
+
 .modal-hero {
     position: relative;
     width: 100%;
@@ -136,7 +137,7 @@ body.modal-open-body {
     background: linear-gradient(
         to top,
         #181818 0%,
-        rgba(24, 24, 24, 0.8) 18%,
+        rgba(24, 24, 24, 0.85) 18%,
         rgba(24, 24, 24, 0.2) 55%,
         rgba(24, 24, 24, 0) 100%
     );
@@ -151,21 +152,44 @@ body.modal-open-body {
     z-index: 4;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
 }
 
 .modal-title {
     margin: 0;
-    font-size: 42px;
+    font-size: #{"clamp(28px, 4vw, 44px)"};
     font-weight: 800;
-    letter-spacing: -0.01em;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.modal-subtitle {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #d8d8d8;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+
+    .modal-director {
+        color: #fff;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+    }
+
+    .modal-dot {
+        color: #888;
+    }
 }
 
 .modal-btns {
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-top: 4px;
 }
 
 .modal-play {
@@ -228,10 +252,11 @@ body.modal-open-body {
     }
 }
 
+/* Sound - bottom-right of hero */
 .modal-sound-btn {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    bottom: 28px;
+    right: 48px;
     z-index: 5;
     width: 40px;
     height: 40px;
@@ -240,37 +265,39 @@ body.modal-open-body {
     justify-content: center;
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
     border-radius: 50%;
     cursor: pointer;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     transition:
         background-color 0.18s ease,
-        border-color 0.18s ease;
+        border-color 0.18s ease,
+        transform 0.18s ease;
 
     &:hover {
-        background: rgba(0, 0, 0, 0.75);
+        background: rgba(0, 0, 0, 0.78);
         border-color: #fff;
+        transform: scale(1.06);
     }
 }
 
-/* Close button */
+/* Close - top-right, alone */
 .exit-modal {
     position: absolute;
     top: 16px;
-    right: 64px;
+    right: 16px;
     width: 36px;
     height: 36px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
     color: #fff;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 6;
+    z-index: 11000;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     transition:
@@ -283,32 +310,47 @@ body.modal-open-body {
     }
 }
 
-/* Details section */
+/* Details ---------------------------------------------------------- */
+
 .modal-details {
     padding: 24px 48px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
 }
 
-.modal-meta {
+.modal-details-main {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px;
-    font-size: 15px;
-    color: #d2d2d2;
+    flex-direction: column;
+    gap: 12px;
+}
 
-    .meta-year {
-        color: #fff;
-        font-weight: 600;
+.modal-rating-row {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .tmdb-rating {
+        color: #f5c518;
+        font-weight: 700;
+        font-size: 16px;
     }
 
-    .meta-director {
-        padding: 2px 10px;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 999px;
-        font-size: 13px;
+    .tmdb-rating-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #999;
     }
 }
 
@@ -320,20 +362,55 @@ body.modal-open-body {
     max-width: 70ch;
 }
 
-.tmdb-rating {
-    color: #f5c518;
-    font-weight: 700;
-    font-size: 15px;
+.modal-details-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+
+    .aside-row {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .aside-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #777;
+    }
+
+    .aside-value {
+        color: #e5e5e5;
+    }
 }
 
-/* Recommendations */
+/* Recommendations -------------------------------------------------- */
+
 .modal-recommendations {
-    padding: 12px 48px 48px;
+    padding: 12px 48px 32px;
+
+    & + .modal-recommendations {
+        padding-top: 0;
+    }
+
+    &:last-child {
+        padding-bottom: 48px;
+    }
 
     h3 {
         margin: 0 0 18px;
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    @media (max-width: 768px) {
+        padding-left: 24px;
+        padding-right: 24px;
     }
 }
 
@@ -393,6 +470,10 @@ body.modal-open-body {
     }
 }
 
+.recommendation-thumb-placeholder {
+    background: linear-gradient(135deg, #1f1f1f 0%, #0f0f0f 100%);
+}
+
 .recommendation-card:hover .recommendation-thumb img {
     transform: scale(1.04);
 }
@@ -409,38 +490,45 @@ body.modal-open-body {
         font-weight: 700;
         color: #fff;
     }
+
+    .recommendation-director {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: #b8b8b8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .recommendation-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-size: 12px;
     color: #a0a0a0;
 
-    .tmdb-rating-sm {
+    .rec-rating {
         margin-left: auto;
         color: #f5c518;
         font-weight: 700;
     }
 }
 
-/* Responsive tweaks */
+/* Responsive ------------------------------------------------------- */
+
 @media (max-width: 768px) {
     .modal-hero-content {
         padding: 0 24px;
         bottom: 20px;
-        gap: 12px;
+        gap: 10px;
     }
 
-    .modal-title {
-        font-size: 28px;
-    }
-
-    .modal-details,
-    .modal-recommendations {
-        padding-left: 24px;
-        padding-right: 24px;
+    .modal-sound-btn {
+        right: 24px;
+        bottom: 20px;
+        width: 36px;
+        height: 36px;
     }
 }

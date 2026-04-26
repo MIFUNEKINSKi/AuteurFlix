@@ -96,8 +96,6 @@ const MovieDetail: React.FC<Props> = ({
       currentProfileId={currentProfileId}
       movie={movie}
       toggleModal={() => setShowModal(false)}
-      soundOff={() => {}}
-      display={null}
       sound={sound}
     />
   ) : null;
@@ -142,10 +140,10 @@ const MovieDetail: React.FC<Props> = ({
         <div className="card-info">
           <div className="card-buttons">
             <div className="card-buttons-left">
-              <Link to={`/watch/${movie.id}`} className="card-btn card-play" onClick={(e) => e.stopPropagation()}>
+              <Link to={`/watch/${movie.id}`} className="card-btn card-play" onClick={(e) => e.stopPropagation()} aria-label="Play">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
               </Link>
-              <button className="card-btn card-add" onClick={toggleListItem} title={onList() ? 'Remove from List' : 'Add to List'}>
+              <button className="card-btn card-add" onClick={toggleListItem} title={onList() ? 'Remove from List' : 'Add to List'} aria-label={onList() ? 'Remove from List' : 'Add to List'}>
                 {onList() ? (
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
                 ) : (
@@ -153,13 +151,18 @@ const MovieDetail: React.FC<Props> = ({
                 )}
               </button>
             </div>
-            <button className="card-btn card-expand" onClick={openModal} title="More Info">
+            <button className="card-btn card-expand" onClick={openModal} title="More Info" aria-label="More Info">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </button>
           </div>
           <p className="card-title">{movie.title}</p>
+          <p className="card-director">
+            <span>{movie.director}</span>
+            <span className="card-dot">·</span>
+            <span>{movie.year}</span>
+          </p>
           <div className="card-meta">
             {tagDisplay}
           </div>

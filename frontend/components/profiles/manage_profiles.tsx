@@ -63,7 +63,7 @@ const ManageProfiles: React.FC = () => {
 
   return (
     <div>
-      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
+      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
       <div className="edit-profiles-container">
         <h1>Manage Profiles:</h1>
         <ul className="edit-profiles-list">

@@ -39,7 +39,7 @@ const ProfilesIndex: React.FC<Props> = ({ profiles, userId, handleClick, fetchPr
 
   return (
     <div>
-      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="Napflix" /></Link>
+      <Link to="/" className="profiles-home-btn"><img id="logo" src={window.logoURL} alt="AuteurFlix" /></Link>
       <div className="profiles-container">
         <h1>Who's Watching?</h1>
         <ul className="profiles-list">
