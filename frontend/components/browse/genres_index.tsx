@@ -9,12 +9,14 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout as logoutThunk } from '../../store/api';
 import { fetchMovies, createListItem, deleteListItem } from '../../store/api';
 import { resetCurrentProfile } from '../../store/sessionSlice';
-import type { Movie } from '../../types';
+import { fetchDirectors } from '../../util/movie_api_util';
+import type { Movie, DirectorSummary } from '../../types';
 
 const GenresIndex: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [heroSound, setHeroSound] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
+  const [directors, setDirectors] = useState<DirectorSummary[]>([]);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const dispatch = useAppDispatch();
 
@@ -32,6 +34,7 @@ const GenresIndex: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchMovies());
+    fetchDirectors().then(setDirectors).catch(() => {});
   }, [dispatch]);
 
   useEffect(() => {
@@ -73,6 +76,53 @@ const GenresIndex: React.FC = () => {
       .map((m) => m.id);
   }, [movies]);
 
+  // Decade rows derived from movie.year (drops the static seed-based
+  // decade tags that only knew about the original 19 films).
+  const decadeRows = useMemo(() => {
+    const buckets = new Map<number, Movie[]>();
+    Object.values(movies).forEach((m) => {
+      if (!m.year) return;
+      const decade = Math.floor(m.year / 10) * 10;
+      const arr = buckets.get(decade) ?? [];
+      arr.push(m);
+      buckets.set(decade, arr);
+    });
+    return Array.from(buckets.entries())
+      .filter(([, arr]) => arr.length >= 4)
+      .sort(([a], [b]) => b - a) // newest first
+      .map(([decade, arr]) => ({
+        decade,
+        label: `${decade}s`,
+        movieIds: arr
+          .sort((a, b) => (b.tmdbVoteCount ?? 0) - (a.tmdbVoteCount ?? 0))
+          .map((m) => m.id),
+      }));
+  }, [movies]);
+
+  // National-cinema rows: bucket movies by their director's country.
+  const countryRows = useMemo(() => {
+    if (directors.length === 0) return [];
+    const directorCountry = new Map<string, string>();
+    directors.forEach((d) => { if (d.country) directorCountry.set(d.name, d.country); });
+    const buckets = new Map<string, Movie[]>();
+    Object.values(movies).forEach((m) => {
+      const c = directorCountry.get(m.director);
+      if (!c) return;
+      const arr = buckets.get(c) ?? [];
+      arr.push(m);
+      buckets.set(c, arr);
+    });
+    return Array.from(buckets.entries())
+      .filter(([, arr]) => arr.length >= 6)
+      .sort(([, a], [, b]) => b.length - a.length)
+      .map(([country, arr]) => ({
+        country,
+        movieIds: arr
+          .sort((a, b) => (b.tmdbVoteCount ?? 0) - (a.tmdbVoteCount ?? 0))
+          .map((m) => m.id),
+      }));
+  }, [movies, directors]);
+
   if (!topMovie || Object.keys(movies).length === 0) {
     return (
       <div className="browse-main">
@@ -82,11 +132,9 @@ const GenresIndex: React.FC = () => {
     );
   }
 
+  // Drop seed-era decade genres ("60s", "70s") -- now derived from movie.year.
   const isDecadeGenre = (g: { genre: string }) => /^\d{2,4}s$/.test(g.genre.trim());
   const directorGenres = genres.filter((g) => !isDecadeGenre(g));
-  const decadeGenres = genres
-    .filter(isDecadeGenre)
-    .sort((a, b) => parseInt(a.genre, 10) - parseInt(b.genre, 10));
 
   const rowTitle = (text: string, linkTo?: string, linkLabel = 'Explore All') => (
     <h2 className="row-title">
@@ -101,12 +149,11 @@ const GenresIndex: React.FC = () => {
     </h2>
   );
 
-  const genreRow = (genre: { id: number; genre: string }, label?: string) => {
-    const isDirectorRow = !isDecadeGenre(genre);
-    const slug = isDirectorRow ? slugifyDirector(genre.genre) : null;
+  const directorGenreRow = (genre: { id: number; genre: string }) => {
+    const slug = slugifyDirector(genre.genre);
     return (
       <div key={genre.id} className="genre-name">
-        {rowTitle(label ?? genre.genre, slug ? `/director/${slug}` : undefined, slug ? 'View director' : undefined)}
+        {rowTitle(genre.genre, `/director/${slug}`, 'View director')}
         <GenreList
           myList={myList}
           currentProfileId={currentProfileId}
@@ -120,6 +167,23 @@ const GenresIndex: React.FC = () => {
       </div>
     );
   };
+
+  const movieIdsRow = (key: string, title: string, ids: number[]) => (
+    <div key={key} className="genre-name">
+      {rowTitle(title)}
+      <GenreList
+        myList={myList}
+        currentProfileId={currentProfileId}
+        createListItem={handleCreateListItem}
+        deleteListItem={handleDeleteListItem}
+        movies={movies}
+        movieIds={ids}
+        genreId={null}
+        genres={genres}
+        tags={tags}
+      />
+    </div>
+  );
 
   const myListSection = myList.length ? (
     <div key={currentProfileId} className="genre-name">
@@ -154,8 +218,12 @@ const GenresIndex: React.FC = () => {
     </div>
   ) : null;
 
-  const decadeHeader = decadeGenres.length > 0 ? (
+  const decadeHeader = decadeRows.length > 0 ? (
     <h3 className="feed-section-title">By Decade</h3>
+  ) : null;
+
+  const countryHeader = countryRows.length > 0 ? (
+    <h3 className="feed-section-title">National Cinema</h3>
   ) : null;
 
   const modal = showModal ? (
@@ -263,9 +331,11 @@ const GenresIndex: React.FC = () => {
         <AuteursRow />
         {myListSection}
         {criticsPicksSection}
-        {directorGenres.map((g) => genreRow(g))}
+        {directorGenres.map((g) => directorGenreRow(g))}
+        {countryHeader}
+        {countryRows.map((c) => movieIdsRow(`country-${c.country}`, c.country, c.movieIds))}
         {decadeHeader}
-        {decadeGenres.map((g) => genreRow(g, `${g.genre}`))}
+        {decadeRows.map((d) => movieIdsRow(`decade-${d.decade}`, d.label, d.movieIds))}
       </div>
       {modal}
     </div>
