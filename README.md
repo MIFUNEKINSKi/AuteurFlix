@@ -98,6 +98,10 @@ Implementation status of the auteur-centric overhaul.
   search and chevron icons
 - Director matching in header search
 - My List empty state
+- Profile delete bugfix: implicit `type="submit"` on EditProfile's Delete
+  and Cancel buttons was reloading the page; explicit `type="button"`
+  plus a corrected `deleteProfile` reducer keeps the user on the manage
+  screen
 - Removed legacy class-component scroll math, dead `top-sound-off` CSS, and
   unused `display`/`soundOff` modal props
 
