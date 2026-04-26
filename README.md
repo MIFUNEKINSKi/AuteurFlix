@@ -104,14 +104,51 @@ Implementation status of the auteur-centric overhaul.
   screen
 - Removed legacy class-component scroll math, dead `top-sound-off` CSS, and
   unused `display`/`soundOff` modal props
+- **Director landing pages** at `/director/:slug` with portrait, bio,
+  country, lifespan, and a filmography grid. New `directors` table seeded
+  with 7 hand-written bios (Kurosawa, Powell & Pressburger, Koreeda,
+  Fellini, Bong Joon-ho, Buñuel, Kubrick); director model auto-slugifies
+  the name; `Api::DirectorsController#show` returns the director plus the
+  movies/tags/genres needed to render the filmography
+- **Featured Auteurs row** at the top of the home feed: a horizontal
+  carousel of circular director portraits (with initials fallback when
+  no portrait), clickable through to the director page. Director names
+  are now clickable from the hero subtitle, every card, the modal
+  subtitle, and the modal aside
+- **Critics' Picks row**: top 12 movies by TMDB rating, breaking ties on
+  vote count. Home feed reordered: Featured Auteurs → My List → Critics'
+  Picks → director rows → "By Decade" rows
+- **TMDB poster integration**: cards/hero/modal now use `tmdbBackdropUrl`
+  (w1280) and `tmdbCardUrl` (w780) when available, falling back to the
+  seeded photo/thumbnail. Director-show endpoint exposes the same fields
+- **TMDB video keys + YouTube fallback**: new `tmdb_video_key` /
+  `tmdb_video_site` columns; `TmdbService#best_trailer` picks the best
+  YouTube trailer for each film during sync. The `/watch/:id` page
+  renders a YouTube iframe when no local `videoUrl` is present, with a
+  "Trailer not available" empty state if neither source is set
+- **TMDB person + filmography ingest**: `TmdbService#sync_director`
+  populates a director's bio/portrait/birth-death/country from
+  `/person/:id`. `TmdbService#ingest_director_filmography` walks a
+  director's movie credits, upserts each Movie with TMDB metadata +
+  trailer key, and tags it with the director's matching genre. New rake
+  tasks: `tmdb:sync_directors` and
+  `tmdb:ingest_director[Name,limit,min_year]`
+- **Asset imports**: removed the 14-line `window.*` script block from
+  the Rails layout and migrated 14 consumers to webpack asset imports
+  via `frontend/assets/index.ts`. TypeScript wildcard module declarations
+  cover `.png/.jpg/.jpeg/.gif/.webp`
 
 **Next up**
-- Director landing page (`/director/:slug`) with portrait, bio, and
-  filmography — clickable from cards, modal, and hero
+- Backfill director portraits + bios from TMDB by running
+  `bundle exec rake tmdb:sync_directors` on a deploy with `TMDB_API_KEY`
+- Demonstrate the catalog-growth path with a real run of
+  `tmdb:ingest_director[Bong Joon Ho,12,1996]`
 - "Top 10" numbered row driven by TMDB rating × vote count
 - Continue Watching row backed by playback progress
-- National-cinema browse axis (Japan, Italy, France, etc.)
-- Replace Rails-injected `window.logoURL` / `window.avatar` globals with
-  webpack asset imports
+- National-cinema browse axis (Japan, Italy, France, etc.) once enough
+  films are ingested to populate per-country rows
+- Trailer-not-available fallback in modal hero (currently only on
+  `/watch/:id`) so ingested films without a YouTube key degrade
+  gracefully in the details view
 
 
