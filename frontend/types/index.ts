@@ -72,6 +72,31 @@ export interface RecommendedMovie {
   tmdbId?: number;
 }
 
+export interface DirectorSummary {
+  id: number;
+  name: string;
+  slug: string;
+  country?: string | null;
+  birthYear?: number | null;
+  deathYear?: number | null;
+  portraitUrl?: string | null;
+  filmCount: number;
+}
+
+export interface DirectorDetail {
+  id: number;
+  name: string;
+  slug: string;
+  bio?: string | null;
+  country?: string | null;
+  birthYear?: number | null;
+  deathYear?: number | null;
+  portraitUrl?: string | null;
+  movies: Record<number, Movie>;
+  genres: Record<number, Genre>;
+  tags: Record<number, Tag>;
+}
+
 // Redux state shape
 
 export interface EntitiesState {

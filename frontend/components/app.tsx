@@ -9,6 +9,7 @@ import ManageProfiles from './profiles/manage_profiles';
 import ShowMovie from './movies/show_movie';
 import MyList from './myList/my_list';
 import Search from './search/search';
+import DirectorPage from './director/director_page';
 
 const App: React.FC = () => (
   <div>
@@ -21,6 +22,7 @@ const App: React.FC = () => (
       <Route path="/watch/:movieId" element={<ProtectedRoute><ShowMovie /></ProtectedRoute>} />
       <Route path="/browse/my-list" element={<ProtectedRoute><MyList /></ProtectedRoute>} />
       <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
+      <Route path="/director/:slug" element={<ProtectedRoute><DirectorPage /></ProtectedRoute>} />
     </Routes>
   </div>
 );

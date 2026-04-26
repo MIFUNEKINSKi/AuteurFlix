@@ -2,7 +2,9 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import BrowseHeader from './browse_header';
 import GenreList from './genre_list';
 import DetailsModal from './details_modal';
+import AuteursRow from './auteurs_row';
 import { Link } from 'react-router-dom';
+import { slugifyDirector } from '../../util/movie_api_util';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout as logoutThunk } from '../../store/api';
 import { fetchMovies, createListItem, deleteListItem } from '../../store/api';
@@ -56,6 +58,21 @@ const GenresIndex: React.FC = () => {
     return h > 0 ? `${h}h ${m}m` : `${m}m`;
   };
 
+  const criticsPicks = useMemo(() => {
+    return Object.values(movies)
+      .filter((m) => typeof m.tmdbRating === 'number' && (m.tmdbRating ?? 0) > 0)
+      .sort((a, b) => {
+        const ra = a.tmdbRating ?? 0;
+        const rb = b.tmdbRating ?? 0;
+        if (ra !== rb) return rb - ra;
+        const va = a.tmdbVoteCount ?? 0;
+        const vb = b.tmdbVoteCount ?? 0;
+        return vb - va;
+      })
+      .slice(0, 12)
+      .map((m) => m.id);
+  }, [movies]);
+
   if (!topMovie || Object.keys(movies).length === 0) {
     return (
       <div className="browse-main">
@@ -65,24 +82,43 @@ const GenresIndex: React.FC = () => {
     );
   }
 
-  const genreRows = genres.map((genre) => (
-    <div key={genre.id} className="genre-name">
-      <h2 className="row-title">
-        <span>{genre.genre}</span>
-        <span className="row-explore" aria-hidden="true">Explore All ›</span>
-      </h2>
-      <GenreList
-        myList={myList}
-        currentProfileId={currentProfileId}
-        createListItem={handleCreateListItem}
-        deleteListItem={handleDeleteListItem}
-        movies={movies}
-        genreId={genre.id}
-        genres={genres}
-        tags={tags}
-      />
-    </div>
-  ));
+  const isDecadeGenre = (g: { genre: string }) => /^\d{2,4}s$/.test(g.genre.trim());
+  const directorGenres = genres.filter((g) => !isDecadeGenre(g));
+  const decadeGenres = genres
+    .filter(isDecadeGenre)
+    .sort((a, b) => parseInt(a.genre, 10) - parseInt(b.genre, 10));
+
+  const genreRow = (genre: { id: number; genre: string }, label?: string) => {
+    const isDirectorRow = !isDecadeGenre(genre);
+    const slug = isDirectorRow ? slugifyDirector(genre.genre) : null;
+    return (
+      <div key={genre.id} className="genre-name">
+        <h2 className="row-title">
+          {slug ? (
+            <Link to={`/director/${slug}`} className="row-title-link">
+              <span>{label ?? genre.genre}</span>
+              <span className="row-explore" aria-hidden="true">View director ›</span>
+            </Link>
+          ) : (
+            <>
+              <span>{label ?? genre.genre}</span>
+              <span className="row-explore" aria-hidden="true">Explore All ›</span>
+            </>
+          )}
+        </h2>
+        <GenreList
+          myList={myList}
+          currentProfileId={currentProfileId}
+          createListItem={handleCreateListItem}
+          deleteListItem={handleDeleteListItem}
+          movies={movies}
+          genreId={genre.id}
+          genres={genres}
+          tags={tags}
+        />
+      </div>
+    );
+  };
 
   const myListSection = myList.length ? (
     <div key={currentProfileId} className="genre-name">
@@ -101,6 +137,30 @@ const GenresIndex: React.FC = () => {
         genres={genres}
       />
     </div>
+  ) : null;
+
+  const criticsPicksSection = criticsPicks.length > 0 ? (
+    <div className="genre-name">
+      <h2 className="row-title">
+        <span>Critics' Picks</span>
+        <span className="row-explore" aria-hidden="true">Explore All ›</span>
+      </h2>
+      <GenreList
+        myList={myList}
+        currentProfileId={currentProfileId}
+        createListItem={handleCreateListItem}
+        deleteListItem={handleDeleteListItem}
+        movies={movies}
+        movieIds={criticsPicks}
+        genreId={null}
+        tags={tags}
+        genres={genres}
+      />
+    </div>
+  ) : null;
+
+  const decadeHeader = decadeGenres.length > 0 ? (
+    <h3 className="feed-section-title">By Decade</h3>
   ) : null;
 
   const modal = showModal ? (
@@ -148,7 +208,9 @@ const GenresIndex: React.FC = () => {
           <p className="hero-eyebrow">Featured Auteur</p>
           <h1 className="hero-title">{topMovie.title}</h1>
           <p className="hero-meta">
-            <span className="hero-director">{topMovie.director}</span>
+            <Link to={`/director/${slugifyDirector(topMovie.director)}`} className="hero-director-link">
+              <span className="hero-director">{topMovie.director}</span>
+            </Link>
             <span className="hero-dot">·</span>
             <span>{topMovie.year}</span>
             <span className="hero-dot">·</span>
@@ -203,8 +265,12 @@ const GenresIndex: React.FC = () => {
       </section>
 
       <div className="genres-browse">
+        <AuteursRow />
         {myListSection}
-        {genreRows}
+        {criticsPicksSection}
+        {directorGenres.map((g) => genreRow(g))}
+        {decadeHeader}
+        {decadeGenres.map((g) => genreRow(g, `${g.genre}`))}
       </div>
       {modal}
     </div>

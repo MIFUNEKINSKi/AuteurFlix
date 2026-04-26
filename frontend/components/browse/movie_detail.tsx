@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import DetailsModal from './details_modal';
 import { Link } from 'react-router-dom';
+import { slugifyDirector } from '../../util/movie_api_util';
 import type { Movie, Genre, Tag, ListItem } from '../../types';
 
 interface Props {
@@ -159,7 +160,13 @@ const MovieDetail: React.FC<Props> = ({
           </div>
           <p className="card-title">{movie.title}</p>
           <p className="card-director">
-            <span>{movie.director}</span>
+            <Link
+              to={`/director/${slugifyDirector(movie.director)}`}
+              className="card-director-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {movie.director}
+            </Link>
             <span className="card-dot">·</span>
             <span>{movie.year}</span>
           </p>

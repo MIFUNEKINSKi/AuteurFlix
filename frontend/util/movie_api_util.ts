@@ -1,4 +1,7 @@
-import type { MoviesResponse, MovieResponse, ProfileWithList, RecommendedMovie } from '../types';
+import type {
+  MoviesResponse, MovieResponse, ProfileWithList, RecommendedMovie,
+  DirectorSummary, DirectorDetail,
+} from '../types';
 
 export const fetchMovies = async (): Promise<MoviesResponse> => {
   const res = await fetch('/api/movies');
@@ -30,6 +33,26 @@ export const deleteListItem = async (listId: number): Promise<ProfileWithList> =
 
 export const fetchRecommendations = async (movieId: number): Promise<RecommendedMovie[]> => {
   const res = await fetch(`/api/movies/${movieId}/recommendations`);
+  if (!res.ok) throw await res.json();
+  return res.json();
+};
+
+export const slugifyDirector = (name: string): string =>
+  name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+export const fetchDirectors = async (): Promise<DirectorSummary[]> => {
+  const res = await fetch('/api/directors');
+  if (!res.ok) throw await res.json();
+  return res.json();
+};
+
+export const fetchDirector = async (slug: string): Promise<DirectorDetail> => {
+  const res = await fetch(`/api/directors/${slug}`);
   if (!res.ok) throw await res.json();
   return res.json();
 };

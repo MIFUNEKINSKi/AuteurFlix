@@ -9,18 +9,25 @@ interface Props {
   myList: ListItem[];
   currentProfileId: number | null;
   genreId: number | null;
+  /** When provided, override genre/myList selection with an explicit ordered id list. */
+  movieIds?: number[];
   createListItem: (args: { movieId: number; profileId: number }) => void;
   deleteListItem: (listId: number) => void;
 }
 
 const GenreList: React.FC<Props> = ({
-  movies, genres, tags, myList, currentProfileId, genreId, createListItem, deleteListItem,
+  movies, genres, tags, myList, currentProfileId, genreId, movieIds, createListItem, deleteListItem,
 }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const selectMovies = useCallback((): Movie[] => {
+    if (movieIds) {
+      return movieIds
+        .map((id) => movies[id])
+        .filter((m): m is Movie => m !== undefined);
+    }
     if (!genreId) {
       return myList
         .map((item) => movies[item.movie_id])
@@ -30,7 +37,7 @@ const GenreList: React.FC<Props> = ({
     return selectedTags
       .map((tag) => movies[tag.movie_id])
       .filter((m): m is Movie => m !== undefined);
-  }, [movies, tags, myList, genreId]);
+  }, [movies, tags, myList, genreId, movieIds]);
 
   const checkScroll = useCallback(() => {
     const el = sliderRef.current;

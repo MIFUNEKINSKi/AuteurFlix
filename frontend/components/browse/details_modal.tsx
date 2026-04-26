@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { Movie, ListItem, RecommendedMovie, Genre, Tag } from '../../types';
-import { fetchRecommendations } from '../../util/movie_api_util';
+import { fetchRecommendations, slugifyDirector } from '../../util/movie_api_util';
 import { useAppSelector } from '../../store/hooks';
 
 interface Props {
@@ -191,7 +191,13 @@ const DetailsModal: React.FC<Props> = ({
           <div className="modal-hero-content">
             <h2 className="modal-title">{activeMovie.title}</h2>
             <p className="modal-subtitle">
-              <span className="modal-director">{activeMovie.director}</span>
+              <Link
+                to={`/director/${slugifyDirector(activeMovie.director)}`}
+                className="modal-director-link"
+                onClick={handleClose}
+              >
+                <span className="modal-director">{activeMovie.director}</span>
+              </Link>
               <span className="modal-dot">·</span>
               <span>{activeMovie.year}</span>
               <span className="modal-dot">·</span>
@@ -259,7 +265,13 @@ const DetailsModal: React.FC<Props> = ({
           <aside className="modal-details-aside">
             <div className="aside-row">
               <span className="aside-label">Director</span>
-              <span className="aside-value">{activeMovie.director}</span>
+              <Link
+                to={`/director/${slugifyDirector(activeMovie.director)}`}
+                className="aside-value aside-link"
+                onClick={handleClose}
+              >
+                {activeMovie.director}
+              </Link>
             </div>
             {activeGenres.length > 0 ? (
               <div className="aside-row">

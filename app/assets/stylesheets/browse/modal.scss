@@ -174,10 +174,23 @@ body.modal-open-body {
     color: #d8d8d8;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 
+    .modal-director-link {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.18s ease;
+
+        &:hover .modal-director {
+            color: #f5c518;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+
     .modal-director {
         color: #fff;
         font-weight: 700;
         letter-spacing: 0.01em;
+        transition: color 0.18s ease;
     }
 
     .modal-dot {
@@ -385,6 +398,17 @@ body.modal-open-body {
 
     .aside-value {
         color: #e5e5e5;
+    }
+
+    .aside-link {
+        text-decoration: none;
+        transition: color 0.18s ease;
+
+        &:hover {
+            color: #f5c518;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
     }
 }
 

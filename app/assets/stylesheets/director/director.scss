@@ -1,0 +1,168 @@
+/* ------------------------------------------------------------------ */
+/* Director landing page                                                */
+/* ------------------------------------------------------------------ */
+
+.director-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #141414;
+}
+
+/* Hero ------------------------------------------------------------- */
+
+.director-hero {
+    position: relative;
+    width: 100%;
+    padding: 130px 4vw 50px;
+    background:
+        radial-gradient(ellipse 60% 80% at 20% 30%, rgba(229, 9, 20, 0.08) 0%, transparent 60%),
+        linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.director-hero-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 36px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (max-width: 740px) {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.director-portrait {
+    flex: 0 0 200px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #222;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+
+    @media (max-width: 740px) {
+        flex-basis: 140px;
+        width: 140px;
+        height: 140px;
+    }
+}
+
+.director-portrait-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    color: #d8d8d8;
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+
+    @media (max-width: 740px) {
+        font-size: 38px;
+    }
+}
+
+.director-hero-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.director-eyebrow {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #e50914;
+}
+
+.director-name {
+    margin: 0;
+    font-size: #{"clamp(2.2rem, 4.5vw, 4rem)"};
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #fff;
+}
+
+.director-meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #b8b8b8;
+
+    .director-dot {
+        color: #555;
+    }
+}
+
+.director-bio {
+    margin: 8px 0 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    max-width: 70ch;
+}
+
+/* Filmography ------------------------------------------------------ */
+
+.director-filmography {
+    width: 100%;
+    padding: 40px 4vw 80px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.director-filmography-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e5e5e5;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+}
+
+.director-films-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px 8px;
+    width: 100%;
+}
+
+.director-films-grid .card {
+    flex: none;
+    min-width: 0;
+}
+
+.director-empty {
+    color: #b8b8b8;
+    font-size: 16px;
+}
+
+/* Error / not-found ------------------------------------------------ */
+
+.director-error {
+    padding: 160px 4vw 80px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #e5e5e5;
+
+    h1 {
+        font-size: 32px;
+        font-weight: 800;
+        margin: 0 0 14px;
+    }
+
+    p {
+        font-size: 16px;
+        color: #b8b8b8;
+        margin: 0;
+    }
+}

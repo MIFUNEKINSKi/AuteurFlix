@@ -36,7 +36,8 @@ Rails.application.routes.draw do
         get :recommendations
       end
     end
+    resources :directors, only: [:index, :show], param: :slug
     resources :lists, only: [:create, :destroy]
-   
-  end 
+
+  end
 end

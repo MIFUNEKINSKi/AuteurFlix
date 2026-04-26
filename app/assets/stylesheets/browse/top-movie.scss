@@ -133,9 +133,22 @@
     color: #d8d8d8;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 
+    .hero-director-link {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.18s ease;
+
+        &:hover .hero-director {
+            color: #f5c518;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+
     .hero-director {
         color: #fff;
         font-weight: 600;
+        transition: color 0.18s ease;
     }
 
     .hero-dot {
