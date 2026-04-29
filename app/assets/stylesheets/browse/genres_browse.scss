@@ -169,6 +169,33 @@ $hover-overflow: 140px;
         }
     }
 
+    /* Stacked variant for derived rows (decade, country) -- a primary
+       label and a secondary metadata line below. Reads as editorial vs.
+       a director name with a "View director" CTA. */
+    .row-title-stacked {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+
+        .row-title-primary {
+            font-size: clamp(20px, 1.7vw, 28px);
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+        }
+
+        .row-title-meta {
+            font-size: clamp(11px, 0.85vw, 13px);
+            font-weight: 500;
+            color: #888;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+    }
+
     .row-explore {
         font-size: 13px;
         font-weight: 600;

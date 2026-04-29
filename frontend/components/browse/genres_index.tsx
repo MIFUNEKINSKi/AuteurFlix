@@ -93,6 +93,8 @@ const GenresIndex: React.FC = () => {
       .map(([decade, arr]) => ({
         decade,
         label: `${decade}s`,
+        rangeLabel: `${decade}–${decade + 9}`,
+        count: arr.length,
         movieIds: arr
           .sort((a, b) => (b.tmdbVoteCount ?? 0) - (a.tmdbVoteCount ?? 0))
           .map((m) => m.id),
@@ -117,6 +119,7 @@ const GenresIndex: React.FC = () => {
       .sort(([, a], [, b]) => b.length - a.length)
       .map(([country, arr]) => ({
         country,
+        count: arr.length,
         movieIds: arr
           .sort((a, b) => (b.tmdbVoteCount ?? 0) - (a.tmdbVoteCount ?? 0))
           .map((m) => m.id),
@@ -171,6 +174,34 @@ const GenresIndex: React.FC = () => {
   const movieIdsRow = (key: string, title: string, ids: number[]) => (
     <div key={key} className="genre-name">
       {rowTitle(title)}
+      <GenreList
+        myList={myList}
+        currentProfileId={currentProfileId}
+        createListItem={handleCreateListItem}
+        deleteListItem={handleDeleteListItem}
+        movies={movies}
+        movieIds={ids}
+        genreId={null}
+        genres={genres}
+        tags={tags}
+      />
+    </div>
+  );
+
+  // Richer title for derived rows (decade, country) -- a primary label plus
+  // a meta line with year-range or film count, styled distinctly from the
+  // director rows so the section feels editorially curated.
+  const labeledRow = (
+    key: string,
+    primary: string,
+    meta: string,
+    ids: number[],
+  ) => (
+    <div key={key} className="genre-name">
+      <h2 className="row-title row-title-stacked">
+        <span className="row-title-primary">{primary}</span>
+        <span className="row-title-meta">{meta}</span>
+      </h2>
       <GenreList
         myList={myList}
         currentProfileId={currentProfileId}
@@ -333,9 +364,19 @@ const GenresIndex: React.FC = () => {
         {criticsPicksSection}
         {directorGenres.map((g) => directorGenreRow(g))}
         {countryHeader}
-        {countryRows.map((c) => movieIdsRow(`country-${c.country}`, c.country, c.movieIds))}
+        {countryRows.map((c) => labeledRow(
+          `country-${c.country}`,
+          c.country,
+          `${c.count} ${c.count === 1 ? 'film' : 'films'}`,
+          c.movieIds,
+        ))}
         {decadeHeader}
-        {decadeRows.map((d) => movieIdsRow(`decade-${d.decade}`, d.label, d.movieIds))}
+        {decadeRows.map((d) => labeledRow(
+          `decade-${d.decade}`,
+          d.label,
+          `${d.rangeLabel} · ${d.count} ${d.count === 1 ? 'film' : 'films'}`,
+          d.movieIds,
+        ))}
       </div>
       {modal}
     </div>
