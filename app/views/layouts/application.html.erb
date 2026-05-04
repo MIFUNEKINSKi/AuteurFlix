@@ -4,9 +4,10 @@
     <title>AuteurFlix</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= favicon_link_tag asset_path('favicon.ico') %>
-
-    <%# CSS is built by webpack alongside bundle.js — bypasses Sprockets entirely %>
+    <%# All assets bypass Sprockets and load as plain static files: %>
+    <%# - /favicon.ico is in public/ %>
+    <%# - /application.css and /bundle.js are emitted by webpack into public/ %>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="/application.css" media="all">
     <script src="/bundle.js" defer></script>
 
