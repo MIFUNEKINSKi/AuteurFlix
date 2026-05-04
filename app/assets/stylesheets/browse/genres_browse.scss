@@ -230,6 +230,14 @@ $hover-overflow: 140px;
     overflow-x: auto;
     overflow-y: visible;
     scroll-snap-type: x mandatory;
+    /* Without scroll-padding, mandatory scroll-snap aligns the first
+       card's start edge to the scroll-container's content-box edge,
+       ignoring padding-left. That makes overflow rows visually start
+       30px to the left of sparse rows. Tell snap to inset by the
+       same row-padding the title uses, so every row's first card
+       lines up with the title regardless of overflow state. */
+    scroll-padding-left: $row-padding;
+    scroll-padding-right: $row-padding;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     /* room for hover expansion without pushing next row down */
