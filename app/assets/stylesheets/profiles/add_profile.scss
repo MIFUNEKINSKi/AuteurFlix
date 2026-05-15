@@ -1,112 +1,92 @@
+/* Add-profile form — minimal pass, inherits global tokens. */
 
-.add-profile-main header {
-    margin: 10px;
+.add-profile-main {
+    min-height: 100vh;
+    background: var(--ink-1);
+    padding: 20px 0 80px;
+
+    header { padding: 0 var(--gut); }
 }
-
-.add-profile-text {
-    width: 100%;
-    border-bottom: 0.25px solid rgba(128, 128, 128, .4);
-}
-
 .add-profile-content {
-    margin: 0 auto;
-    padding-top: 10%;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
+    max-width: 720px;
+    margin: 80px auto;
+    padding: 0 var(--gut);
 
-.add-profile-content h1 {
-    font-size: 50px;
+    h1 {
+        font-family: var(--ff-display);
+        font-style: italic;
+        font-size: #{"clamp(40px, 5vw, 72px)"};
+        color: var(--bone);
+        margin: 0 0 12px;
+    }
+    p {
+        color: var(--bone-2);
+        margin: 0 0 28px;
+    }
 }
-
-.add-profile-content p {
-    color: gray;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
 .add-profile-middle {
-    width: 100%;
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
     align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 10px;
-}
+    margin-bottom: 24px;
 
-.add-profile-middle img {
-    width: 150px;
-    height: auto;
-    border-radius: 5px;
-    margin-right: 20px;
+    img {
+        display: none;
+    }
 }
-
-.add-profile-input-container {
-    position: relative;
-    display: flex;
-    max-width: 50%;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.profile-name-input {
-    position: relative;
-    outline: 0;
-    width: 300px;
-    height: 40px;
-    background: gray;
-    border: none;
-    color: white;
-    font-size: 24px;
-    font-weight: 200;
-    padding-left: 10px;
-}
-
-.add-profile-input-container label {
-    position: absolute;
-    pointer-events: none;
-    color: white;
-    font-size: 24px;
-    font-weight: 200;
-    line-height: 1;
-    padding-left: 10px;
-}
-
-.add-profile-input-container:focus-within label, #profile-filled {
-    display: none;
-}
-
-.add-profile-bottom {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+.profile-name-input,
+.add-profile-input-container input {
     width: 100%;
-    height: fit-content;
-    border-top: 0.25px solid rgba(128, 128, 128, .4);
-    margin-top: 15px;
+    background: var(--ink-2);
+    border: 1px solid var(--ink-4);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    font-family: var(--ff-body);
+    font-size: 16px;
+    color: var(--bone);
+    outline: none;
+
+    &:focus { border-color: var(--accent); background: var(--ink-3); }
 }
-
-
+.add-profile-input-container label { display: none; }
 .add-profile-btns {
     display: flex;
-    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 24px;
+}
+.save-btn {
+    display: inline-flex;
     align-items: center;
-    width: 100%;
-    height: 100px;
+    gap: 10px;
+    padding: 12px 22px;
+    font-family: var(--ff-body);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    border-radius: var(--r-pill);
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: 0;
+    cursor: pointer;
+    transition: filter var(--dur) var(--ease), transform var(--dur) var(--ease);
+
+    &:hover { transform: translateY(-1px); filter: brightness(1.05); }
 }
+.cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    font-family: var(--ff-body);
+    font-size: 13px;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--bone);
+    border: 1px solid var(--ink-4);
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 
-.add-profile-bottom .profile-error {
-    color: red;
-    width: fit-content;
-    height: 20px;
-    text-align: center;
+    &:hover { border-color: var(--accent); color: var(--accent); }
 }
-
-
-
-
-
+.profile-error { color: var(--accent); font-size: 13px; }

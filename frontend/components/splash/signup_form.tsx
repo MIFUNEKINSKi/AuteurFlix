@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import SignupFooter from './signup_footer';
-import SplashHeader from './splash_header';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { signup } from '../../store/api';
 import { resetSessionErrors } from '../../store/errorsSlice';
@@ -14,9 +12,7 @@ const SignupForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const errors = useAppSelector((state) => Object.values(state.errors.session));
 
-  useEffect(() => {
-    dispatch(resetSessionErrors());
-  }, [dispatch]);
+  useEffect(() => { dispatch(resetSessionErrors()); }, [dispatch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,41 +20,41 @@ const SignupForm: React.FC = () => {
     dispatch(signup({ email, password }));
   };
 
-  const emailFilled = email === '' ? '' : 'filled';
-  const passFilled = password === '' ? '' : 'filled';
-  const passError = errors.filter((error) => String(error).includes('Password'));
-  const emailError = errors.filter((error) => String(error).includes('Email'));
-
   return (
-    <div className="signup-main">
-      <SplashHeader />
-      <div className="signup-form-container">
-        <h2>Create a password to start your membership</h2>
-        <p>We hate paperwork, too.</p>
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <div className="signup-input-container">
-            <input
-              className="signup-input"
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label id={emailFilled}>Email</label>
+    <div className="auth-page">
+      <header className="auth-header">
+        <Link to="/" className="wordmark wordmark-md">
+          <span className="wordmark-a">A</span>
+          <span className="wordmark-rest">UTEUR</span>
+          <span className="wordmark-flix">/flix</span>
+        </Link>
+      </header>
+      <div className="auth-card">
+        <span className="t-eyebrow">New viewer</span>
+        <h1 className="t-display auth-title"><em>Make a profile.</em></h1>
+        <p className="t-body auth-sub">No card, no commitment. A portfolio piece — the signup creates a real account scoped to your inbox.</p>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <label className="auth-field">
+            <span className="t-meta">Email</span>
+            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+          </label>
+          <label className="auth-field">
+            <span className="t-meta">Password</span>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+          </label>
+          {errors.length > 0 && (
+            <ul className="auth-errors">
+              {errors.map((err, i) => <li key={i}>{err}</li>)}
+            </ul>
+          )}
+          <div className="auth-actions">
+            <button type="submit" className="btn btn-accent">Make profile</button>
           </div>
-          <p className="signup-error">{emailError[0]}</p>
-          <div className="signup-input-container">
-            <input
-              className="signup-input"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label id={passFilled}>Add a password</label>
-          </div>
-          <p className="signup-error">{passError[0]}</p>
-          <button className="signup-btn" type="submit">Sign Up</button>
         </form>
+        <p className="t-meta auth-aside">
+          Already have one? <Link to="/login" className="auth-link">Sign in.</Link>
+        </p>
       </div>
-      <SignupFooter />
     </div>
   );
 };

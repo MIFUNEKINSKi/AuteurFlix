@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import SignupFooter from './signup_footer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { login } from '../../store/api';
 import { resetSessionErrors } from '../../store/errorsSlice';
-import { logoURL } from '../../assets';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,9 +10,7 @@ const LoginForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const errors = useAppSelector((state) => Object.values(state.errors.session));
 
-  useEffect(() => {
-    dispatch(resetSessionErrors());
-  }, [dispatch]);
+  useEffect(() => { dispatch(resetSessionErrors()); }, [dispatch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,45 +23,41 @@ const LoginForm: React.FC = () => {
     dispatch(login({ email: 'dan@gmail.com', password: 'password' }));
   };
 
-  const filled = email === '' ? '' : 'filled';
-  const passFilled = password === '' ? '' : 'filled';
-  const errorList = errors.length > 0
-    ? errors.map((error, index) => <li key={index}>{error}</li>)
-    : [];
-
   return (
-    <div>
-      <div className="login-main">
-        <header className="login-header">
-          <Link to="./" className="home-button"><img id="logo" src={logoURL} alt="AuteurFlix" /></Link>
-        </header>
-        <div className="login-container">
-          <h2>Sign In</h2>
-          <form className="form-content">
-            <div className="login-input-container">
-              <input
-                className="login-input"
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <label id={filled}>Email address</label>
-            </div>
-            <div className="login-input-container">
-              <input
-                className="login-input"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <label id={passFilled}>Password</label>
-            </div>
-            {errorList.length > 0 && <ul className="error-list">{errorList}</ul>}
-            <button className="login-btn" onClick={handleSubmit}>Sign In</button>
-            <button className="login-btn" onClick={handleDemo}>Sign In as Demo User</button>
-          </form>
-          <span>New to AuteurFlix? <Link to="/signup" className="link-text">Sign up now.</Link></span>
-        </div>
+    <div className="auth-page">
+      <header className="auth-header">
+        <Link to="/" className="wordmark wordmark-md">
+          <span className="wordmark-a">A</span>
+          <span className="wordmark-rest">UTEUR</span>
+          <span className="wordmark-flix">/flix</span>
+        </Link>
+      </header>
+      <div className="auth-card">
+        <span className="t-eyebrow">Returning viewer</span>
+        <h1 className="t-display auth-title"><em>Sign in.</em></h1>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <label className="auth-field">
+            <span className="t-meta">Email</span>
+            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+          </label>
+          <label className="auth-field">
+            <span className="t-meta">Password</span>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
+          </label>
+          {errors.length > 0 && (
+            <ul className="auth-errors">
+              {errors.map((err, i) => <li key={i}>{err}</li>)}
+            </ul>
+          )}
+          <div className="auth-actions">
+            <button type="submit" className="btn btn-accent">Sign in</button>
+            <button type="button" className="btn btn-outline" onClick={handleDemo}>Use demo account</button>
+          </div>
+        </form>
+        <p className="t-meta auth-aside">
+          New to AuteurFlix? <Link to="/signup" className="auth-link">Make a profile.</Link>
+        </p>
       </div>
-      <SignupFooter />
     </div>
   );
 };

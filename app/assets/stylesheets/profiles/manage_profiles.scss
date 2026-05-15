@@ -1,111 +1,74 @@
-body {
-    background: black;
-}
+/* ============================================================
+   Manage profiles — minimal pass; inherits global tokens.
+   ============================================================ */
 
 .edit-profiles-container {
-    margin: 0 auto;
-    width: 50%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    max-width: 900px;
+    margin: 120px auto 80px;
+    padding: 0 var(--gut);
     text-align: center;
-    padding-top: 10%;
-}
 
-.edit-profiles-container h1 {
-    font-size: 40px;
-    margin-bottom: 50px;
+    h1 {
+        font-family: var(--ff-display);
+        font-style: italic;
+        font-size: #{"clamp(40px, 5vw, 72px)"};
+        color: var(--bone);
+        margin: 0 0 48px;
+    }
 }
 .edit-profiles-list {
-    display: flex;
-    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 56px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+    max-width: 800px;
 }
-
-.edit-profiles-list li {
-    margin: 15px;
+.edit-profile-container {
+    background: var(--ink-2);
+    border: 1px dashed var(--ink-4);
+    border-radius: var(--r-md);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
     cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    transition: border-color var(--dur) var(--ease);
+
+    img { display: none; }
+    p {
+        font-family: var(--ff-display);
+        font-style: italic;
+        font-size: 22px;
+        color: var(--mute);
+        margin: 0;
+    }
+    &:hover {
+        border-color: var(--accent);
+        p { color: var(--accent); }
+    }
 }
-
-.edit-profiles-list img {
-    width: 150px;
-    height: 150px;
-    border-radius: 5px;
-    box-sizing: border-box;
-
-}
-
-.edit-profiles-list img:hover {
-    border: 2px solid white;
-}
-
-
-.profiles-home-btn img {
-    padding-top: 20px;
-    cursor: pointer;
-    padding-left: 30px;
-}
-
-.edit-profiles-list li p {
-    margin-top: 20px;
-    color: gray;
-
-}
-
-#edit-profile {
-    box-sizing: border-box;
-    color: gray;
-    width: 150px;
-    height: 150px;
-    opacity: 80%;
-}
-
-#edit-profile:hover {
-    background: white;
-    opacity: 90%
-}
-
-.done-btn {
-    color: black;
-    background: white;
-    margin-top: 10%;
-    font-size: 18px;
-    font-weight: 400;
-    padding: 10px;
-    width: 80px;
-    cursor: pointer;
-}
-
-.done-btn:hover {
-    background: red;
-    color: white;
-}
-
 .done-link {
     text-decoration: none;
+    display: inline-block;
 }
+.done-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid var(--ink-4);
+    border-radius: var(--r-pill);
+    font-family: var(--ff-body);
+    font-size: 13px;
+    color: var(--bone);
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 
-.profile-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    &:hover { border-color: var(--accent); color: var(--accent); }
 }
-
-.edit-profiles-list .pencil {
-    position: absolute;
-    width: 50px;
-    height: auto;
-    padding-bottom: 20px;
+.profiles-home-btn {
+    display: inline-flex;
+    padding: 20px var(--gut);
+    text-decoration: none;
 }
-
-.edit-profiles-list .pencil:hover {
-    border: none;
-}
-
-.dark {
-    filter: brightness(60%);
-}
-
-

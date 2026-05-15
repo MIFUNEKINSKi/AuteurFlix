@@ -1,247 +1,228 @@
-/* ------------------------------------------------------------------ */
-/* Browse header - transparent over hero, solid after scroll           */
-/* ------------------------------------------------------------------ */
+/* ============================================================
+   Header — transparent over hero, solid on scroll.
+   Editorial wordmark, italic-amber initial.
+   ============================================================ */
 
-.browse-header {
+.af-header {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 68px;
-    display: flex;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    background: linear-gradient(180deg, color-mix(in oklab, var(--ink-0) 75%, transparent), transparent);
+    border-bottom: 1px solid transparent;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.af-header.solid {
+    background: color-mix(in oklab, var(--ink-0) 92%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--ink-4);
+}
+.af-header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    padding: 0 4vw;
-    z-index: 100;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.7) 0%,
-        rgba(0, 0, 0, 0) 100%
-    );
-    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+    gap: 32px;
+    padding: 16px var(--gut);
 }
 
-.browse-header-scrolled {
-    background: #141414;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.home-button {
+/* ---- Wordmark ---- */
+.wordmark {
     display: inline-flex;
-    align-items: center;
-    flex: 0 0 auto;
-    margin-right: 28px;
-
-    #logo {
-        height: 30px;
-        width: auto;
-        display: block;
-    }
+    align-items: baseline;
+    gap: 0;
+    font-family: var(--ff-display);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--bone);
+    cursor: pointer;
+    text-decoration: none;
+}
+.wordmark-a {
+    font-style: italic;
+    color: var(--accent);
+    font-size: 1.15em;
+    line-height: 1;
+    margin-right: 1px;
+}
+.wordmark-rest {
+    font-weight: 500;
+    font-family: var(--ff-body);
+    letter-spacing: 0.16em;
+    font-size: 0.7em;
+    transform: translateY(-2px);
+    display: inline-block;
+}
+.wordmark-flix {
+    font-style: italic;
+    color: var(--mute);
+    margin-left: 4px;
+    font-size: 0.9em;
 }
 
-.left-nav {
+/* ---- Nav ---- */
+.af-nav {
     display: flex;
     align-items: center;
     gap: 22px;
-    flex: 1 1 auto;
+    justify-self: center;
+}
+.af-nav-item {
+    font-family: var(--ff-body);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 6px 4px;
+    color: var(--bone-2);
+    position: relative;
+    transition: color var(--dur) var(--ease);
+    text-decoration: none;
 
-    a {
-        color: #e5e5e5;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
-        transition: color 0.2s ease;
-        position: relative;
-        padding: 4px 0;
-
-        &:hover {
-            color: #b3b3b3;
-        }
-
-        &::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -3px;
-            height: 2px;
-            background: #fff;
-            transform: scaleX(0);
-            transform-origin: left center;
-            transition: transform 0.25s ease;
-        }
-
-        &:hover::after {
-            transform: scaleX(1);
-        }
-    }
-
-    @media (max-width: 740px) {
-        gap: 14px;
-        font-size: 13px;
+    &:hover { color: var(--bone); }
+    &.active { color: var(--bone); }
+    &.active::after {
+        content: "";
+        position: absolute;
+        left: 4px; right: 4px; bottom: -2px;
+        height: 1px;
+        background: var(--accent);
     }
 }
 
-.right-nav {
+/* ---- Header actions ---- */
+.af-header-actions {
     display: flex;
     align-items: center;
-    gap: 18px;
-    flex: 0 0 auto;
-    margin-left: auto;
+    gap: 14px;
 }
-
-.search-icon-btn {
+.icon-btn {
     width: 36px;
     height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
+    color: var(--bone);
+    border-radius: 50%;
     background: transparent;
-    color: #fff;
-    border: none;
+    border: 0;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.18s ease;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 
     &:hover {
-        background: rgba(255, 255, 255, 0.08);
+        background: color-mix(in oklab, var(--bone) 10%, transparent);
+        color: var(--accent);
     }
+    &.dark { background: rgba(0, 0, 0, 0.45); }
+    &.dark:hover { background: rgba(0, 0, 0, 0.65); }
 }
 
+/* ---- Search bar (inline replacement when expanded) ---- */
 .search-bar {
     display: flex;
     align-items: center;
     gap: 8px;
     background: rgba(0, 0, 0, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    border-radius: 4px;
+    border: 1px solid var(--bone);
+    border-radius: var(--r-sm);
     padding: 6px 10px;
-    color: #fff;
-    min-width: 240px;
+    color: var(--bone);
+    min-width: 280px;
     position: relative;
 
     .search-bar-icon {
         display: inline-flex;
         align-items: center;
-        color: #fff;
+        color: var(--bone);
     }
 
     .search-input {
         background: transparent;
         border: none;
         outline: none;
-        color: #fff;
+        color: var(--bone);
+        font-family: var(--ff-body);
         font-size: 14px;
         flex: 1 1 auto;
         min-width: 0;
 
         &::placeholder {
-            color: #b3b3b3;
-        }
-    }
-
-    label {
-        position: absolute;
-        left: 38px;
-        color: #b3b3b3;
-        font-size: 14px;
-        pointer-events: none;
-        transition: opacity 0.15s ease;
-
-        &#search-filled {
-            opacity: 0;
+            color: var(--mute);
+            font-family: var(--ff-body);
         }
     }
 
     .exit-search {
         background: transparent;
         border: none;
-        color: #b3b3b3;
+        color: var(--mute);
         cursor: pointer;
         padding: 2px;
-        border-radius: 50%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        transition: color 0.15s ease, background-color 0.15s ease;
+        transition: color var(--dur) var(--ease);
 
-        &:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-        }
+        &:hover { color: var(--accent); }
     }
 }
 
-/* Profiles dropdown ------------------------------------------------ */
-
+/* ---- Profile chip + dropdown ---- */
 .profiles-dropdown {
     position: relative;
     display: inline-block;
-    height: 100%;
 }
-
-.dropdown-btn {
-    display: inline-flex;
+.profile-chip {
+    display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+    border-radius: var(--r-pill);
+    color: var(--bone);
+    background: transparent;
+    border: 0;
     cursor: pointer;
-    padding: 8px 4px;
-    color: #fff;
-}
+    transition: background var(--dur) var(--ease);
 
+    &:hover { background: color-mix(in oklab, var(--bone) 8%, transparent); }
+}
 #profiles-avatar {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 4px;
     object-fit: cover;
     display: block;
 }
-
-#profiles-arrow {
-    display: inline-flex;
-    align-items: center;
-    color: #fff;
-    transition: transform 0.25s ease;
-
-    svg {
-        display: block;
-    }
-}
-
-.profiles-dropdown:hover #profiles-arrow {
-    transform: rotate(180deg);
-}
-
 .profiles-dropdown-content {
     display: none;
     position: absolute;
     top: calc(100% + 6px);
     right: 0;
-    background-color: rgba(0, 0, 0, 0.92);
-    min-width: 180px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    background: color-mix(in oklab, var(--ink-0) 92%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    min-width: 200px;
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
     z-index: 110;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 14px;
-    border-radius: 4px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--ink-4);
+    border-radius: var(--r-md);
     padding: 6px 0;
 
     p {
-        color: #e5e5e5;
+        font-family: var(--ff-body);
+        font-size: 14px;
+        color: var(--bone-2);
         padding: 10px 16px;
         margin: 0;
-        text-decoration: none;
         cursor: pointer;
-        transition: background-color 0.15s ease, color 0.15s ease;
+        transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 
         &:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: #fff;
+            background: color-mix(in oklab, var(--bone) 6%, transparent);
+            color: var(--accent);
         }
     }
 }
+.profiles-dropdown:hover .profiles-dropdown-content { display: block; }
 
-.profiles-dropdown:hover .profiles-dropdown-content {
-    display: block;
+@media (max-width: 740px) {
+    .af-nav { gap: 14px; }
+    .af-nav-item { font-size: 12px; }
+    .search-bar { min-width: 180px; }
 }

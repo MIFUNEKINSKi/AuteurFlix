@@ -1,71 +1,181 @@
-/* css-rev: 2026-04-26-2 — bump to force Sprockets fingerprint regeneration */
+/* css-rev: 2026-05-14 — Claude Design pass (Criterion-meets-streaming) */
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
  *= require_tree .
  *= require_self
  */
 
- @import './reset.scss';
- @import './auth/splash.scss';
- @import './auth/signup.scss';
- @import './auth/login.scss';
- @import './profiles/profiles.scss';
- @import './profiles/add_profile.scss';
- @import './profiles/manage_profiles.scss';
- @import './profiles/edit_profile.scss';
- @import './browse/browse-header.scss';
- @import './browse/top-movie.scss';
- @import './browse/genres_browse.scss';
- @import './browse/modal.scss';
- @import './browse/show_movie.scss';
- @import './director/director.scss';
- @import './search/search.scss';
+@import './tokens';
+@import './reset.scss';
+@import './auth/splash.scss';
+@import './auth/signup.scss';
+@import './auth/login.scss';
+@import './profiles/profiles.scss';
+@import './profiles/add_profile.scss';
+@import './profiles/manage_profiles.scss';
+@import './profiles/edit_profile.scss';
+@import './browse/browse-header.scss';
+@import './browse/top-movie.scss';
+@import './browse/genres_browse.scss';
+@import './browse/modal.scss';
+@import './browse/show_movie.scss';
+@import './director/director.scss';
+@import './search/search.scss';
 
+/* ============================================================
+   Base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
 
- 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+html, body {
     margin: 0;
-    color: white;
+    padding: 0;
+    background: var(--ink-1);
+    color: var(--bone);
     overflow-x: hidden;
-    background: #141414;
 }
+
+body {
+    font-family: var(--ff-body);
+    font-size: var(--t-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: var(--accent-ink); }
 
 .browse-main {
-    padding-top: 0;
     position: relative;
+    padding-top: 0;
+    background: var(--ink-1);
 }
 
-/* Modern scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
+/* ---- Type roles ---- */
+.t-display {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+}
+.t-display em { font-style: italic; }
+.t-section {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: var(--t-d2);
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+}
+.t-row {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: var(--t-d4);
+    line-height: 1.1;
+    letter-spacing: -0.005em;
+}
+.t-eyebrow {
+    font-family: var(--ff-mono);
+    font-size: var(--t-meta);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+}
+.t-meta {
+    font-family: var(--ff-mono);
+    font-size: var(--t-meta);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+}
+.t-body {
+    font-family: var(--ff-body);
+    font-size: var(--t-body);
+    line-height: 1.6;
+}
+.t-muted { color: var(--mute); }
+
+/* ---- Hairline rule ---- */
+.hr { height: 1px; background: var(--ink-4); border: 0; margin: 0; }
+
+/* ---- Buttons ---- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    font-family: var(--ff-body);
+    font-weight: 500;
+    font-size: var(--t-sm);
+    letter-spacing: 0.02em;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background var(--dur) var(--ease),
+        color var(--dur) var(--ease),
+        border-color var(--dur) var(--ease),
+        transform var(--dur) var(--ease);
+
+    svg { display: block; }
+}
+.btn-accent {
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+.btn-accent:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+.btn-ghost {
+    background: color-mix(in oklab, var(--bone) 12%, transparent);
+    color: var(--bone);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.btn-ghost:hover { background: color-mix(in oklab, var(--bone) 20%, transparent); }
+.btn-outline {
+    border: 1px solid var(--ink-4);
+    color: var(--bone);
+    background: transparent;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---- Stack utilities ---- */
+.stack-sm > * + * { margin-top: 6px; }
+.stack-md > * + * { margin-top: 14px; }
+.stack-lg > * + * { margin-top: 28px; }
+
+/* ---- Striped placeholder (used as fallback for missing TMDB imagery) ---- */
+.placeholder {
+    position: relative;
+    overflow: hidden;
+    background:
+        repeating-linear-gradient(135deg,
+            color-mix(in oklab, var(--ph, #6e5631) 92%, black) 0 14px,
+            color-mix(in oklab, var(--ph, #6e5631) 80%, black) 14px 28px);
+    color: rgba(255, 255, 255, 0.7);
+}
+.placeholder-label {
+    position: absolute;
+    inset: auto 10px 8px 10px;
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
 }
 
-::-webkit-scrollbar-track {
-    background: #141414;
-}
+/* ---- Focus ---- */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-/* Firefox scrollbar */
+/* ---- Hide scrollbars on rail carousels ---- */
+::-webkit-scrollbar { width: 6px; height: 0; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--mute); }
 * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) #141414;
+    scrollbar-color: var(--ink-4) transparent;
 }

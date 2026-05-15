@@ -1,0 +1,49 @@
+/* ============================================================
+   AuteurFlix — design tokens
+   ONE accent, 5 neutrals, 6-step type scale assigned to roles.
+   Reskin per /docs/design-handover.md and the Claude Design pass.
+   ============================================================ */
+
+:root {
+  /* ---- Neutrals (warm near-black, bone foreground) ---- */
+  --ink-0:  oklch(8.5%  0.006 60);   /* deepest, behind hero */
+  --ink-1:  oklch(12%   0.006 60);   /* page background */
+  --ink-2:  oklch(17%   0.008 60);   /* surface / card resting */
+  --ink-3:  oklch(24%   0.009 65);   /* surface raised / hover */
+  --ink-4:  oklch(38%   0.011 70);   /* hairline / divider */
+  --mute:   oklch(62%   0.010 70);   /* secondary text */
+  --bone:   oklch(94%   0.012 80);   /* primary text */
+  --bone-2: oklch(86%   0.014 80);   /* primary text on darker */
+
+  /* ---- One accent. Sodium amber. ---- */
+  --accent: #d4a13b;
+  --accent-soft: color-mix(in oklab, var(--accent) 22%, transparent);
+  --accent-ink:  #1c1408;
+
+  /* ---- Type ---- */
+  --ff-display: "Instrument Serif", "Source Serif 4", Georgia, serif;
+  --ff-body:    "DM Sans", "Public Sans", system-ui, sans-serif;
+  --ff-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* 6-step display scale + body/meta */
+  --t-d1: #{"clamp(56px, 8.4vw, 132px)"};   /* hero / director name */
+  --t-d2: #{"clamp(40px, 5.6vw,  84px)"};   /* section header */
+  --t-d3: #{"clamp(28px, 3.4vw,  52px)"};   /* modal title */
+  --t-d4: #{"clamp(22px, 2.0vw,  32px)"};   /* row title */
+  --t-d5: 20px;                              /* card title large */
+  --t-d6: 16px;                              /* card title */
+  --t-body: 15px;
+  --t-sm:   13px;
+  --t-meta: 11px;                            /* mono caption */
+
+  /* ---- Spacing, radii ---- */
+  --gut:   #{"clamp(20px, 4vw, 56px)"};      /* page side gutter */
+  --r-sm:  2px;
+  --r-md:  3px;                              /* cards: deliberately almost-square */
+  --r-lg:  4px;
+  --r-pill: 999px;
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --dur:  220ms;
+}

@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import BrowseHeader from '../browse/browse_header';
+import BrowseFooter from '../browse/browse_footer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout as logoutThunk } from '../../store/api';
 import { resetCurrentProfile } from '../../store/sessionSlice';
 import { fetchDirectors } from '../../util/movie_api_util';
 import type { DirectorSummary } from '../../types';
 
-const monogram = (name: string): string => {
-  const parts = name.split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return '';
-  return parts[parts.length - 1]!.slice(0, 3).toUpperCase();
+const monogramFor = (name: string): string => {
+  const surname = name.split(/\s+/).filter(Boolean).pop() ?? name;
+  return surname.slice(0, 2).toLowerCase();
 };
 
-const hueFor = (name: string): number => {
-  let h = 0;
-  for (let i = 0; i < name.length; i += 1) h = (h * 31 + name.charCodeAt(i)) >>> 0;
-  return h % 360;
-};
-
-const placeholderStyle = (name: string): React.CSSProperties => {
-  const h = hueFor(name);
-  return {
-    background: `linear-gradient(135deg, hsl(${h}deg 35% 28%) 0%, hsl(${(h + 40) % 360}deg 30% 14%) 100%)`,
-  };
+const paletteFor = (name: string): string => {
+  let seed = 0;
+  for (let i = 0; i < name.length; i += 1) seed = (seed * 31 + name.charCodeAt(i)) >>> 0;
+  return `hsl(${seed % 360}deg 38% 26%)`;
 };
 
 const DirectorsIndex: React.FC = () => {
@@ -40,51 +33,52 @@ const DirectorsIndex: React.FC = () => {
 
   if (!currentProfileId) return <Navigate to="/browse" replace />;
 
+  const sorted = (directors ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  const totalFilms = (directors ?? []).reduce((s, d) => s + d.filmCount, 0);
+
   return (
-    <div className="directors-index-page">
+    <main className="directors-index-page">
       <BrowseHeader logout={handleLogout} resetProfile={handleResetProfile} />
 
-      <section className="directors-index-hero">
-        <p className="directors-index-eyebrow">All Auteurs</p>
-        <h1 className="directors-index-title">Browse by Director</h1>
+      <header className="directors-index-hero">
+        <span className="t-eyebrow">The Collection</span>
+        <h1 className="t-display directors-index-title">
+          <em>All {directors?.length ?? '—'} auteurs.</em>
+        </h1>
         <p className="directors-index-sub">
-          AuteurFlix is organized around the people who make the films. Pick a
-          director below to see their bio and every one of their films we have.
+          The complete roster. Alphabetical, with portrait, country, and the count of
+          films in catalog. {totalFilms} films in total. Click any name to open
+          their room.
         </p>
-      </section>
+      </header>
 
       {directors === null ? (
-        <div className="browse-loading">Loading directors…</div>
-      ) : directors.length === 0 ? (
-        <div className="browse-loading">No directors yet.</div>
+        <div className="browse-loading t-meta">Loading directors…</div>
+      ) : sorted.length === 0 ? (
+        <div className="browse-loading t-meta">No directors yet.</div>
       ) : (
-        <div className="directors-grid">
-          {directors.map((d) => (
-            <Link key={d.id} to={`/director/${d.slug}`} className="directors-grid-card">
-              <div className="directors-grid-portrait">
+        <section className="directors-grid">
+          {sorted.map((d, i) => (
+            <Link key={d.id} to={`/director/${d.slug}`} className="dir-tile">
+              <span className="dir-tile-num t-meta">№{String(i + 1).padStart(2, '0')}</span>
+              <span className="dir-tile-portrait" style={{ background: paletteFor(d.name) }}>
                 {d.portraitUrl ? (
                   <img src={d.portraitUrl} alt={d.name} loading="lazy" />
                 ) : (
-                  <div
-                    className="directors-grid-placeholder"
-                    style={placeholderStyle(d.name)}
-                    aria-hidden="true"
-                  >
-                    <span>{monogram(d.name)}</span>
-                  </div>
+                  <span className="dir-tile-glyph">{monogramFor(d.name)}</span>
                 )}
-              </div>
-              <p className="directors-grid-name">{d.name}</p>
-              <p className="directors-grid-meta">
-                {d.country ? <span>{d.country}</span> : null}
-                {d.country ? <span className="dot">·</span> : null}
-                <span>{d.filmCount} {d.filmCount === 1 ? 'film' : 'films'}</span>
-              </p>
+              </span>
+              <span className="dir-tile-name">{d.name}</span>
+              <span className="t-meta dir-tile-meta">
+                {d.country ?? '—'} · {d.filmCount} films
+              </span>
             </Link>
           ))}
-        </div>
+        </section>
       )}
-    </div>
+
+      <BrowseFooter />
+    </main>
   );
 };
 

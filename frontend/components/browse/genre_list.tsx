@@ -9,7 +9,7 @@ interface Props {
   myList: ListItem[];
   currentProfileId: number | null;
   genreId: number | null;
-  /** When provided, override genre/myList selection with an explicit ordered id list. */
+  /** Optional explicit ordered id list (overrides genre/myList selection). */
   movieIds?: number[];
   createListItem: (args: { movieId: number; profileId: number }) => void;
   deleteListItem: (listId: number) => void;
@@ -24,18 +24,16 @@ const GenreList: React.FC<Props> = ({
 
   const selectMovies = useCallback((): Movie[] => {
     if (movieIds) {
-      return movieIds
-        .map((id) => movies[id])
-        .filter((m): m is Movie => m !== undefined);
+      return movieIds.map((id) => movies[id]).filter((m): m is Movie => m !== undefined);
     }
     if (!genreId) {
       return myList
         .map((item) => movies[item.movie_id])
         .filter((m): m is Movie => m !== undefined);
     }
-    const selectedTags = tags.filter((tag) => tag.genre_id === genreId);
+    const selectedTags = tags.filter((t) => t.genre_id === genreId);
     return selectedTags
-      .map((tag) => movies[tag.movie_id])
+      .map((t) => movies[t.movie_id])
       .filter((m): m is Movie => m !== undefined);
   }, [movies, tags, myList, genreId, movieIds]);
 
@@ -58,10 +56,6 @@ const GenreList: React.FC<Props> = ({
     };
   }, [checkScroll]);
 
-  // Reset scroll position when the row's content changes (e.g. movies load
-  // late and the carousel was already at a non-zero scroll from a transient
-  // mount). Without this, Critics' Picks can render with its first card
-  // already scrolled off the left edge.
   useEffect(() => {
     if (sliderRef.current) sliderRef.current.scrollLeft = 0;
   }, [genreId, movieIds]);
@@ -69,56 +63,40 @@ const GenreList: React.FC<Props> = ({
   const scroll = (direction: 'left' | 'right') => {
     const el = sliderRef.current;
     if (!el) return;
-    const scrollAmount = el.clientWidth * 0.85;
-    el.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
-    });
+    el.scrollBy({ left: direction === 'left' ? -el.clientWidth * 0.8 : el.clientWidth * 0.8, behavior: 'smooth' });
   };
 
   const renderMovies = selectMovies();
   if (renderMovies.length === 0) return null;
 
   return (
-    <div className="carousel">
+    <div className="rail">
       {canScrollLeft && (
-        <button
-          className="carousel-arrow carousel-arrow-left"
-          onClick={() => scroll('left')}
-          aria-label="Scroll left"
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
+        <button type="button" className="rail-arrow left" onClick={() => scroll('left')} aria-label="Scroll left">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M12 4 6 10l6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </button>
       )}
-
-      <div className="carousel-slider" ref={sliderRef}>
+      <div className="rail-scroller" ref={sliderRef}>
         {renderMovies
           .filter((movie) => movie && movie.id)
-          .map((movie) => (
-            <MovieDetail
-              key={movie.id}
-              movie={movie}
-              tags={tags}
-              genres={genres}
-              myList={myList}
-              currentProfileId={currentProfileId}
-              createListItem={createListItem}
-              deleteListItem={deleteListItem}
-            />
+          .map((movie, i) => (
+            <div key={movie.id} className="rail-cell">
+              <MovieDetail
+                movie={movie}
+                tags={tags}
+                genres={genres}
+                myList={myList}
+                currentProfileId={currentProfileId}
+                createListItem={createListItem}
+                deleteListItem={deleteListItem}
+                index={i + 1}
+              />
+            </div>
           ))}
       </div>
-
       {canScrollRight && (
-        <button
-          className="carousel-arrow carousel-arrow-right"
-          onClick={() => scroll('right')}
-          aria-label="Scroll right"
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
+        <button type="button" className="rail-arrow right" onClick={() => scroll('right')} aria-label="Scroll right">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M8 4l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </button>
       )}
     </div>

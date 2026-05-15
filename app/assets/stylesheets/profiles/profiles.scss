@@ -1,87 +1,117 @@
-body {
-    background: black;
-}
+/* ============================================================
+   Profile picker — editorial tiles
+   ============================================================ */
 
-.profiles-container {
-    margin: 0 auto;
-    width: 50%;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    text-align: center;
-    padding-top: 10%;
+.profile-picker {
+    min-height: 100vh;
+    background:
+        radial-gradient(60% 60% at 50% 30%, color-mix(in oklab, var(--accent) 6%, transparent), transparent),
+        var(--ink-1);
+    padding: 32px 20px 80px;
 }
-
-.profiles-container h1 {
-    font-size: 40px;
-    margin-bottom: 50px;
-}
-.profiles-list {
-    display: flex;
-    justify-content: space-between;
-}
-
-.profiles-list li {
-    margin: 15px;
-    cursor: pointer;
-}
-
-.profiles-list img {
-    width: 150px;
-    height: 150px;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.profiles-list img:hover {
-    border: 2px solid white;
-}
-
-.profiles-home-btn img {
-    padding-top: 20px;
-    cursor: pointer;
-    padding-left: 30px;
-}
-
-.profiles-list li p {
-    margin-top: 20px;
-    color: gray;
-
-}
-
-#add-profile {
-    box-sizing: border-box;
-    color: gray;
-    width: 150px;
-    height: 150px;
-    opacity: 80%;
-}
-
-#add-profile:hover {
-    background: white;
-    opacity: 90%
-}
-
-.manage {
-    color: gray;
-    background: none;
-    margin-top: 10%;
-    font-size: 24px;
-    border: 1px solid gray;
-    font-weight: 200;
-    padding: 10px;
-    width: max-content;
-    cursor: pointer;
-}
-
-.manage-link {
+.profile-picker-mark {
+    display: inline-flex;
     text-decoration: none;
+    padding: 6px 0;
+}
+.profile-picker-inner {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    width: 100%;
+}
+.profile-picker-eyebrow {
+    display: block;
+    text-align: center;
+    color: var(--mute);
+}
+.profile-picker-title {
+    text-align: center;
+    margin: 20px 0 56px;
+    font-size: #{"clamp(40px, 5vw, 76px)"};
+    color: var(--bone);
+
+    em { font-style: italic; }
 }
 
-
-.hidden {
-    display: none;
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
 }
+.profile-card {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    display: grid;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+}
+.profile-card-tile {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--r-md);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease), outline var(--dur) var(--ease);
+    outline: 2px solid transparent;
+    outline-offset: 4px;
+    display: grid;
+    place-items: center;
+}
+.profile-card:hover .profile-card-tile {
+    transform: translateY(-3px);
+    outline-color: var(--accent);
+}
+.profile-card-num {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+.profile-card-role {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+.profile-card-glyph {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: #{"clamp(80px, 10vw, 132px)"};
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1;
+}
+.profile-card-foot {
+    display: grid;
+    gap: 4px;
+    justify-items: center;
+}
+.profile-card-name {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 24px;
+    color: var(--bone);
+}
+.profile-card-name-mute { color: var(--mute); }
 
+.add-tile {
+    background: var(--ink-2) !important;
+    border: 1px dashed var(--ink-4);
+}
+.add-plus {
+    font-family: var(--ff-display);
+    font-size: 80px;
+    color: var(--mute);
+    transition: color var(--dur) var(--ease);
+    line-height: 1;
+}
+.profile-card.add:hover .add-plus { color: var(--accent); }
+.profile-card.add:hover .add-tile { border-color: var(--accent); }
+
+.profile-picker-foot {
+    text-align: center;
+    margin-top: 56px;
+}

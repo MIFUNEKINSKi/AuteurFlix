@@ -11,6 +11,8 @@ import MyList from './myList/my_list';
 import Search from './search/search';
 import DirectorPage from './director/director_page';
 import DirectorsIndex from './director/directors_index';
+import CinemasPage from './collection/cinemas_page';
+import DecadesPage from './collection/decades_page';
 
 const App: React.FC = () => (
   <div>
@@ -25,6 +27,8 @@ const App: React.FC = () => (
       <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
       <Route path="/directors" element={<ProtectedRoute><DirectorsIndex /></ProtectedRoute>} />
       <Route path="/director/:slug" element={<ProtectedRoute><DirectorPage /></ProtectedRoute>} />
+      <Route path="/cinemas" element={<ProtectedRoute><CinemasPage /></ProtectedRoute>} />
+      <Route path="/decades" element={<ProtectedRoute><DecadesPage /></ProtectedRoute>} />
     </Routes>
   </div>
 );

@@ -10,12 +10,13 @@ interface Props {
   genres: Genre[];
   myList: ListItem[];
   currentProfileId: number | null;
+  index?: number;
   createListItem: (args: { movieId: number; profileId: number }) => void;
   deleteListItem: (listId: number) => void;
 }
 
 const MovieDetail: React.FC<Props> = ({
-  movie, tags, genres, myList, currentProfileId, createListItem, deleteListItem,
+  movie, tags, genres, myList, currentProfileId, index, createListItem, deleteListItem,
 }) => {
   const [sound, setSound] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -23,20 +24,12 @@ const MovieDetail: React.FC<Props> = ({
   const hoverTimer = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const movieGenres = useCallback(() => {
-    if (!movie?.id) return [];
-    const selectedTags = tags.filter((tag) => tag.movie_id === movie.id);
-    return selectedTags
-      .map((tag) => genres.find((g) => g.id === tag.genre_id))
-      .filter((g): g is Genre => g !== undefined);
-  }, [movie, tags, genres]);
-
   const handleMouseEnter = () => {
     hoverTimer.current = window.setTimeout(() => {
       setHovered(true);
       const vid = videoRef.current;
-      if (vid) {
-        if (!vid.src && movie.videoUrl) vid.src = movie.videoUrl;
+      if (vid && movie.videoUrl) {
+        if (!vid.src) vid.src = movie.videoUrl;
         vid.currentTime = 0;
         vid.muted = !sound;
         vid.play().catch(() => {});
@@ -51,17 +44,7 @@ const MovieDetail: React.FC<Props> = ({
     }
     setHovered(false);
     const vid = videoRef.current;
-    if (vid) {
-      vid.pause();
-      vid.currentTime = 0;
-    }
-  };
-
-  const handleSoundOff = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newSound = !sound;
-    setSound(newSound);
-    if (videoRef.current) videoRef.current.muted = !newSound;
+    if (vid) { vid.pause(); vid.currentTime = 0; }
   };
 
   const onList = () => myList.some((item) => item.movie_id === movie.id);
@@ -85,9 +68,8 @@ const MovieDetail: React.FC<Props> = ({
 
   if (!movie) return null;
 
-  const tagDisplay = movieGenres().map((g) => (
-    <span key={g.id} className="card-genre-tag">{g.genre}</span>
-  ));
+  const numStr = index !== undefined ? String(index).padStart(3, '0') : null;
+  const thumb = movie.tmdbCardUrl ?? movie.thumbnailUrl;
 
   const modal = showModal ? (
     <DetailsModal
@@ -104,75 +86,50 @@ const MovieDetail: React.FC<Props> = ({
   return (
     <>
       <div
-        className={`card ${hovered ? 'card-hovered' : ''}`}
+        className={`film-card poster ${hovered ? 'is-hovered' : ''}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={openModal}
       >
-        <div className="card-media">
-          <img
-            className="card-thumbnail"
-            src={movie.tmdbCardUrl ?? movie.thumbnailUrl}
-            alt={movie.title}
-            loading="lazy"
-          />
-          <video
-            ref={videoRef}
-            className={`card-video ${hovered ? 'playing' : ''}`}
-            preload="none"
-            muted
-            playsInline
-            onEnded={() => setHovered(false)}
-          />
-          {hovered && (
-            <button className="card-sound-btn" onClick={handleSoundOff}>
-              {sound ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M15.54 8.46a5 5 0 010 7.07" /><path d="M19.07 4.93a10 10 0 010 14.14" />
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M23 9l-6 6M17 9l6 6" />
-                </svg>
-              )}
-            </button>
+        <div className="film-card-media">
+          {thumb ? (
+            <img className="film-card-thumb" src={thumb} alt={movie.title} loading="lazy" />
+          ) : (
+            <div className="film-card-thumb placeholder" style={{ ['--ph' as any]: '#3a2a1a' }} aria-hidden="true">
+              <span className="placeholder-label">{movie.title.toUpperCase()} · BACKDROP</span>
+            </div>
           )}
-        </div>
-
-        <div className="card-info">
-          <div className="card-buttons">
-            <div className="card-buttons-left">
-              <Link to={`/watch/${movie.id}`} className="card-btn card-play" onClick={(e) => e.stopPropagation()} aria-label="Play">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+          {numStr && <span className="film-card-num t-meta">№{numStr}</span>}
+          {/* hover overlay */}
+          <div className="film-card-overlay">
+            <div className="film-card-overlay-actions">
+              <Link to={`/watch/${movie.id}`} className="film-card-play" onClick={(e) => e.stopPropagation()} aria-label="Play trailer">
+                <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5 12 7 3 12.5z" fill="currentColor" /></svg>
               </Link>
-              <button className="card-btn card-add" onClick={toggleListItem} title={onList() ? 'Remove from List' : 'Add to List'} aria-label={onList() ? 'Remove from List' : 'Add to List'}>
+              <button type="button" className="film-card-add" onClick={toggleListItem} aria-label={onList() ? 'Remove from list' : 'Add to list'}>
                 {onList() ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
+                  <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7l3 3 5-6" stroke="currentColor" strokeWidth="1.6" fill="none" /></svg>
                 ) : (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+                  <svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="1.4" /></svg>
                 )}
               </button>
             </div>
-            <button className="card-btn card-expand" onClick={openModal} title="More Info" aria-label="More Info">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </button>
           </div>
-          <p className="card-title">{movie.title}</p>
-          <p className="card-director">
-            <Link
-              to={`/director/${slugifyDirector(movie.director)}`}
-              className="card-director-link"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {movie.director}
-            </Link>
-            <span className="card-dot">·</span>
-            <span>{movie.year}</span>
-          </p>
-          <div className="card-meta">
-            {tagDisplay}
+        </div>
+        <div className="film-card-info">
+          <div className="film-card-row">
+            <span className="film-card-title">
+              <em>{movie.title}</em>
+            </span>
+            <span className="t-meta film-card-year">{movie.year}</span>
           </div>
+          <Link
+            to={`/director/${slugifyDirector(movie.director)}`}
+            className="film-card-director t-meta"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {movie.director.toUpperCase()}
+          </Link>
         </div>
       </div>
       {modal}

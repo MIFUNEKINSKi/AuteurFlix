@@ -3,6 +3,8 @@ import BrowseHeader from './browse_header';
 import GenreList from './genre_list';
 import DetailsModal from './details_modal';
 import AuteursRow from './auteurs_row';
+import EntryCards from './entry_cards';
+import BrowseFooter from './browse_footer';
 import { Link } from 'react-router-dom';
 import { slugifyDirector } from '../../util/movie_api_util';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -11,6 +13,25 @@ import { fetchMovies, createListItem, deleteListItem } from '../../store/api';
 import { resetCurrentProfile } from '../../store/sessionSlice';
 import { fetchDirectors } from '../../util/movie_api_util';
 import type { Movie, DirectorSummary } from '../../types';
+
+const splitTitleForItalic = (title: string): React.ReactNode => {
+  const parts = title.split(' ');
+  if (parts.length === 1) return <em>{title}</em>;
+  const split = Math.max(1, Math.floor(parts.length / 2));
+  return (
+    <>
+      <em>{parts.slice(0, split).join(' ')}</em>
+      {' '}
+      {parts.slice(split).join(' ')}
+    </>
+  );
+};
+
+const convertLength = (minutes: number) => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return h > 0 ? `${h}H ${m}M` : `${m}M`;
+};
 
 const GenresIndex: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,10 +47,21 @@ const GenresIndex: React.FC = () => {
   const currentProfileId = useAppSelector((state) => state.session.profileId);
   const myList = useAppSelector((state) => Object.values(state.entities.myList));
 
+  // Pick a stable featured film by highest TMDB rating × vote weight
   const topMovie = useMemo<Movie | undefined>(() => {
     const movieArr = Object.values(movies);
     if (movieArr.length === 0) return undefined;
-    return movieArr[Math.floor(Math.random() * movieArr.length)];
+    const scored = movieArr
+      .filter((m) => (m.tmdbRating ?? 0) > 0 && (m.tmdbBackdropUrl || m.photoUrl))
+      .sort((a, b) => {
+        const sa = (a.tmdbRating ?? 0) * Math.log10((a.tmdbVoteCount ?? 1) + 1);
+        const sb = (b.tmdbRating ?? 0) * Math.log10((b.tmdbVoteCount ?? 1) + 1);
+        return sb - sa;
+      });
+    // Rotate within the top 12 deterministically per page load
+    const pool = scored.slice(0, 12);
+    if (pool.length === 0) return movieArr[0];
+    return pool[Math.floor(Math.random() * pool.length)];
   }, [Object.keys(movies).length]);
 
   useEffect(() => {
@@ -37,225 +69,97 @@ const GenresIndex: React.FC = () => {
     fetchDirectors().then(setDirectors).catch(() => {});
   }, [dispatch]);
 
-  useEffect(() => {
-    setHeroVideoReady(false);
-  }, [topMovie?.id]);
+  useEffect(() => { setHeroVideoReady(false); }, [topMovie?.id]);
 
   const handleLogout = () => dispatch(logoutThunk());
   const handleResetProfile = () => dispatch(resetCurrentProfile());
-  const handleCreateListItem = (args: { movieId: number; profileId: number }) =>
-    dispatch(createListItem(args));
+  const handleCreateListItem = (args: { movieId: number; profileId: number }) => dispatch(createListItem(args));
   const handleDeleteListItem = (listId: number) => dispatch(deleteListItem(listId));
 
-  const toggleModal = () => setShowModal((prev) => !prev);
-
+  const toggleModal = () => setShowModal((p) => !p);
   const toggleHeroSound = () => {
     const next = !heroSound;
     setHeroSound(next);
     if (heroVideoRef.current) heroVideoRef.current.muted = !next;
   };
 
-  const convertLength = (minutes: number) => {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return h > 0 ? `${h}h ${m}m` : `${m}m`;
-  };
-
+  // Critics' Picks: top 12 by tmdbRating × log(voteCount)
   const criticsPicks = useMemo(() => {
     return Object.values(movies)
-      .filter((m) => typeof m.tmdbRating === 'number' && (m.tmdbRating ?? 0) > 0)
+      .filter((m) => (m.tmdbRating ?? 0) > 0)
       .sort((a, b) => {
-        const ra = a.tmdbRating ?? 0;
-        const rb = b.tmdbRating ?? 0;
-        if (ra !== rb) return rb - ra;
-        const va = a.tmdbVoteCount ?? 0;
-        const vb = b.tmdbVoteCount ?? 0;
-        return vb - va;
+        const sa = (a.tmdbRating ?? 0) * Math.log10((a.tmdbVoteCount ?? 1) + 1);
+        const sb = (b.tmdbRating ?? 0) * Math.log10((b.tmdbVoteCount ?? 1) + 1);
+        return sb - sa;
       })
       .slice(0, 12)
       .map((m) => m.id);
   }, [movies]);
 
-  // Decade rows derived from movie.year (drops the static seed-based
-  // decade tags that only knew about the original 19 films).
-  const decadeRows = useMemo(() => {
-    const buckets = new Map<number, Movie[]>();
-    Object.values(movies).forEach((m) => {
-      if (!m.year) return;
-      const decade = Math.floor(m.year / 10) * 10;
-      const arr = buckets.get(decade) ?? [];
-      arr.push(m);
-      buckets.set(decade, arr);
-    });
-    return Array.from(buckets.entries())
-      .filter(([, arr]) => arr.length >= 4)
-      .sort(([a], [b]) => b - a) // newest first
-      .map(([decade, arr]) => ({
-        decade,
-        label: `${decade}s`,
-        rangeLabel: `${decade}–${decade + 9}`,
-        count: arr.length,
-        movieIds: arr
-          .sort((a, b) => (b.tmdbVoteCount ?? 0) - (a.tmdbVoteCount ?? 0))
-          .map((m) => m.id),
-      }));
+  // Restorations & rediscoveries: pre-1990 films sorted by rating
+  const restorations = useMemo(() => {
+    return Object.values(movies)
+      .filter((m) => m.year < 1990 && (m.tmdbRating ?? 0) >= 7)
+      .sort((a, b) => (b.tmdbRating ?? 0) - (a.tmdbRating ?? 0))
+      .slice(0, 12)
+      .map((m) => m.id);
   }, [movies]);
 
-  // National-cinema rows: bucket movies by their director's country.
-  const countryRows = useMemo(() => {
-    if (directors.length === 0) return [];
-    const directorCountry = new Map<string, string>();
-    directors.forEach((d) => { if (d.country) directorCountry.set(d.name, d.country); });
-    const buckets = new Map<string, Movie[]>();
+  // Top 2 director "spotlight" rows — most films + highest avg rating
+  const spotlightGenres = useMemo(() => {
+    const directorGenres = genres.filter((g) => !/^\d{2,4}s$/.test(g.genre.trim()));
+    const ranked = directorGenres
+      .map((g) => {
+        const taggedMovieIds = tags.filter((t) => t.genre_id === g.id).map((t) => t.movie_id);
+        const films = taggedMovieIds.map((id) => movies[id]).filter(Boolean);
+        const avgRating = films.length === 0 ? 0
+          : films.reduce((s, m) => s + (m.tmdbRating ?? 0), 0) / films.length;
+        return { genre: g, count: films.length, score: films.length * avgRating };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 2);
+    return ranked.map((r) => r.genre);
+  }, [genres, tags, movies]);
+
+  // Decade + country counts for entry-card stats
+  const decadeSummary = useMemo(() => {
+    const buckets = new Map<number, number>();
     Object.values(movies).forEach((m) => {
-      const c = directorCountry.get(m.director);
-      if (!c) return;
-      const arr = buckets.get(c) ?? [];
-      arr.push(m);
-      buckets.set(c, arr);
+      if (!m.year) return;
+      const d = Math.floor(m.year / 10) * 10;
+      buckets.set(d, (buckets.get(d) ?? 0) + 1);
     });
     return Array.from(buckets.entries())
-      .filter(([, arr]) => arr.length >= 6)
-      .sort(([, a], [, b]) => b.length - a.length)
-      .map(([country, arr]) => ({
-        country,
-        count: arr.length,
-        movieIds: arr
-          .sort((a, b) => (b.tmdbVoteCount ?? 0) - (a.tmdbVoteCount ?? 0))
-          .map((m) => m.id),
-      }));
+      .sort(([a], [b]) => b - a)
+      .map(([d, count]) => ({ decade: d, count }));
+  }, [movies]);
+
+  const countrySummary = useMemo(() => {
+    if (directors.length === 0) return [];
+    const dirCountry = new Map<string, string>();
+    directors.forEach((d) => { if (d.country) dirCountry.set(d.name, d.country); });
+    const buckets = new Map<string, number>();
+    Object.values(movies).forEach((m) => {
+      const c = dirCountry.get(m.director);
+      if (!c) return;
+      buckets.set(c, (buckets.get(c) ?? 0) + 1);
+    });
+    return Array.from(buckets.entries())
+      .sort(([, a], [, b]) => b - a)
+      .map(([country, count]) => ({ country, count }));
   }, [movies, directors]);
 
   if (!topMovie || Object.keys(movies).length === 0) {
     return (
       <div className="browse-main">
         <BrowseHeader logout={handleLogout} resetProfile={handleResetProfile} />
-        <div className="browse-loading">Loading films…</div>
+        <div className="browse-loading t-meta">Loading the collection…</div>
       </div>
     );
   }
 
-  // Drop seed-era decade genres ("60s", "70s") -- now derived from movie.year.
-  const isDecadeGenre = (g: { genre: string }) => /^\d{2,4}s$/.test(g.genre.trim());
-  const directorGenres = genres.filter((g) => !isDecadeGenre(g));
-
-  const rowTitle = (text: string, linkTo?: string, linkLabel = 'Explore All') => (
-    <h2 className="row-title">
-      {linkTo ? (
-        <Link to={linkTo} className="row-title-link">
-          <span>{text}</span>
-          <span className="row-explore" aria-hidden="true">{linkLabel} ›</span>
-        </Link>
-      ) : (
-        <span>{text}</span>
-      )}
-    </h2>
-  );
-
-  const directorGenreRow = (genre: { id: number; genre: string }) => {
-    const slug = slugifyDirector(genre.genre);
-    return (
-      <div key={genre.id} className="genre-name">
-        {rowTitle(genre.genre, `/director/${slug}`, 'View director')}
-        <GenreList
-          myList={myList}
-          currentProfileId={currentProfileId}
-          createListItem={handleCreateListItem}
-          deleteListItem={handleDeleteListItem}
-          movies={movies}
-          genreId={genre.id}
-          genres={genres}
-          tags={tags}
-        />
-      </div>
-    );
-  };
-
-  const movieIdsRow = (key: string, title: string, ids: number[]) => (
-    <div key={key} className="genre-name">
-      {rowTitle(title)}
-      <GenreList
-        myList={myList}
-        currentProfileId={currentProfileId}
-        createListItem={handleCreateListItem}
-        deleteListItem={handleDeleteListItem}
-        movies={movies}
-        movieIds={ids}
-        genreId={null}
-        genres={genres}
-        tags={tags}
-      />
-    </div>
-  );
-
-  // Richer title for derived rows (decade, country) -- a primary label plus
-  // a meta line with year-range or film count, styled distinctly from the
-  // director rows so the section feels editorially curated.
-  const labeledRow = (
-    key: string,
-    primary: string,
-    meta: string,
-    ids: number[],
-  ) => (
-    <div key={key} className="genre-name">
-      <h2 className="row-title row-title-stacked">
-        <span className="row-title-primary">{primary}</span>
-        <span className="row-title-meta">{meta}</span>
-      </h2>
-      <GenreList
-        myList={myList}
-        currentProfileId={currentProfileId}
-        createListItem={handleCreateListItem}
-        deleteListItem={handleDeleteListItem}
-        movies={movies}
-        movieIds={ids}
-        genreId={null}
-        genres={genres}
-        tags={tags}
-      />
-    </div>
-  );
-
-  const myListSection = myList.length ? (
-    <div key={currentProfileId} className="genre-name">
-      {rowTitle('My List', '/browse/my-list')}
-      <GenreList
-        currentProfileId={currentProfileId}
-        createListItem={handleCreateListItem}
-        deleteListItem={handleDeleteListItem}
-        movies={movies}
-        myList={myList}
-        genreId={null}
-        tags={tags}
-        genres={genres}
-      />
-    </div>
-  ) : null;
-
-  const criticsPicksSection = criticsPicks.length > 0 ? (
-    <div className="genre-name">
-      {rowTitle("Critics' Picks")}
-      <GenreList
-        myList={myList}
-        currentProfileId={currentProfileId}
-        createListItem={handleCreateListItem}
-        deleteListItem={handleDeleteListItem}
-        movies={movies}
-        movieIds={criticsPicks}
-        genreId={null}
-        tags={tags}
-        genres={genres}
-      />
-    </div>
-  ) : null;
-
-  const decadeHeader = decadeRows.length > 0 ? (
-    <h3 className="feed-section-title">By Decade</h3>
-  ) : null;
-
-  const countryHeader = countryRows.length > 0 ? (
-    <h3 className="feed-section-title">National Cinema</h3>
-  ) : null;
+  const totalMovies = Object.keys(movies).length;
+  const totalDirectors = directors.length || spotlightGenres.length;
 
   const modal = showModal ? (
     <DetailsModal
@@ -273,17 +177,18 @@ const GenresIndex: React.FC = () => {
     <div className="browse-main">
       <BrowseHeader logout={handleLogout} resetProfile={handleResetProfile} />
 
+      {/* ============= HERO ============= */}
       <section className="hero" aria-label={`Featured: ${topMovie.title}`}>
-        <div className="hero-media">
+        <div className="hero-backdrop">
           <img
-            className={`hero-image ${heroVideoReady ? 'faded' : ''}`}
+            className={`hero-layer hero-image ${heroVideoReady ? '' : 'on'}`}
             src={topMovie.tmdbBackdropUrl ?? topMovie.photoUrl}
             alt=""
           />
           {topMovie.videoUrl ? (
             <video
               ref={heroVideoRef}
-              className={`hero-video ${heroVideoReady ? 'visible' : ''}`}
+              className={`hero-layer hero-video ${heroVideoReady ? 'on' : ''}`}
               key={topMovie.id}
               src={topMovie.videoUrl}
               autoPlay
@@ -294,90 +199,160 @@ const GenresIndex: React.FC = () => {
               onEnded={() => setHeroVideoReady(false)}
             />
           ) : null}
+          <div className="hero-scrim" />
           <div className="hero-vignette" />
-          <div className="hero-fade-bottom" />
         </div>
 
         <div className="hero-content">
-          <p className="hero-eyebrow">Featured Auteur</p>
-          <h1 className="hero-title">{topMovie.title}</h1>
-          <p className="hero-meta">
+          <span className="t-eyebrow">Featured this week · Auteur in focus</span>
+          <h1 className="t-display hero-title">{splitTitleForItalic(topMovie.title)}</h1>
+          <div className="hero-meta">
             <Link to={`/director/${slugifyDirector(topMovie.director)}`} className="hero-director-link">
               <span className="hero-director">{topMovie.director}</span>
             </Link>
-            <span className="hero-dot">·</span>
-            <span>{topMovie.year}</span>
-            <span className="hero-dot">·</span>
-            <span>{convertLength(topMovie.length)}</span>
-            {topMovie.tmdbRating ? (
-              <>
-                <span className="hero-dot">·</span>
-                <span className="hero-rating">★ {topMovie.tmdbRating.toFixed(1)}</span>
-              </>
-            ) : null}
-          </p>
-          <p className="hero-summary">{topMovie.summary}</p>
-          <div className="hero-btns">
-            <Link to={`/watch/${topMovie.id}`} className="hero-play">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              Play
+            <span className="t-meta">
+              {topMovie.year} · {convertLength(topMovie.length)}
+              {topMovie.tmdbRating ? ` · ★ ${topMovie.tmdbRating.toFixed(1)}` : ''}
+            </span>
+          </div>
+          <p className="hero-blurb">{topMovie.summary}</p>
+          <div className="hero-actions">
+            <Link to={`/watch/${topMovie.id}`} className="btn btn-accent">
+              <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5 12 7 3 12.5z" fill="currentColor" /></svg>
+              Play trailer
             </Link>
-            <button type="button" className="hero-info" onClick={toggleModal}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="11" x2="12" y2="17" strokeLinecap="round" />
-                <circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none" />
-              </svg>
-              More Info
+            <button type="button" className="btn btn-ghost" onClick={toggleModal}>
+              <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" /><path d="M7 4v3.5l2 1.2" stroke="currentColor" fill="none" strokeWidth="1.4" /></svg>
+              More info
             </button>
           </div>
         </div>
 
-        {topMovie.videoUrl ? (
-          <button
-            type="button"
-            className="hero-sound-btn"
-            onClick={toggleHeroSound}
-            aria-label={heroSound ? 'Mute trailer' : 'Unmute trailer'}
-          >
-            {heroSound ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11 5L6 9H2v6h4l5 4V5z" />
-                <path d="M15.54 8.46a5 5 0 010 7.07" />
-                <path d="M19.07 4.93a10 10 0 010 14.14" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11 5L6 9H2v6h4l5 4V5z" />
-                <path d="M23 9l-6 6M17 9l6 6" />
-              </svg>
-            )}
-          </button>
-        ) : null}
+        <div className="hero-controls">
+          {topMovie.videoUrl ? (
+            <button type="button" onClick={toggleHeroSound} className="icon-btn dark" aria-label={heroSound ? 'Mute trailer' : 'Unmute trailer'}>
+              {heroSound ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 5L6 9H3v6h3l5 4V5Z" /><path d="M16 8c2 2 2 6 0 8M19 5c3.5 3.5 3.5 10.5 0 14" /></svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 5L6 9H3v6h3l5 4V5Z" /><path d="m17 9 5 5M22 9l-5 5" /></svg>
+              )}
+            </button>
+          ) : null}
+          <span className="hero-aspect t-meta">Trailer · YouTube · {convertLength(topMovie.length)}</span>
+        </div>
       </section>
 
-      <div className="genres-browse">
+      {/* ============= FEED ============= */}
+      <div className="browse-stack">
+        {/* No. 01 — Critics' Picks */}
+        {criticsPicks.length > 0 && (
+          <div className="rail-section">
+            <div className="genre-name">
+              <h2 className="rail-title">
+                <span className="t-eyebrow">No. 01</span>
+                <span className="t-row">Critics' picks · this week</span>
+              </h2>
+              <GenreList
+                myList={myList}
+                currentProfileId={currentProfileId}
+                createListItem={handleCreateListItem}
+                deleteListItem={handleDeleteListItem}
+                movies={movies}
+                movieIds={criticsPicks}
+                genreId={null}
+                genres={genres}
+                tags={tags}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Featured Auteurs rail */}
         <AuteursRow />
-        {myListSection}
-        {criticsPicksSection}
-        {directorGenres.map((g) => directorGenreRow(g))}
-        {countryHeader}
-        {countryRows.map((c) => labeledRow(
-          `country-${c.country}`,
-          c.country,
-          `${c.count} ${c.count === 1 ? 'film' : 'films'}`,
-          c.movieIds,
-        ))}
-        {decadeHeader}
-        {decadeRows.map((d) => labeledRow(
-          `decade-${d.decade}`,
-          d.label,
-          `${d.rangeLabel} · ${d.count} ${d.count === 1 ? 'film' : 'films'}`,
-          d.movieIds,
-        ))}
+
+        {/* My List */}
+        {myList.length > 0 && (
+          <div className="rail-section">
+            <div className="genre-name">
+              <h2 className="rail-title">
+                <span className="t-eyebrow">No. 02</span>
+                <span className="t-row">My List</span>
+                <Link to="/browse/my-list" className="rail-explore">Explore all →</Link>
+              </h2>
+              <GenreList
+                myList={myList}
+                currentProfileId={currentProfileId}
+                createListItem={handleCreateListItem}
+                deleteListItem={handleDeleteListItem}
+                movies={movies}
+                genreId={null}
+                genres={genres}
+                tags={tags}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Director spotlights — top 2 */}
+        {spotlightGenres.map((g, idx) => {
+          const slug = slugifyDirector(g.genre);
+          return (
+            <div key={g.id} className="rail-section">
+              <div className="genre-name">
+                <h2 className="rail-title">
+                  <span className="t-eyebrow">Spotlight</span>
+                  <Link to={`/director/${slug}`} className="t-row rail-title-link"><em>{g.genre}</em>, complete</Link>
+                  <Link to={`/director/${slug}`} className="rail-explore">View director →</Link>
+                </h2>
+                <GenreList
+                  myList={myList}
+                  currentProfileId={currentProfileId}
+                  createListItem={handleCreateListItem}
+                  deleteListItem={handleDeleteListItem}
+                  movies={movies}
+                  genreId={g.id}
+                  genres={genres}
+                  tags={tags}
+                />
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Restorations & rediscoveries */}
+        {restorations.length > 0 && (
+          <div className="rail-section">
+            <div className="genre-name">
+              <h2 className="rail-title">
+                <span className="t-eyebrow">Currents</span>
+                <span className="t-row">Restorations & rediscoveries</span>
+              </h2>
+              <GenreList
+                myList={myList}
+                currentProfileId={currentProfileId}
+                createListItem={handleCreateListItem}
+                deleteListItem={handleDeleteListItem}
+                movies={movies}
+                movieIds={restorations}
+                genreId={null}
+                genres={genres}
+                tags={tags}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Three entry cards — the IA shortcut */}
+        <EntryCards
+          totalDirectors={totalDirectors}
+          totalMovies={totalMovies}
+          countries={countrySummary}
+          decades={decadeSummary}
+        />
+
+        <BrowseFooter />
       </div>
+
       {modal}
     </div>
   );

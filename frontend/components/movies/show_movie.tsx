@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchMovie } from '../../store/api';
+import { slugifyDirector } from '../../util/movie_api_util';
+
+const convertLength = (minutes: number) => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return h > 0 ? `${h}H ${m}M` : `${m}M`;
+};
 
 const ShowMovie: React.FC = () => {
   const { movieId } = useParams<{ movieId: string }>();
@@ -11,16 +18,12 @@ const ShowMovie: React.FC = () => {
   const currentMovie = movieId ? movies[Number(movieId)] : null;
   const [mounted, setMounted] = useState(false);
   const [leaving, setLeaving] = useState(false);
-  const [controlsVisible, setControlsVisible] = useState(true);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!currentMovie && movieId) {
-      dispatch(fetchMovie(Number(movieId)));
-    }
+    if (!currentMovie && movieId) dispatch(fetchMovie(Number(movieId)));
   }, [dispatch, currentMovie, movieId]);
 
-  // Fade in on mount
   useEffect(() => {
     const raf = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(raf);
@@ -32,80 +35,80 @@ const ShowMovie: React.FC = () => {
     window.setTimeout(() => navigate('/browse'), 220);
   }, [leaving, navigate]);
 
-  // Escape key to go back
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') goBack();
-    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') goBack(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [goBack]);
 
   const clearTimers = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
+    if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
   };
 
-  const showControls = () => {
-    clearTimers();
-    setControlsVisible(true);
-    timerRef.current = window.setTimeout(() => setControlsVisible(false), 3000);
-  };
+  useEffect(() => () => clearTimers(), []);
 
   if (!currentMovie) {
     return (
-      <div className="movie-container mounted">
-        <div className="show-movie-loading">Loading…</div>
+      <div className="watch-page mounted">
+        <div className="browse-loading t-meta">Loading trailer…</div>
       </div>
     );
   }
 
   const state = leaving ? 'leaving' : mounted ? 'mounted' : 'entering';
+  const hasLocal = !!currentMovie.videoUrl;
+  const hasYT = !!(currentMovie.tmdbVideoKey && currentMovie.tmdbVideoSite === 'YouTube');
+  const slug = slugifyDirector(currentMovie.director);
 
   return (
-    <div
-      className={`movie-container ${state}`}
-      onMouseMove={showControls}
-      onTouchStart={showControls}
-    >
-      <button
-        type="button"
-        className={`show-back ${controlsVisible ? 'visible' : ''}`}
-        onClick={goBack}
-        aria-label="Back to browse"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
-        <span>Back</span>
-      </button>
-      {currentMovie.videoUrl ? (
-        <video
-          autoPlay
-          muted
-          className="show-movie"
-          src={currentMovie.videoUrl}
-          controls
-          playsInline
-        />
-      ) : currentMovie.tmdbVideoKey && currentMovie.tmdbVideoSite === 'YouTube' ? (
-        <iframe
-          className="show-movie show-movie-iframe"
-          src={`https://www.youtube.com/embed/${currentMovie.tmdbVideoKey}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
-          title={currentMovie.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      ) : (
-        <div className="show-movie-empty">
-          <div>
-            <h2>Trailer not available</h2>
-            <p>We don't have a trailer for "{currentMovie.title}" yet.</p>
-          </div>
+    <div className={`watch-page ${state}`}>
+      <div className="watch-bar">
+        <button type="button" onClick={goBack} className="watch-back">
+          <svg width="14" height="14" viewBox="0 0 14 14"><path d="M9 2 4 7l5 5" stroke="currentColor" fill="none" strokeWidth="1.5" /></svg>
+          Back
+        </button>
+        <div className="watch-bar-mid">
+          <span className="t-eyebrow">Now playing · trailer</span>
+          <span className="watch-bar-title"><em>{currentMovie.title}</em></span>
+          <Link to={`/director/${slug}`} className="t-meta watch-bar-director">{currentMovie.director.toUpperCase()}</Link>
+          <span className="t-meta">{currentMovie.year} · {convertLength(currentMovie.length)}</span>
         </div>
-      )}
+        <div className="watch-bar-spacer" />
+      </div>
+
+      <div className="watch-stage">
+        {hasLocal ? (
+          <video
+            autoPlay
+            muted
+            className="watch-video"
+            src={currentMovie.videoUrl}
+            controls
+            playsInline
+          />
+        ) : hasYT ? (
+          <iframe
+            className="watch-video watch-iframe"
+            src={`https://www.youtube.com/embed/${currentMovie.tmdbVideoKey}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
+            title={currentMovie.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <div className="watch-empty">
+            <span className="t-eyebrow">No trailer in TMDB</span>
+            <h2 className="t-section watch-empty-title"><em>Trailer not available.</em></h2>
+            <p className="t-body watch-empty-body">
+              TMDB doesn't have a YouTube key for "{currentMovie.title}". Try the director's other films,
+              or browse the catalog.
+            </p>
+            <div className="watch-empty-actions">
+              <Link to={`/director/${slug}`} className="btn btn-accent">More from {currentMovie.director}</Link>
+              <Link to="/browse" className="btn btn-outline">Back to browse</Link>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
