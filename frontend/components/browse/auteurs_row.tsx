@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchDirectors } from '../../util/movie_api_util';
 import type { DirectorSummary } from '../../types';
@@ -24,10 +24,38 @@ const monogramFor = (name: string): string => {
 
 const AuteursRow: React.FC = () => {
   const [directors, setDirectors] = useState<DirectorSummary[]>([]);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
     fetchDirectors().then(setDirectors).catch(() => setDirectors([]));
   }, []);
+
+  const checkScroll = useCallback(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const el = sliderRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [checkScroll, directors.length]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = sliderRef.current;
+    if (!el) return;
+    el.scrollBy({ left: direction === 'left' ? -el.clientWidth * 0.8 : el.clientWidth * 0.8, behavior: 'smooth' });
+  };
 
   if (directors.length === 0) return null;
 
@@ -43,7 +71,12 @@ const AuteursRow: React.FC = () => {
           <Link to="/directors" className="rail-explore">All {totalCount} auteurs →</Link>
         </h2>
         <div className="rail">
-          <div className="rail-scroller auteurs-scroller">
+          {canScrollLeft && (
+            <button type="button" className="rail-arrow left" onClick={() => scroll('left')} aria-label="Scroll left">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M12 4 6 10l6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          )}
+          <div className="rail-scroller auteurs-scroller" ref={sliderRef}>
             {featured.map((d, i) => {
               const palette = paletteFor(d.name);
               return (
@@ -79,6 +112,11 @@ const AuteursRow: React.FC = () => {
               );
             })}
           </div>
+          {canScrollRight && (
+            <button type="button" className="rail-arrow right" onClick={() => scroll('right')} aria-label="Scroll right">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M8 4l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          )}
         </div>
       </div>
     </div>

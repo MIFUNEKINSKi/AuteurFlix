@@ -7,11 +7,18 @@
     position: relative;
     padding: #{"clamp(40px, 6vw, 80px)"} 0 0;
     display: grid;
+    /* Constrain the implicit single column to viewport width; without
+       minmax(0, 1fr) the grid track expands to fit the rail-scroller's
+       content (e.g. 12 cards x 700px), making every cell huge. */
+    grid-template-columns: minmax(0, 1fr);
     gap: #{"clamp(50px, 6vw, 80px)"};
     background: var(--ink-1);
 }
 
-.rail-section { width: 100%; }
+.rail-section {
+    width: 100%;
+    min-width: 0; /* belt-and-suspenders so the rail-scroller can shrink */
+}
 
 .genre-name {
     position: relative;
